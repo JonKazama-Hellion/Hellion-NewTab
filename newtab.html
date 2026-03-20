@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hellion NewTab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/css/main.css" />
+</head>
+<body>
+
+  <!-- BACKGROUND -->
+  <div class="bg-layer" id="bgLayer"></div>
+  <div class="bg-overlay"></div>
+  <div class="bg-noise"></div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <span class="logo">⬡ HELLION</span>
+      <div class="clock-block">
+        <span class="clock" id="clock">00:00</span>
+        <span class="date" id="date">Fr, 01. Jan</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="btn-icon" id="btnImport" title="Bookmarks importieren (HTML)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Import
+      </button>
+      <button class="btn-icon" id="btnAddBoard" title="Neues Board hinzufügen">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Board
+      </button>
+      <button class="btn-icon" id="btnNote" title="Schnellnotiz">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Note
+      </button>
+      <button class="btn-icon" id="btnSettings" title="Einstellungen">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </button>
+    </div>
+  </header>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar-wrapper" id="searchBarWrapper">
+    <div class="search-bar">
+      <button class="search-engine-toggle" id="searchEngineToggle" title="Suchmaschine wechseln">
+        <span id="searchEngineIcon">G</span>
+      </button>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search the web…" autocomplete="off" />
+      <button class="search-submit" id="searchSubmit">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STICKY NOTE -->
+  <div class="sticky-note" id="stickyNote">
+    <div class="sticky-note-header" id="stickyNoteHeader">
+      <span class="sticky-note-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Note
+      </span>
+      <button class="sticky-note-close" id="stickyNoteClose">✕</button>
+    </div>
+    <textarea class="sticky-note-body" id="stickyNoteBody" placeholder="Quick note…" spellcheck="false"></textarea>
+  </div>
+
+  <!-- BOARDS CONTAINER -->
+  <main class="boards-wrapper" id="boardsWrapper">
+    <!-- dynamisch via JS -->
+  </main>
+
+  <!-- HIDDEN FILE INPUT FOR IMPORT -->
+  <input type="file" id="importInput" accept=".html,.htm" style="display:none" />
+
+  <!-- SETTINGS PANEL -->
+  <div class="panel-overlay" id="settingsOverlay"></div>
+  <aside class="settings-panel" id="settingsPanel">
+    <div class="panel-header">
+      <span>Settings</span>
+      <button class="btn-close" id="btnCloseSettings">✕</button>
+    </div>
+    <div class="panel-body">
+
+      <!-- APPEARANCE -->
+      <section class="settings-section">
+        <!-- THEME PICKER -->
+        <h3 class="settings-section-title">THEME</h3>
+        <div class="theme-grid">
+          <div class="theme-card active" data-value="astronaut">
+            <img class="theme-card-img" src="assets/themes/bg-astronaut.jpg" alt="Astronaut" />
+            <span class="theme-card-label">Astronaut</span>
+            <span class="theme-card-check">✓</span>
+          </div>
+          <div class="theme-card" data-value="cosmic-clock">
+            <img class="theme-card-img" src="assets/themes/bg-cosmic-clock.jpg" alt="Cosmic Clock" />
+            <span class="theme-card-label">Cosmic</span>
+            <span class="theme-card-check">✓</span>
+          </div>
+          <div class="theme-card" data-value="void-mage">
+            <img class="theme-card-img" src="assets/themes/bg-void-mage.jpg" alt="Void Mage" />
+            <span class="theme-card-label">Void Mage</span>
+            <span class="theme-card-check">✓</span>
+          </div>
+          <div class="theme-card" data-value="merchantman">
+            <img class="theme-card-img" src="assets/themes/bg-merchantman.webp" alt="Merchantman" />
+            <span class="theme-card-label">Merchantman</span>
+            <span class="theme-card-check">✓</span>
+          </div>
+          <div class="theme-card" data-value="julia-jin">
+            <img class="theme-card-img" src="assets/themes/bg-julia-jin.png" alt="Julia & Jin" />
+            <span class="theme-card-label">Julia &amp; Jin</span>
+            <span class="theme-card-check">✓</span>
+          </div>
+          <div class="theme-card" data-value="sc-sunset">
+            <img class="theme-card-img" src="assets/themes/bg-sc-sunset.jpg" alt="SC Sunset" />
+            <span class="theme-card-label">SC Sunset</span>
+            <span class="theme-card-check">✓</span>
+          </div>
+          <div class="theme-card" data-value="hellion-hud">
+            <img class="theme-card-img" src="assets/themes/bg-hellion-hud.png" alt="Hellion HUD" />
+            <span class="theme-card-label">HUD</span>
+            <span class="theme-card-check">✓</span>
+          </div>
+          <div class="theme-card" data-value="hellion-energy">
+            <img class="theme-card-img" src="assets/themes/bg-hellion-energy.jpg" alt="Hellion Energy" />
+            <span class="theme-card-label">Energy</span>
+            <span class="theme-card-check">✓</span>
+          </div>
+        </div>
+
+        <h3 class="settings-section-title">APPEARANCE</h3>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Compact mode</span>
+            <span class="setting-desc">Reduce spacing to show more bookmarks</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingCompact" /><span class="slider"></span></label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Shorten long titles</span>
+            <span class="setting-desc">Shorten title to one line with "…"</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingShorten" /><span class="slider"></span></label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Background image</span>
+            <span class="setting-desc">Custom wallpaper URL or upload</span>
+          </div>
+          <button class="btn-small" id="btnChangeBg">Change</button>
+        </div>
+
+        <div class="setting-row" id="bgInputRow" style="display:none">
+          <input type="text" class="text-input full-width" id="bgUrlInput" placeholder="https://... or leave empty for default" />
+          <button class="btn-small" id="btnApplyBg">Apply</button>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Background file upload</span>
+            <span class="setting-desc">Use a local image as background</span>
+          </div>
+          <button class="btn-small" id="btnBgFile">Upload</button>
+          <input type="file" id="bgFileInput" accept="image/*" style="display:none" />
+        </div>
+
+      </section>
+
+      <!-- BEHAVIOR -->
+      <section class="settings-section">
+        <h3 class="settings-section-title">BEHAVIOR</h3>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Open links in new tab</span>
+            <span class="setting-desc">Open bookmarks in a new browser tab</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingNewTab" checked /><span class="slider"></span></label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Show bookmark descriptions</span>
+            <span class="setting-desc">Display saved descriptions below bookmark titles</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingShowDesc" /><span class="slider"></span></label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Hide extra bookmarks in long boards</span>
+            <span class="setting-desc">Automatically hides extra bookmarks in long boards</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingHideExtra" /><span class="slider"></span></label>
+        </div>
+
+        <div class="setting-row" id="visibleCountRow">
+          <div class="setting-info">
+            <span class="setting-label">Visible bookmarks before hide</span>
+            <span class="setting-desc">Choose how many bookmarks are shown</span>
+          </div>
+          <select class="select-input" id="settingVisibleCount">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Quick Save shortcut</span>
+            <span class="setting-desc">Save current page to a board quickly</span>
+          </div>
+          <span class="setting-badge" id="quickSaveBadge">Not set</span>
+        </div>
+
+      </section>
+
+      <!-- ABOUT / IMPRESSUM -->
+      <section class="settings-section">
+        <h3 class="settings-section-title">ABOUT</h3>
+
+        <div class="about-block">
+          <div class="about-logo">⬡ HELLION NEWTAB</div>
+          <div class="about-version">Version 1.2.0 · by Hellion Online Media</div>
+
+          <div class="about-links">
+            <a href="https://hellion-media.de/impressum" target="_blank" class="about-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Impressum
+            </a>
+            <a href="https://hellion-media.de" target="_blank" class="about-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              hellion-media.de
+            </a>
+          </div>
+
+          <div class="about-divider"></div>
+
+          <div class="about-info-row">
+            <span class="about-info-label">Entwickler</span>
+            <span class="about-info-value">Florian Wathling</span>
+          </div>
+          <div class="about-info-row">
+            <span class="about-info-label">Unternehmen</span>
+            <span class="about-info-value">Hellion Online Media</span>
+          </div>
+          <div class="about-info-row">
+            <span class="about-info-label">Lizenz</span>
+            <span class="about-info-value">Proprietär · Nicht open source</span>
+          </div>
+          <div class="about-info-row">
+            <span class="about-info-label">Datenspeicherung</span>
+            <span class="about-info-value">100% lokal · Kein Server · Kein Account</span>
+          </div>
+
+          <div class="about-divider"></div>
+
+          <div class="about-bugreport">
+            <span class="about-info-label" style="display:block;margin-bottom:6px">Bug Report / Feedback</span>
+            <a href="mailto:kontakt@hellion-media.de?subject=Hellion NewTab – Bug Report" class="about-link-mail">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              kontakt@hellion-media.de
+            </a>
+          </div>
+
+          <div class="about-browsers">
+            <span class="about-info-label" style="display:block;margin-bottom:6px">Kompatible Browser</span>
+            <div class="about-browser-tags">
+              <span class="browser-tag">Chrome</span>
+              <span class="browser-tag">Edge</span>
+              <span class="browser-tag">Opera</span>
+              <span class="browser-tag">Opera GX</span>
+              <span class="browser-tag">Brave</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DATA -->
+      <section class="settings-section">
+        <h3 class="settings-section-title">DATA</h3>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Export Boards</span>
+            <span class="setting-desc">Alle Boards als JSON sichern</span>
+          </div>
+          <button class="btn-small" id="btnExportJSON">Export</button>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Import Boards</span>
+            <span class="setting-desc">JSON-Backup wiederherstellen</span>
+          </div>
+          <button class="btn-small" id="btnImportJSON">Import</button>
+          <input type="file" id="jsonImportInput" accept=".json" style="display:none" />
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Suchleiste anzeigen</span>
+            <span class="setting-desc">Suchleiste unter dem Header ein/aus</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingShowSearch" checked /><span class="slider"></span></label>
+        </div>
+      </section>
+
+      <!-- DANGER ZONE -->
+      <section class="settings-section">
+        <h3 class="settings-section-title danger">DANGER ZONE</h3>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Reset all data</span>
+            <span class="setting-desc">Deletes all boards and bookmarks</span>
+          </div>
+          <button class="btn-danger" id="btnResetAll">Reset</button>
+        </div>
+      </section>
+
+    </div>
+  </aside>
+
+  <!-- ADD BOARD MODAL -->
+  <div class="modal-overlay" id="addBoardOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span>New Board</span>
+        <button class="btn-close" id="btnCancelBoard">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="text-input full-width" id="newBoardName" placeholder="Board name..." maxlength="40" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" id="btnConfirmBoard">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD BOOKMARK MODAL -->
+  <div class="modal-overlay" id="addBookmarkOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span>New Bookmark</span>
+        <button class="btn-close" id="btnCancelBookmark">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="text-input full-width" id="newBmTitle" placeholder="Title..." maxlength="60" />
+        <input type="url" class="text-input full-width" id="newBmUrl" placeholder="https://..." style="margin-top:8px" />
+        <input type="text" class="text-input full-width" id="newBmDesc" placeholder="Description (optional)" style="margin-top:8px" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" id="btnConfirmBookmark">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENAME MODAL -->
+  <div class="modal-overlay" id="renameOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span>Rename</span>
+        <button class="btn-close" id="btnCancelRename">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="text-input full-width" id="renameInput" placeholder="New name..." maxlength="60" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" id="btnConfirmRename">Rename</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Storage muss zuerst -->
+  <script src="src/js/storage.js"></script>
+  <!-- State & Hilfsfunktionen -->
+  <script src="src/js/state.js"></script>
+  <!-- Theme-System -->
+  <script src="src/js/themes.js"></script>
+  <!-- Features -->
+  <script src="src/js/drag.js"></script>
+  <script src="src/js/boards.js"></script>
+  <script src="src/js/settings.js"></script>
+  <script src="src/js/search.js"></script>
+  <script src="src/js/sticky.js"></script>
+  <script src="src/js/data.js"></script>
+  <!-- Einstiegspunkt zuletzt -->
+  <script src="src/js/app.js"></script>
+</body>
+</html>

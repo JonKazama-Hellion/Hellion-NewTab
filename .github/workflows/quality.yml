@@ -1,0 +1,92 @@
+# Code-Qualität — Validierung bei Push und PR
+name: Code Quality
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Extension
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: HTML-Validierung (newtab.html existiert)
+        run: |
+          echo "Prüfe Projektstruktur..."
+          test -f manifest.json || (echo "FEHLER: manifest.json fehlt!" && exit 1)
+          test -f manifest.firefox.json || (echo "FEHLER: manifest.firefox.json fehlt!" && exit 1)
+          test -f newtab.html || (echo "FEHLER: newtab.html fehlt!" && exit 1)
+          test -d src/js || (echo "FEHLER: src/js/ fehlt!" && exit 1)
+          test -d src/css || (echo "FEHLER: src/css/ fehlt!" && exit 1)
+          test -d assets/icons || (echo "FEHLER: assets/icons/ fehlt!" && exit 1)
+          test -d assets/themes || (echo "FEHLER: assets/themes/ fehlt!" && exit 1)
+          echo "Projektstruktur OK"
+
+      - name: Manifest-Validierung
+        run: |
+          echo "Prüfe manifest.json..."
+          python3 -c "
+          import json, sys
+          with open('manifest.json') as f:
+              m = json.load(f)
+          assert m.get('manifest_version') == 3, 'Manifest V3 erwartet'
+          assert m.get('name'), 'Name fehlt'
+          assert m.get('version'), 'Version fehlt'
+          assert 'storage' in m.get('permissions', []), 'Storage Permission fehlt'
+          print('manifest.json (V3) OK — Version:', m['version'])
+
+          with open('manifest.firefox.json') as f:
+              mf = json.load(f)
+          assert mf.get('manifest_version') == 2, 'Firefox Manifest V2 erwartet'
+          assert mf['version'] == m['version'], 'Versionen stimmen nicht überein!'
+          print('manifest.firefox.json (V2) OK — Version:', mf['version'])
+          "
+
+      - name: JavaScript Syntax-Check
+        run: |
+          echo "Prüfe JavaScript-Syntax..."
+          ERRORS=0
+          for f in src/js/*.js; do
+            if ! node --check "$f" 2>&1; then
+              echo "SYNTAX-FEHLER in $f"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "$ERRORS Datei(en) mit Syntax-Fehlern!"
+            exit 1
+          fi
+          echo "Alle JS-Dateien syntaktisch korrekt"
+
+      - name: Icon-Dateien prüfen
+        run: |
+          for icon in assets/icons/icon16.png assets/icons/icon48.png assets/icons/icon128.png; do
+            test -f "$icon" || (echo "FEHLER: $icon fehlt!" && exit 1)
+          done
+          echo "Alle Icons vorhanden"
+
+      - name: Versions-Konsistenz prüfen
+        run: |
+          MANIFEST_VER=$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])")
+          FIREFOX_VER=$(python3 -c "import json; print(json.load(open('manifest.firefox.json'))['version'])")
+          HTML_VER=$(grep -oP 'Version \K[0-9]+\.[0-9]+\.[0-9]+' newtab.html || echo 'NICHT GEFUNDEN')
+          echo "manifest.json:         $MANIFEST_VER"
+          echo "manifest.firefox.json: $FIREFOX_VER"
+          echo "newtab.html:           $HTML_VER"
+          if [ "$MANIFEST_VER" != "$FIREFOX_VER" ]; then
+            echo "FEHLER: Versionen in Manifests stimmen nicht überein!"
+            exit 1
+          fi
+          if [ "$MANIFEST_VER" != "$HTML_VER" ]; then
+            echo "WARNUNG: Version in newtab.html ($HTML_VER) weicht ab von Manifest ($MANIFEST_VER)"
+            exit 1
+          fi
+          echo "Alle Versionen konsistent: $MANIFEST_VER"

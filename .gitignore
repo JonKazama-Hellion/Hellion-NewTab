@@ -1,0 +1,20 @@
+# System
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build / Temp
+dist/
+*.zip
+*.tar.gz
+node_modules/
+
+# Persönliche Backup-Dateien (nicht ins Repo)
+favorites_*.html
+*_backup*.json

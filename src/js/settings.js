@@ -33,7 +33,7 @@ function applySettings() {
   const showSearchEl = document.getElementById('settingShowSearch');
   if (showSearchEl) showSearchEl.checked = settings.showSearch;
 
-  applyTheme(settings.theme || 'astronaut', !!settings.bgUrl);
+  applyTheme(settings.theme || 'nebula', !!settings.bgUrl);
 
   if (settings.bgUrl) {
     document.getElementById('bgLayer').style.backgroundImage = `url('${settings.bgUrl}')`;
@@ -129,7 +129,7 @@ function bindSettingsEvents() {
     if (!confirm('Wirklich alle Boards und Einstellungen löschen? Nicht rückgängig machbar.')) return;
     boards   = [];
     settings = { compact: false, shortenTitles: false, newTab: true, showDesc: false,
-                 hideExtra: false, visibleCount: 10, bgUrl: '', theme: 'astronaut',
+                 hideExtra: false, visibleCount: 10, bgUrl: '', theme: 'nebula',
                  showSearch: true, searchEngine: 'google' };
     await saveBoards();
     await saveSettings();

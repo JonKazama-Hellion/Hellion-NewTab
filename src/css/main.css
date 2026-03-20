@@ -1,22 +1,22 @@
 /* =============================================
    HELLION NEWTAB — Theme System
-   Themes: astronaut | cosmic-clock | void-mage
+   Themes: nebula | crescent | event-horizon
    ============================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Cinzel:wght@400;600&display=swap');
 
-/* ---- BASE VARIABLES (Astronaut = Default) ---- */
+/* ---- BASE VARIABLES (Nebula = Default) ---- */
 :root {
-  --accent:              #ffa032;
-  --accent-dim:          rgba(255, 160, 50, 0.15);
-  --accent-glow:         rgba(255, 160, 50, 0.08);
-  --border-accent:       rgba(255, 160, 50, 0.35);
-  --bg-primary:          #08090d;
-  --bg-board:            rgba(10, 12, 18, 0.48);
+  --accent:              #d65cff;
+  --accent-dim:          rgba(214, 92, 255, 0.15);
+  --accent-glow:         rgba(214, 92, 255, 0.08);
+  --border-accent:       rgba(214, 92, 255, 0.35);
+  --bg-primary:          #0a060e;
+  --bg-board:            rgba(12, 8, 18, 0.48);
   --border:              rgba(255, 255, 255, 0.06);
-  --text-primary:        #dde0ee;
-  --text-secondary:      #7a7d8e;
-  --text-muted:          #44475a;
+  --text-primary:        #e0d8f0;
+  --text-secondary:      #8a7a9e;
+  --text-muted:          #4a3860;
   --danger:              #e05555;
   --font-display:        'Rajdhani', sans-serif;
   --font-body:           'Inter', sans-serif;
@@ -25,93 +25,91 @@
   --board-width:         240px;
   --spacing:             10px;
   --spacing-compact:     5px;
-  --overlay-bg:          linear-gradient(180deg, rgba(8,9,13,0.85) 0%, rgba(8,9,13,0.42) 45%, rgba(8,9,13,0.90) 100%);
-  --header-bg:           rgba(8,9,13,0.90);
-  --board-hover-border:  rgba(255,160,50,0.22);
-  --toggle-on-bg:        rgba(255,160,50,0.22);
-  --logo-shadow:         rgba(255,160,50,0.45);
+  --overlay-bg:          linear-gradient(180deg, rgba(10,6,14,0.85) 0%, rgba(10,6,14,0.42) 45%, rgba(10,6,14,0.90) 100%);
+  --header-bg:           rgba(10,6,14,0.90);
+  --board-hover-border:  rgba(214,92,255,0.22);
+  --toggle-on-bg:        rgba(214,92,255,0.22);
+  --logo-shadow:         rgba(214,92,255,0.45);
 }
 
 /* ============================================
-   THEME: ASTRONAUT
+   THEME: NEBULA (magenta / cosmic nebula)
    ============================================ */
-[data-theme="astronaut"] {
-  --accent:             #ffa032;
-  --accent-dim:         rgba(255, 160, 50, 0.14);
-  --accent-glow:        rgba(255, 160, 50, 0.06);
-  --border-accent:      rgba(255, 160, 50, 0.32);
-  --bg-primary:         #07080c;
-  --bg-board:           rgba(9, 10, 16, 0.46);
+[data-theme="nebula"] {
+  --accent:             #d65cff;
+  --accent-dim:         rgba(214, 92, 255, 0.14);
+  --accent-glow:        rgba(214, 92, 255, 0.06);
+  --border-accent:      rgba(214, 92, 255, 0.32);
+  --bg-primary:         #0a060e;
+  --bg-board:           rgba(12, 8, 18, 0.48);
   --border:             rgba(255, 255, 255, 0.055);
-  --text-primary:       #d8dbe8;
-  --text-secondary:     #72758a;
-  --text-muted:         #404358;
+  --text-primary:       #e0d8f0;
+  --text-secondary:     #8a7a9e;
+  --text-muted:         #4a3860;
   --font-display:       'Rajdhani', sans-serif;
   --font-body:          'Inter', sans-serif;
-  --overlay-bg:         linear-gradient(180deg, rgba(7,8,12,0.88) 0%, rgba(7,8,12,0.38) 45%, rgba(7,8,12,0.94) 100%);
-  --header-bg:          rgba(7,8,12,0.92);
-  --board-hover-border: rgba(255,160,50,0.22);
-  --toggle-on-bg:       rgba(255,160,50,0.22);
-  --logo-shadow:        rgba(255,160,50,0.50);
+  --overlay-bg:         linear-gradient(180deg, rgba(10,6,14,0.88) 0%, rgba(10,6,14,0.35) 45%, rgba(10,6,14,0.92) 100%);
+  --header-bg:          rgba(10,6,14,0.92);
+  --board-hover-border: rgba(214,92,255,0.22);
+  --toggle-on-bg:       rgba(214,92,255,0.22);
+  --logo-shadow:        rgba(214,92,255,0.50);
 }
+[data-theme="nebula"] .board         { border-color: rgba(214,92,255,0.10); }
+[data-theme="nebula"] .bm-item:hover { background: rgba(214,92,255,0.05); }
 
 /* ============================================
-   THEME: COSMIC CLOCK
+   THEME: CRESCENT (gold / minimalist night)
    ============================================ */
-[data-theme="cosmic-clock"] {
-  --accent:             #d4a843;
-  --accent-dim:         rgba(212, 168, 67, 0.16);
-  --accent-glow:        rgba(212, 168, 67, 0.07);
-  --border-accent:      rgba(212, 168, 67, 0.38);
-  --bg-primary:         #0d090c;
-  --bg-board:           rgba(18, 10, 14, 0.50);
-  --border:             rgba(212, 168, 67, 0.09);
-  --text-primary:       #ecdccc;
-  --text-secondary:     #8a6e5e;
-  --text-muted:         #523930;
+[data-theme="crescent"] {
+  --accent:             #c8a84a;
+  --accent-dim:         rgba(200, 168, 74, 0.16);
+  --accent-glow:        rgba(200, 168, 74, 0.07);
+  --border-accent:      rgba(200, 168, 74, 0.35);
+  --bg-primary:         #080a12;
+  --bg-board:           rgba(10, 14, 26, 0.50);
+  --border:             rgba(200, 168, 74, 0.09);
+  --text-primary:       #d8dce8;
+  --text-secondary:     #6a7090;
+  --text-muted:         #363c55;
   --font-display:       'Cinzel', serif;
   --font-body:          'Inter', sans-serif;
-  --overlay-bg:         linear-gradient(160deg, rgba(13,9,12,0.90) 0%, rgba(13,9,12,0.42) 50%, rgba(13,9,12,0.94) 100%);
-  --header-bg:          rgba(13,9,12,0.93);
-  --board-hover-border: rgba(212,168,67,0.28);
-  --toggle-on-bg:       rgba(212,168,67,0.22);
-  --logo-shadow:        rgba(212,168,67,0.55);
+  --overlay-bg:         linear-gradient(180deg, rgba(8,10,18,0.88) 0%, rgba(8,10,18,0.30) 50%, rgba(8,10,18,0.92) 100%);
+  --header-bg:          rgba(8,10,18,0.93);
+  --board-hover-border: rgba(200,168,74,0.26);
+  --toggle-on-bg:       rgba(200,168,74,0.22);
+  --logo-shadow:        rgba(200,168,74,0.55);
 }
 
-[data-theme="cosmic-clock"] .logo         { font-family: 'Cinzel', serif; letter-spacing: 4px; }
-[data-theme="cosmic-clock"] .clock        { font-family: 'Cinzel', serif; }
-[data-theme="cosmic-clock"] .board-title  { letter-spacing: 2px; }
-[data-theme="cosmic-clock"] .bm-item:hover { background: rgba(212,168,67,0.05); }
-[data-theme="cosmic-clock"] .board        { border-color: rgba(212,168,67,0.10); }
+[data-theme="crescent"] .logo         { font-family: 'Cinzel', serif; letter-spacing: 4px; }
+[data-theme="crescent"] .clock        { font-family: 'Cinzel', serif; }
+[data-theme="crescent"] .board-title  { letter-spacing: 2px; }
+[data-theme="crescent"] .bm-item:hover { background: rgba(200,168,74,0.05); }
+[data-theme="crescent"] .board        { border-color: rgba(200,168,74,0.10); }
 
 /* ============================================
-   THEME: VOID MAGE
+   THEME: EVENT HORIZON (orange-violet / deep space)
    ============================================ */
-[data-theme="void-mage"] {
-  --accent:             #9b6fff;
-  --accent-dim:         rgba(155, 111, 255, 0.15);
-  --accent-glow:        rgba(155, 111, 255, 0.07);
-  --border-accent:      rgba(155, 111, 255, 0.35);
-  --bg-primary:         #07060f;
-  --bg-board:           rgba(10, 8, 20, 0.50);
-  --border:             rgba(155, 111, 255, 0.09);
-  --text-primary:       #d4cef5;
-  --text-secondary:     #7068a0;
-  --text-muted:         #3e3860;
-  --font-display:       'Cinzel', serif;
+[data-theme="event-horizon"] {
+  --accent:             #e08030;
+  --accent-dim:         rgba(224, 128, 48, 0.15);
+  --accent-glow:        rgba(224, 128, 48, 0.07);
+  --border-accent:      rgba(224, 128, 48, 0.35);
+  --bg-primary:         #06050c;
+  --bg-board:           rgba(8, 6, 16, 0.52);
+  --border:             rgba(224, 128, 48, 0.08);
+  --text-primary:       #d8d0e8;
+  --text-secondary:     #7a6898;
+  --text-muted:         #3c3058;
+  --font-display:       'Rajdhani', sans-serif;
   --font-body:          'Inter', sans-serif;
-  --overlay-bg:         linear-gradient(160deg, rgba(7,6,15,0.92) 0%, rgba(7,6,15,0.40) 50%, rgba(7,6,15,0.95) 100%);
-  --header-bg:          rgba(7,6,15,0.93);
-  --board-hover-border: rgba(155,111,255,0.28);
-  --toggle-on-bg:       rgba(155,111,255,0.22);
-  --logo-shadow:        rgba(155,111,255,0.60);
+  --overlay-bg:         linear-gradient(180deg, rgba(6,5,12,0.90) 0%, rgba(6,5,12,0.38) 50%, rgba(6,5,12,0.94) 100%);
+  --header-bg:          rgba(6,5,12,0.93);
+  --board-hover-border: rgba(224,128,48,0.26);
+  --toggle-on-bg:       rgba(224,128,48,0.22);
+  --logo-shadow:        rgba(224,128,48,0.55);
 }
-
-[data-theme="void-mage"] .logo         { font-family: 'Cinzel', serif; letter-spacing: 5px; }
-[data-theme="void-mage"] .clock        { font-family: 'Cinzel', serif; }
-[data-theme="void-mage"] .board-title  { letter-spacing: 2px; }
-[data-theme="void-mage"] .bm-item:hover { background: rgba(155,111,255,0.06); }
-[data-theme="void-mage"] .board        { border-color: rgba(155,111,255,0.11); }
+[data-theme="event-horizon"] .board         { border-color: rgba(224,128,48,0.10); }
+[data-theme="event-horizon"] .bm-item:hover { background: rgba(224,128,48,0.05); }
 
 
 /* ============================================
@@ -539,9 +537,9 @@ body.show-desc .bm-desc { display: block; }
   text-align: center; text-transform: uppercase;
 }
 
-.theme-card[data-value="astronaut"]      .theme-card-label { color: #ffa032; }
-.theme-card[data-value="cosmic-clock"]   .theme-card-label { color: #d4a843; }
-.theme-card[data-value="void-mage"]      .theme-card-label { color: #9b6fff; }
+.theme-card[data-value="nebula"]          .theme-card-label { color: #d65cff; }
+.theme-card[data-value="crescent"]       .theme-card-label { color: #c8a84a; }
+.theme-card[data-value="event-horizon"]  .theme-card-label { color: #e08030; }
 .theme-card[data-value="merchantman"]    .theme-card-label { color: #4ecfcf; }
 .theme-card[data-value="julia-jin"]      .theme-card-label { color: #5b9fff; }
 .theme-card[data-value="sc-sunset"]      .theme-card-label { color: #f07c30; }

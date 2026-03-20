@@ -4,9 +4,9 @@
    ============================================= */
 
 const THEMES = {
-  'astronaut':      { bg: 'assets/themes/bg-astronaut.jpg' },
-  'cosmic-clock':   { bg: 'assets/themes/bg-cosmic-clock.jpg' },
-  'void-mage':      { bg: 'assets/themes/bg-void-mage.jpg' },
+  'nebula':          { bg: 'assets/themes/bg-nebula.jpg' },
+  'crescent':        { bg: 'assets/themes/bg-crescent.jpg' },
+  'event-horizon':   { bg: 'assets/themes/bg-event-horizon.jpg' },
   'merchantman':    { bg: 'assets/themes/bg-merchantman.webp' },
   'julia-jin':      { bg: 'assets/themes/bg-julia-jin.png' },
   'sc-sunset':      { bg: 'assets/themes/bg-sc-sunset.jpg' },

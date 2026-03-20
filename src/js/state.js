@@ -13,7 +13,7 @@ let settings = {
   hideExtra:     false,
   visibleCount:  10,
   bgUrl:         '',
-  theme:         'astronaut',
+  theme:         'nebula',
   showSearch:    true,
   searchEngine:  'google'
 };

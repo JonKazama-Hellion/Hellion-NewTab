@@ -44,11 +44,14 @@ const Notes = {
       return note;
     });
 
-    // Calculator-State beibehalten falls vorhanden
+    // Calculator- und Timer-State beibehalten falls vorhanden
     const existing = await Store.get(this.STORAGE_KEY);
     const saveData = { notes: merged };
     if (existing && existing.calculator) {
       saveData.calculator = existing.calculator;
+    }
+    if (existing && existing.timer) {
+      saveData.timer = existing.timer;
     }
     await Store.set(this.STORAGE_KEY, saveData);
   },
@@ -522,6 +525,8 @@ const Notes = {
         await this.create('checklist');
       } else if (action === 'calculator') {
         Calculator.toggle();
+      } else if (action === 'timer') {
+        Timer.toggle();
       } else if (action === 'notebook') {
         this.openNotebook();
       }

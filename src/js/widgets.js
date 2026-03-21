@@ -6,7 +6,7 @@
 const WidgetManager = {
   /** @type {Map<string, {el: HTMLElement, type: string, state: Object}>} */
   _widgets: new Map(),
-  _topZ: 51,
+  _topZ: 100,
   STORAGE_KEY: 'widgetStates',
 
   /**

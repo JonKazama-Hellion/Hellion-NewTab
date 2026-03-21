@@ -1,23 +1,32 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Hellion NewTab",
   "version": "1.2.0",
   "description": "Personal bookmark dashboard — local, private, no account needed. By Hellion Online Media.",
   "author": "Florian Wathling – hellion-media.de",
   "homepage_url": "https://hellion-media.de",
+  
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },
+
   "permissions": [
     "storage",
     "bookmarks"
   ],
+
   "browser_specific_settings": {
     "gecko": {
       "id": "hellion-newtab@hellion-media.de",
-      "strict_min_version": "109.0"
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
     }
   },
+
   "icons": {
     "16":  "assets/icons/icon16.png",
     "48":  "assets/icons/icon48.png",

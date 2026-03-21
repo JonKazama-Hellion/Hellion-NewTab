@@ -16,7 +16,8 @@ let settings = {
   theme:         'nebula',
   showSearch:    true,
   searchEngine:  'google',
-  toolbarPos:    'right'
+  toolbarPos:    'right',
+  imageRefEnabled: false
 };
 
 function uid() {

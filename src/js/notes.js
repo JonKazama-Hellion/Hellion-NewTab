@@ -53,6 +53,9 @@ const Notes = {
     if (existing && existing.timer) {
       saveData.timer = existing.timer;
     }
+    if (existing && existing.imageRef) {
+      saveData.imageRef = existing.imageRef;
+    }
     await Store.set(this.STORAGE_KEY, saveData);
   },
 
@@ -527,6 +530,8 @@ const Notes = {
         Calculator.toggle();
       } else if (action === 'timer') {
         Timer.toggle();
+      } else if (action === 'image-ref') {
+        ImageRef.create();
       } else if (action === 'notebook') {
         this.openNotebook();
       }

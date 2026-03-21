@@ -71,6 +71,13 @@ function applySettings() {
   const showSearchEl = document.getElementById('settingShowSearch');
   if (showSearchEl) showSearchEl.checked = settings.showSearch;
 
+  // Image-Ref Toggle
+  if (settings.imageRefEnabled === undefined) settings.imageRefEnabled = false;
+  const imgRefCheckbox = document.getElementById('settingImageRef');
+  if (imgRefCheckbox) imgRefCheckbox.checked = settings.imageRefEnabled;
+  const imgRefBtn = document.querySelector('[data-action="image-ref"]');
+  if (imgRefBtn) imgRefBtn.classList.toggle('hidden', !settings.imageRefEnabled);
+
   // Toolbar-Position
   document.body.classList.toggle('toolbar-left', settings.toolbarPos === 'left');
   const toolbarPosEl = document.getElementById('settingToolbarPos');
@@ -127,6 +134,11 @@ function bindSettingsEvents() {
     settingShowSearch: v => {
       settings.showSearch = v;
       document.getElementById('searchBarWrapper').classList.toggle('hidden', !v);
+    },
+    settingImageRef: v => {
+      settings.imageRefEnabled = v;
+      const imgBtn = document.querySelector('[data-action="image-ref"]');
+      if (imgBtn) imgBtn.classList.toggle('hidden', !v);
     }
   };
 
@@ -204,7 +216,8 @@ function bindSettingsEvents() {
     boards   = [];
     settings = { compact: false, shortenTitles: false, newTab: true, showDesc: false,
                  hideExtra: false, visibleCount: 10, bgUrl: '', theme: 'nebula',
-                 showSearch: true, searchEngine: 'google', toolbarPos: 'right' };
+                 showSearch: true, searchEngine: 'google', toolbarPos: 'right',
+                 imageRefEnabled: false };
     await saveBoards();
     await saveSettings();
     applySettings();

@@ -1,4 +1,4 @@
-# Release — erstellt ZIP-Pakete für Chrome und Firefox bei neuem Tag
+# Release — erstellt ZIP-Pakete für Chrome, Firefox und Opera bei neuem Tag
 name: Release
 
 on:
@@ -25,18 +25,25 @@ jobs:
         run: |
           mkdir -p dist
           zip -r "dist/hellion-newtab-${{ steps.version.outputs.tag }}-chrome.zip" \
-            manifest.json newtab.html src/ assets/ \
-            -x "*.git*" "dist/*" ".github/*"
+            manifest.json newtab.html src/js/*.js src/css/ assets/ \
+            -x "*.git*" "dist/*" ".github/*" "src/js/opera/*"
 
-      - name: Firefox ZIP erstellen (Manifest V2)
+      - name: Firefox ZIP erstellen (Manifest V3)
         run: |
-          # manifest.firefox.json wird zu manifest.json für Firefox
           cp manifest.json manifest.chrome-backup.json
           cp manifest.firefox.json manifest.json
           zip -r "dist/hellion-newtab-${{ steps.version.outputs.tag }}-firefox.zip" \
-            manifest.json newtab.html src/ assets/ \
-            -x "*.git*" "dist/*" ".github/*" "manifest.chrome-backup.json" "manifest.firefox.json"
-          # Wiederherstellen
+            manifest.json newtab.html src/js/*.js src/css/ assets/ \
+            -x "*.git*" "dist/*" ".github/*" "manifest.chrome-backup.json" "manifest.firefox.json" "src/js/opera/*"
+          mv manifest.chrome-backup.json manifest.json
+
+      - name: Opera/Opera GX ZIP erstellen (Manifest V3 + Workaround)
+        run: |
+          cp manifest.json manifest.chrome-backup.json
+          cp manifest.opera.json manifest.json
+          zip -r "dist/hellion-newtab-${{ steps.version.outputs.tag }}-opera.zip" \
+            manifest.json newtab.html src/js/*.js src/js/opera/ src/css/ assets/ \
+            -x "*.git*" "dist/*" ".github/*" "manifest.chrome-backup.json" "manifest.opera.json"
           mv manifest.chrome-backup.json manifest.json
 
       - name: SHA256 Checksummen erstellen
@@ -53,8 +60,9 @@ jobs:
             ## Hellion NewTab ${{ steps.version.outputs.tag }}
 
             ### Installation
-            - **Chrome / Edge / Brave / Opera / Vivaldi:** `hellion-newtab-${{ steps.version.outputs.tag }}-chrome.zip` herunterladen und entpacken
-            - **Firefox:** `hellion-newtab-${{ steps.version.outputs.tag }}-firefox.zip` herunterladen und entpacken
+            - **Chrome / Edge / Brave / Vivaldi:** `hellion-newtab-${{ steps.version.outputs.tag }}-chrome.zip`
+            - **Firefox:** `hellion-newtab-${{ steps.version.outputs.tag }}-firefox.zip`
+            - **Opera / Opera GX:** `hellion-newtab-${{ steps.version.outputs.tag }}-opera.zip`
 
             Siehe [README](README.md) für die vollständige Installationsanleitung.
 
@@ -63,5 +71,6 @@ jobs:
           files: |
             dist/hellion-newtab-${{ steps.version.outputs.tag }}-chrome.zip
             dist/hellion-newtab-${{ steps.version.outputs.tag }}-firefox.zip
+            dist/hellion-newtab-${{ steps.version.outputs.tag }}-opera.zip
             dist/checksums-sha256.txt
           generate_release_notes: true

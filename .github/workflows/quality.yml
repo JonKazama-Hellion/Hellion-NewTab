@@ -18,43 +18,56 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: HTML-Validierung (newtab.html existiert)
+      - name: Projektstruktur prüfen
         run: |
           echo "Prüfe Projektstruktur..."
           test -f manifest.json || (echo "FEHLER: manifest.json fehlt!" && exit 1)
           test -f manifest.firefox.json || (echo "FEHLER: manifest.firefox.json fehlt!" && exit 1)
+          test -f manifest.opera.json || (echo "FEHLER: manifest.opera.json fehlt!" && exit 1)
           test -f newtab.html || (echo "FEHLER: newtab.html fehlt!" && exit 1)
           test -d src/js || (echo "FEHLER: src/js/ fehlt!" && exit 1)
+          test -d src/js/opera || (echo "FEHLER: src/js/opera/ fehlt!" && exit 1)
           test -d src/css || (echo "FEHLER: src/css/ fehlt!" && exit 1)
           test -d assets/icons || (echo "FEHLER: assets/icons/ fehlt!" && exit 1)
           test -d assets/themes || (echo "FEHLER: assets/themes/ fehlt!" && exit 1)
+          test -d assets/fonts || (echo "FEHLER: assets/fonts/ fehlt!" && exit 1)
           echo "Projektstruktur OK"
 
-      - name: Manifest-Validierung
+      - name: Manifest-Validierung (alle 3)
         run: |
-          echo "Prüfe manifest.json..."
+          echo "Prüfe Manifests..."
           python3 -c "
           import json, sys
+
           with open('manifest.json') as f:
               m = json.load(f)
-          assert m.get('manifest_version') == 3, 'Manifest V3 erwartet'
-          assert m.get('name'), 'Name fehlt'
-          assert m.get('version'), 'Version fehlt'
-          assert 'storage' in m.get('permissions', []), 'Storage Permission fehlt'
+          assert m.get('manifest_version') == 3, 'Chrome: Manifest V3 erwartet'
+          assert m.get('name'), 'Chrome: Name fehlt'
+          assert m.get('version'), 'Chrome: Version fehlt'
+          assert 'storage' in m.get('permissions', []), 'Chrome: Storage Permission fehlt'
           print('manifest.json (V3) OK — Version:', m['version'])
 
           with open('manifest.firefox.json') as f:
               mf = json.load(f)
-          assert mf.get('manifest_version') == 2, 'Firefox Manifest V2 erwartet'
-          assert mf['version'] == m['version'], 'Versionen stimmen nicht überein!'
-          print('manifest.firefox.json (V2) OK — Version:', mf['version'])
+          assert mf.get('manifest_version') == 3, 'Firefox: Manifest V3 erwartet'
+          assert mf['version'] == m['version'], 'Firefox: Version stimmt nicht mit Chrome überein!'
+          assert 'browser_specific_settings' in mf, 'Firefox: browser_specific_settings fehlt'
+          print('manifest.firefox.json (V3) OK — Version:', mf['version'])
+
+          with open('manifest.opera.json') as f:
+              mo = json.load(f)
+          assert mo.get('manifest_version') == 3, 'Opera: Manifest V3 erwartet'
+          assert mo['version'] == m['version'], 'Opera: Version stimmt nicht mit Chrome überein!'
+          assert 'tabs' in mo.get('permissions', []), 'Opera: Tabs Permission fehlt'
+          assert 'background' in mo, 'Opera: Background Service Worker fehlt'
+          print('manifest.opera.json (V3) OK — Version:', mo['version'])
           "
 
       - name: JavaScript Syntax-Check
         run: |
           echo "Prüfe JavaScript-Syntax..."
           ERRORS=0
-          for f in src/js/*.js; do
+          for f in src/js/*.js src/js/opera/*.js; do
             if ! node --check "$f" 2>&1; then
               echo "SYNTAX-FEHLER in $f"
               ERRORS=$((ERRORS + 1))
@@ -77,12 +90,18 @@ jobs:
         run: |
           MANIFEST_VER=$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])")
           FIREFOX_VER=$(python3 -c "import json; print(json.load(open('manifest.firefox.json'))['version'])")
+          OPERA_VER=$(python3 -c "import json; print(json.load(open('manifest.opera.json'))['version'])")
           HTML_VER=$(grep -oP 'Version \K[0-9]+\.[0-9]+\.[0-9]+' newtab.html || echo 'NICHT GEFUNDEN')
           echo "manifest.json:         $MANIFEST_VER"
           echo "manifest.firefox.json: $FIREFOX_VER"
+          echo "manifest.opera.json:   $OPERA_VER"
           echo "newtab.html:           $HTML_VER"
           if [ "$MANIFEST_VER" != "$FIREFOX_VER" ]; then
-            echo "FEHLER: Versionen in Manifests stimmen nicht überein!"
+            echo "FEHLER: Chrome/Firefox Versionen stimmen nicht überein!"
+            exit 1
+          fi
+          if [ "$MANIFEST_VER" != "$OPERA_VER" ]; then
+            echo "FEHLER: Chrome/Opera Versionen stimmen nicht überein!"
             exit 1
           fi
           if [ "$MANIFEST_VER" != "$HTML_VER" ]; then

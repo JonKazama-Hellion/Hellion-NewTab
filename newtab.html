@@ -59,17 +59,30 @@
     </div>
   </div>
 
-  <!-- STICKY NOTE -->
-  <div class="sticky-note" id="stickyNote">
-    <div class="sticky-note-header" id="stickyNoteHeader">
-      <span class="sticky-note-title">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        Note
-      </span>
-      <button class="sticky-note-close" id="stickyNoteClose">✕</button>
-    </div>
-    <textarea class="sticky-note-body" id="stickyNoteBody" placeholder="Quick note…" spellcheck="false"></textarea>
+  <!-- WIDGET TOOLBAR -->
+  <div class="widget-toolbar" id="widgetToolbar">
+    <button class="widget-toolbar-btn" data-action="new-note" title="Note erstellen">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    </button>
+    <button class="widget-toolbar-btn" data-action="new-checklist" title="Checkliste erstellen">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    </button>
+    <button class="widget-toolbar-btn" data-action="notebook" title="Alle Notes">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+    </button>
   </div>
+
+  <!-- NOTEBOOK SIDEBAR -->
+  <div class="notebook-overlay" id="notebookOverlay"></div>
+  <aside class="notebook-panel" id="notebookPanel">
+    <div class="notebook-header">
+      <span class="notebook-header-title">Notebook <span class="notebook-count" id="notebookCount">0 / 5</span></span>
+      <button class="btn-close" id="btnCloseNotebook">✕</button>
+    </div>
+    <div class="notebook-slots" id="notebookSlots">
+      <!-- dynamisch via JS -->
+    </div>
+  </aside>
 
   <!-- BOARDS CONTAINER -->
   <main class="boards-wrapper" id="boardsWrapper">
@@ -157,6 +170,26 @@
               <span class="setting-desc">Suchleiste unter dem Header ein/aus</span>
             </div>
             <label class="toggle"><input type="checkbox" id="settingShowSearch" checked /><span class="slider"></span></label>
+          </div>
+        </div>
+      </section>
+
+      <!-- WIDGETS -->
+      <section class="settings-section" data-section="widgets">
+        <button class="settings-section-title" type="button">
+          <span class="section-chevron">▸</span>
+          WIDGETS
+        </button>
+        <div class="section-content">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label">Toolbar-Position</span>
+              <span class="setting-desc">Widget-Toolbar links oder rechts</span>
+            </div>
+            <select class="select-input" id="settingToolbarPos">
+              <option value="right" selected>Rechts</option>
+              <option value="left">Links</option>
+            </select>
           </div>
         </div>
       </section>
@@ -440,7 +473,8 @@
   <script src="src/js/boards.js"></script>
   <script src="src/js/settings.js"></script>
   <script src="src/js/search.js"></script>
-  <script src="src/js/sticky.js"></script>
+  <script src="src/js/widgets.js"></script>
+  <script src="src/js/notes.js"></script>
   <script src="src/js/data.js"></script>
   <!-- Onboarding -->
   <script src="src/js/onboarding.js"></script>

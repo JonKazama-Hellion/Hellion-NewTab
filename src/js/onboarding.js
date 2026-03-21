@@ -33,7 +33,8 @@ const Onboarding = {
       title: 'Weitere Features',
       features: [
         'Suchleiste mit Google, DuckDuckGo oder Bing',
-        'Sticky Notes f\u00FCr schnelle Notizen',
+        'Widget-Toolbar rechts \u2014 Notes und Checklisten erstellen',
+        'Notebook-Sidebar \u00FCber den \u201ENote\u201C Button oder die Toolbar',
         'Funktioniert komplett offline \u2014 alles lokal gespeichert'
       ]
     },

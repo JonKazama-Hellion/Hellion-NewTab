@@ -25,7 +25,7 @@ function closeThemeModal() {
 
 // ---- ACCORDION ----
 function initAccordion() {
-  const defaultOpen = new Set(['appearance', 'behavior', 'data', 'help']);
+  const defaultOpen = new Set(['appearance', 'behavior', 'widgets', 'data', 'help']);
   const sections = document.querySelectorAll('.settings-section[data-section]');
 
   sections.forEach(section => {
@@ -70,6 +70,11 @@ function applySettings() {
   if (searchWrapper) searchWrapper.classList.toggle('hidden', !settings.showSearch);
   const showSearchEl = document.getElementById('settingShowSearch');
   if (showSearchEl) showSearchEl.checked = settings.showSearch;
+
+  // Toolbar-Position
+  document.body.classList.toggle('toolbar-left', settings.toolbarPos === 'left');
+  const toolbarPosEl = document.getElementById('settingToolbarPos');
+  if (toolbarPosEl) toolbarPosEl.value = settings.toolbarPos || 'right';
 
   applyTheme(settings.theme || 'nebula', !!settings.bgUrl);
 
@@ -172,6 +177,17 @@ function bindSettingsEvents() {
     reader.readAsDataURL(file);
   });
 
+  // Toolbar-Position Setting
+  const toolbarPosEl = document.getElementById('settingToolbarPos');
+  if (toolbarPosEl) {
+    toolbarPosEl.value = settings.toolbarPos || 'right';
+    toolbarPosEl.addEventListener('change', async (e) => {
+      settings.toolbarPos = e.target.value;
+      document.body.classList.toggle('toolbar-left', e.target.value === 'left');
+      await saveSettings();
+    });
+  }
+
   // Onboarding wiederholen
   document.getElementById('btnRestartOnboarding').addEventListener('click', () => {
     closeSettings();
@@ -188,7 +204,7 @@ function bindSettingsEvents() {
     boards   = [];
     settings = { compact: false, shortenTitles: false, newTab: true, showDesc: false,
                  hideExtra: false, visibleCount: 10, bgUrl: '', theme: 'nebula',
-                 showSearch: true, searchEngine: 'google' };
+                 showSearch: true, searchEngine: 'google', toolbarPos: 'right' };
     await saveBoards();
     await saveSettings();
     applySettings();

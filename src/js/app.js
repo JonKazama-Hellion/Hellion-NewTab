@@ -16,7 +16,8 @@ async function init() {
   bindGlobalEvents();
   bindSettingsEvents();
   initSearch();
-  initStickyNote();
+  await migrateSticky();
+  await Notes.init();
   initDataButtons();
   Store.checkQuota();
 
@@ -27,6 +28,46 @@ async function init() {
   } else {
     // Backup-Reminder (nur wenn Onboarding schon durch ist)
     await checkBackupReminder();
+  }
+}
+
+// ---- STICKY NOTE MIGRATION ----
+async function migrateSticky() {
+  const stickyText = await Store.get('stickyNote');
+  const stickyPos = await Store.get('stickyPos');
+  const existingWidgets = await Store.get('widgetStates');
+
+  // Nur migrieren wenn alte Daten vorhanden UND noch keine Widgets existieren
+  if (!stickyText && !stickyPos) return;
+  if (existingWidgets && Array.isArray(existingWidgets.notes) && existingWidgets.notes.length > 0) return;
+
+  const noteData = {
+    id: 'note_' + uid(),
+    title: (stickyText || '').split('\n')[0].trim().slice(0, 20) || 'Note',
+    content: stickyText || '',
+    template: 'text',
+    x: stickyPos ? stickyPos.x : 120,
+    y: stickyPos ? stickyPos.y : 80,
+    width: 280,
+    height: 220,
+    open: true,
+    checkedItems: [],
+    checklistItems: []
+  };
+
+  await Store.set('widgetStates', { notes: [noteData] });
+
+  // Alte Keys aufraeumen
+  try {
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      chrome.storage.local.remove(['stickyNote', 'stickyPos', 'stickyVisible']);
+    } else {
+      localStorage.removeItem('stickyNote');
+      localStorage.removeItem('stickyPos');
+      localStorage.removeItem('stickyVisible');
+    }
+  } catch (e) {
+    console.warn('Sticky-Migration: Alte Keys konnten nicht entfernt werden', e);
   }
 }
 
@@ -55,7 +96,9 @@ async function checkBackupReminder() {
 
   if (doBackup) {
     // JSON-Export auslösen (gleiche Logik wie btnExportJSON)
-    const data = { version: '1.5.2', exported: new Date().toISOString(), boards, settings };
+    const widgetData = await Store.get('widgetStates');
+    const notesData = (widgetData && Array.isArray(widgetData.notes)) ? widgetData.notes : [];
+    const data = { version: '1.6.0', exported: new Date().toISOString(), boards, settings, notes: notesData };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');

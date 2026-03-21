@@ -9,9 +9,16 @@ function initDataButtons() {
   const jsonInput = document.getElementById('jsonImportInput');
   if (!btnExport || !btnImport) return;
 
-  // Export
-  btnExport.addEventListener('click', () => {
-    const data = { version: '1.5.2', exported: new Date().toISOString(), boards, settings };
+  // Export (inkl. Notes)
+  btnExport.addEventListener('click', async () => {
+    const widgetData = await Store.get('widgetStates');
+    const data = {
+      version: '1.6.0',
+      exported: new Date().toISOString(),
+      boards,
+      settings,
+      notes: widgetData && Array.isArray(widgetData.notes) ? widgetData.notes : []
+    };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -50,8 +57,31 @@ function initDataButtons() {
       boards = [...boards, ...validBoards];
       await saveBoards();
       renderBoards();
+
+      // Notes importieren (falls vorhanden)
+      let notesImported = 0;
+      if (Array.isArray(data.notes) && data.notes.length > 0) {
+        const existingWidgets = await Store.get('widgetStates');
+        const existingNotes = (existingWidgets && Array.isArray(existingWidgets.notes)) ? existingWidgets.notes : [];
+        const importNotes = data.notes.filter(n => {
+          if (!n || !n.id || !n.template) return false;
+          n.checklistItems = Array.isArray(n.checklistItems) ? n.checklistItems : [];
+          return true;
+        });
+        // Limit beachten
+        const spaceLeft = Notes.MAX_NOTES - existingNotes.length;
+        const toImport = importNotes.slice(0, spaceLeft);
+        if (toImport.length > 0) {
+          const merged = [...existingNotes, ...toImport];
+          await Store.set('widgetStates', { notes: merged });
+          Notes._notes = merged;
+          notesImported = toImport.length;
+        }
+      }
+
+      const noteMsg = notesImported > 0 ? ` + ${notesImported} Note(s)` : '';
       await HellionDialog.alert(
-        `${validBoards.length} Board(s) erfolgreich importiert.`,
+        `${validBoards.length} Board(s)${noteMsg} erfolgreich importiert.`,
         { type: 'success', title: 'Import erfolgreich' }
       );
     } catch (err) {

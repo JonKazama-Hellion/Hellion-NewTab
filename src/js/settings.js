@@ -1,8 +1,9 @@
 /* =============================================
    HELLION NEWTAB — settings.js
-   Settings Panel: Toggles, Hintergrund, Theme-Picker
+   Settings Panel, Theme-Modal, Accordion, Toggles
    ============================================= */
 
+// ---- SETTINGS PANEL ----
 function openSettings()  {
   document.getElementById('settingsPanel').classList.add('open');
   document.getElementById('settingsOverlay').classList.add('active');
@@ -12,6 +13,43 @@ function closeSettings() {
   document.getElementById('settingsOverlay').classList.remove('active');
 }
 
+// ---- THEME MODAL ----
+function openThemeModal() {
+  const overlay = document.getElementById('themeOverlay');
+  overlay.classList.add('active');
+}
+function closeThemeModal() {
+  const overlay = document.getElementById('themeOverlay');
+  overlay.classList.remove('active');
+}
+
+// ---- ACCORDION ----
+function initAccordion() {
+  const defaultOpen = new Set(['appearance', 'behavior', 'data', 'help']);
+  const sections = document.querySelectorAll('.settings-section[data-section]');
+
+  sections.forEach(section => {
+    const name = section.dataset.section;
+    const title = section.querySelector('.settings-section-title');
+
+    if (defaultOpen.has(name)) {
+      section.classList.add('open');
+    }
+
+    title.addEventListener('click', () => {
+      section.classList.toggle('open');
+    });
+
+    title.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        section.classList.toggle('open');
+      }
+    });
+  });
+}
+
+// ---- APPLY SETTINGS ----
 function applySettings() {
   const body = document.body;
   body.classList.toggle('compact',        settings.compact);
@@ -24,7 +62,7 @@ function applySettings() {
   document.getElementById('settingShowDesc').checked     = settings.showDesc;
   document.getElementById('settingHideExtra').checked    = settings.hideExtra;
   document.getElementById('settingVisibleCount').value   = String(settings.visibleCount);
-  document.getElementById('visibleCountRow').style.opacity = settings.hideExtra ? '1' : '0.4';
+  document.getElementById('visibleCountRow').classList.toggle('dim', !settings.hideExtra);
 
   // showSearch: undefined (alter Save) → true
   if (settings.showSearch === undefined) settings.showSearch = true;
@@ -40,13 +78,21 @@ function applySettings() {
   }
 }
 
+// ---- BIND EVENTS ----
 function bindSettingsEvents() {
-  // Panel
+  // Settings Panel
   document.getElementById('settingsOverlay').addEventListener('click', closeSettings);
   document.getElementById('btnCloseSettings').addEventListener('click', closeSettings);
   document.getElementById('btnSettings').addEventListener('click', openSettings);
 
-  // Theme-Picker
+  // Theme Modal
+  document.getElementById('btnTheme').addEventListener('click', openThemeModal);
+  document.getElementById('btnCloseTheme').addEventListener('click', closeThemeModal);
+  document.getElementById('themeOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('themeOverlay')) closeThemeModal();
+  });
+
+  // Theme-Picker (Cards im Theme-Modal)
   document.querySelectorAll('.theme-card').forEach(card => {
     card.addEventListener('click', async () => {
       const name = card.dataset.value;
@@ -59,6 +105,9 @@ function bindSettingsEvents() {
     });
   });
 
+  // Accordion initialisieren
+  initAccordion();
+
   // Toggles
   const toggleMap = {
     settingCompact:   v => { settings.compact       = v; document.body.classList.toggle('compact', v); },
@@ -67,7 +116,7 @@ function bindSettingsEvents() {
     settingShowDesc:  v => { settings.showDesc       = v; document.body.classList.toggle('show-desc', v); },
     settingHideExtra: v => {
       settings.hideExtra = v;
-      document.getElementById('visibleCountRow').style.opacity = v ? '1' : '0.4';
+      document.getElementById('visibleCountRow').classList.toggle('dim', !v);
       renderBoards();
     },
     settingShowSearch: v => {
@@ -92,20 +141,19 @@ function bindSettingsEvents() {
     renderBoards();
   });
 
-  // Background URL
+  // Background URL (im Theme-Modal)
   document.getElementById('btnChangeBg').addEventListener('click', () => {
-    const row = document.getElementById('bgInputRow');
-    row.style.display = row.style.display === 'none' ? 'flex' : 'none';
+    document.getElementById('bgInputRow').classList.toggle('hidden');
   });
   document.getElementById('btnApplyBg').addEventListener('click', async () => {
     const url = document.getElementById('bgUrlInput').value.trim();
     settings.bgUrl = url;
     document.getElementById('bgLayer').style.backgroundImage = url ? `url('${url}')` : '';
     await saveSettings();
-    document.getElementById('bgInputRow').style.display = 'none';
+    document.getElementById('bgInputRow').classList.add('hidden');
   });
 
-  // Background File Upload
+  // Background File Upload (im Theme-Modal)
   document.getElementById('btnBgFile').addEventListener('click', () => {
     document.getElementById('bgFileInput').click();
   });
@@ -119,14 +167,24 @@ function bindSettingsEvents() {
       await saveSettings();
     };
     reader.onerror = () => {
-      alert('Fehler beim Lesen der Datei. Bitte eine andere Datei wählen.');
+      HellionDialog.alert('Fehler beim Lesen der Datei. Bitte eine andere Datei wählen.', { type: 'danger', title: 'Dateifehler' });
     };
     reader.readAsDataURL(file);
   });
 
+  // Onboarding wiederholen
+  document.getElementById('btnRestartOnboarding').addEventListener('click', () => {
+    closeSettings();
+    Onboarding.start();
+  });
+
   // Reset All
   document.getElementById('btnResetAll').addEventListener('click', async () => {
-    if (!confirm('Wirklich alle Boards und Einstellungen löschen? Nicht rückgängig machbar.')) return;
+    const ok = await HellionDialog.confirm(
+      'Wirklich alle Boards und Einstellungen löschen? Das kann nicht rückgängig gemacht werden.',
+      { type: 'danger', title: 'Alles zurücksetzen', confirmText: 'Alles löschen' }
+    );
+    if (!ok) return;
     boards   = [];
     settings = { compact: false, shortenTitles: false, newTab: true, showDesc: false,
                  hideExtra: false, visibleCount: 10, bgUrl: '', theme: 'nebula',

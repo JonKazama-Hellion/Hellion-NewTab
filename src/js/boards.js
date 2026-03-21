@@ -6,16 +6,67 @@
 let pendingBookmarkBoardId = null;
 let pendingRenameCallback  = null;
 
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/**
+ * Erzeugt ein SVG-Element mit Attributen und Kinder-Elementen.
+ * @param {string} tag - SVG-Tag (z.B. 'svg', 'circle', 'line')
+ * @param {Object} attrs - Attribute als Key-Value
+ * @param {Array} children - Kind-Elemente
+ * @returns {SVGElement}
+ */
+function svgEl(tag, attrs, children) {
+  const el = document.createElementNS(SVG_NS, tag);
+  if (attrs) {
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  }
+  if (children) {
+    for (const child of children) el.appendChild(child);
+  }
+  return el;
+}
+
+/** Erzeugt das 6-Punkt Drag-Handle SVG */
+function createDragHandleSvg() {
+  return svgEl('svg', { width: '10', height: '14', viewBox: '0 0 10 14', fill: 'currentColor' }, [
+    svgEl('circle', { cx: '2', cy: '2', r: '1.5' }),
+    svgEl('circle', { cx: '8', cy: '2', r: '1.5' }),
+    svgEl('circle', { cx: '2', cy: '7', r: '1.5' }),
+    svgEl('circle', { cx: '8', cy: '7', r: '1.5' }),
+    svgEl('circle', { cx: '2', cy: '12', r: '1.5' }),
+    svgEl('circle', { cx: '8', cy: '12', r: '1.5' }),
+  ]);
+}
+
+/** Erzeugt das Plus-Icon SVG */
+function createPlusSvg() {
+  return svgEl('svg', { width: '11', height: '11', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2' }, [
+    svgEl('line', { x1: '12', y1: '5', x2: '12', y2: '19' }),
+    svgEl('line', { x1: '5', y1: '12', x2: '19', y2: '12' }),
+  ]);
+}
+
 // ---- RENDER ----
 function renderBoards() {
   const wrapper = document.getElementById('boardsWrapper');
-  wrapper.innerHTML = '';
+  wrapper.replaceChildren();
 
   if (boards.length === 0) {
-    wrapper.innerHTML = `<div class="empty-state">
-      No boards yet. Click <strong style="color:var(--accent)">+ Board</strong> to create one,
-      or use <strong style="color:var(--accent)">Import</strong> to load your browser bookmarks.
-    </div>`;
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+
+    const boardStrong = document.createElement('strong');
+    boardStrong.className = 'accent-text';
+    boardStrong.textContent = '+ Board';
+
+    const importStrong = document.createElement('strong');
+    importStrong.className = 'accent-text';
+    importStrong.textContent = 'Import';
+
+    empty.append(
+      'No boards yet. Click ', boardStrong, ' to create one, or use ', importStrong, ' to load your browser bookmarks.'
+    );
+    wrapper.appendChild(empty);
     return;
   }
 
@@ -31,43 +82,59 @@ function createBoardEl(board) {
   // Header
   const header = document.createElement('div');
   header.className = 'board-header';
-  header.innerHTML = `
-    <span class="board-drag-handle" title="Board verschieben">
-      <svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor">
-        <circle cx="2" cy="2" r="1.5"/><circle cx="8" cy="2" r="1.5"/>
-        <circle cx="2" cy="7" r="1.5"/><circle cx="8" cy="7" r="1.5"/>
-        <circle cx="2" cy="12" r="1.5"/><circle cx="8" cy="12" r="1.5"/>
-      </svg>
-    </span>
-    <span class="board-title" title="${escHtml(board.title)}">${escHtml(board.title)}</span>
-    <div class="board-actions">
-      <button class="board-action-btn btn-blur-board"   title="${board.blurred ? 'Unblur' : 'Blur (privat)'}">🔒</button>
-      <button class="board-action-btn btn-rename-board" title="Umbenennen">✎</button>
-      <button class="board-action-btn btn-delete-board" title="Löschen">✕</button>
-    </div>
-  `;
+
+  const dragHandle = document.createElement('span');
+  dragHandle.className = 'board-drag-handle';
+  dragHandle.title = 'Board verschieben';
+  dragHandle.appendChild(createDragHandleSvg());
+
+  const titleSpanHeader = document.createElement('span');
+  titleSpanHeader.className = 'board-title';
+  titleSpanHeader.title = board.title;
+  titleSpanHeader.textContent = board.title;
+
+  const actions = document.createElement('div');
+  actions.className = 'board-actions';
+
+  const btnBlur = document.createElement('button');
+  btnBlur.className = 'board-action-btn btn-blur-board';
+  btnBlur.title = board.blurred ? 'Unblur' : 'Blur (privat)';
+  btnBlur.textContent = '\uD83D\uDD12';
+
+  const btnRename = document.createElement('button');
+  btnRename.className = 'board-action-btn btn-rename-board';
+  btnRename.title = 'Umbenennen';
+  btnRename.textContent = '\u270E';
+
+  const btnDelete = document.createElement('button');
+  btnDelete.className = 'board-action-btn btn-delete-board';
+  btnDelete.title = 'Löschen';
+  btnDelete.textContent = '\u2715';
+
+  actions.append(btnBlur, btnRename, btnDelete);
+  header.append(dragHandle, titleSpanHeader, actions);
 
   // Blur-Overlay
   const blurOverlay = document.createElement('div');
   blurOverlay.className = 'board-blur-overlay';
   div.appendChild(blurOverlay);
 
-  header.querySelector('.btn-blur-board').addEventListener('click', async e => {
+  btnBlur.addEventListener('click', async e => {
     e.stopPropagation();
     board.blurred = !board.blurred;
     div.classList.toggle('blurred', board.blurred);
-    e.currentTarget.title = board.blurred ? 'Unblur' : 'Blur (privat)';
+    btnBlur.title = board.blurred ? 'Unblur' : 'Blur (privat)';
     await saveBoards();
   });
 
   blurOverlay.addEventListener('click', async () => {
     board.blurred = false;
     div.classList.remove('blurred');
-    header.querySelector('.btn-blur-board').title = 'Blur (privat)';
+    btnBlur.title = 'Blur (privat)';
     await saveBoards();
   });
 
-  header.querySelector('.btn-rename-board').addEventListener('click', e => {
+  btnRename.addEventListener('click', e => {
     e.stopPropagation();
     openRenameModal(board.title, async newName => {
       if (!newName.trim()) return;
@@ -77,11 +144,16 @@ function createBoardEl(board) {
     });
   });
 
-  header.querySelector('.btn-delete-board').addEventListener('click', e => {
+  btnDelete.addEventListener('click', async e => {
     e.stopPropagation();
-    if (confirm(`Board "${board.title}" löschen?`)) {
+    const ok = await HellionDialog.confirm(
+      `Board "${board.title}" wirklich löschen?`,
+      { type: 'danger', title: 'Board löschen', confirmText: 'Löschen' }
+    );
+    if (ok) {
       boards = boards.filter(b => b.id !== board.id);
-      saveBoards().then(renderBoards);
+      await saveBoards();
+      renderBoards();
     }
   });
 
@@ -127,7 +199,8 @@ function createBoardEl(board) {
   // Add Bookmark
   const addBtn = document.createElement('button');
   addBtn.className = 'add-bm-btn';
-  addBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add link`;
+  addBtn.appendChild(createPlusSvg());
+  addBtn.append(' Add link');
   addBtn.addEventListener('click', () => openAddBookmarkModal(board.id));
   div.appendChild(addBtn);
 
@@ -148,13 +221,12 @@ function createBmEl(bm) {
   favicon.height = 14;
   favicon.src = getFaviconUrl(bm.url);
   favicon.addEventListener('error', function() {
-    this.style.display = 'none';
-    this.nextElementSibling.style.display = 'flex';
+    this.classList.add('hidden');
+    this.nextElementSibling.classList.remove('hidden');
   });
 
   const fallback = document.createElement('div');
-  fallback.className = 'bm-favicon-fallback';
-  fallback.style.display = 'none';
+  fallback.className = 'bm-favicon-fallback hidden';
   fallback.textContent = bm.title.charAt(0).toUpperCase();
 
   const textDiv = document.createElement('div');

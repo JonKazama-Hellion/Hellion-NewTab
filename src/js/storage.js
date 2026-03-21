@@ -23,7 +23,7 @@ const Store = {
         chrome.storage.local.set({ [key]: value }, () => {
           if (chrome.runtime.lastError) {
             console.error('Storage-Fehler:', chrome.runtime.lastError.message);
-            alert('Speicher voll! Bitte lösche alte Boards oder das Hintergrundbild, um Platz zu schaffen.');
+            HellionDialog.alert('Speicher voll! Bitte lösche alte Boards oder das Hintergrundbild, um Platz zu schaffen.', { type: 'danger', title: 'Speicher voll' });
             reject(new Error(chrome.runtime.lastError.message));
             return;
           }
@@ -35,7 +35,7 @@ const Store = {
           resolve();
         } catch (e) {
           console.error('Storage-Fehler:', e.message);
-          alert('Speicher voll! Bitte lösche alte Boards oder das Hintergrundbild, um Platz zu schaffen.');
+          HellionDialog.alert('Speicher voll! Bitte lösche alte Boards oder das Hintergrundbild, um Platz zu schaffen.', { type: 'danger', title: 'Speicher voll' });
           reject(e);
         }
       }

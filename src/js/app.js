@@ -19,6 +19,54 @@ async function init() {
   initStickyNote();
   initDataButtons();
   Store.checkQuota();
+
+  // Onboarding beim ersten Start
+  const onboardingDone = await Store.get('onboardingDone');
+  if (!onboardingDone) {
+    Onboarding.start();
+  } else {
+    // Backup-Reminder (nur wenn Onboarding schon durch ist)
+    await checkBackupReminder();
+  }
+}
+
+// ---- BACKUP REMINDER ----
+const BACKUP_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000; // 7 Tage
+
+async function checkBackupReminder() {
+  const lastReminder = await Store.get('lastBackupReminder');
+  const now = Date.now();
+
+  // Beim allerersten Mal: Timestamp setzen, aber noch nicht nerven
+  if (!lastReminder) {
+    await Store.set('lastBackupReminder', now);
+    return;
+  }
+
+  if (now - lastReminder < BACKUP_INTERVAL_MS) return;
+
+  // Nur erinnern wenn es Boards gibt die sich lohnen zu sichern
+  if (boards.length === 0) return;
+
+  const doBackup = await HellionDialog.confirm(
+    'Du hast seit über einer Woche kein Backup gemacht. Beim Löschen der Browserdaten gehen deine Boards verloren. Jetzt sichern?',
+    { type: 'warning', title: 'Backup-Erinnerung', confirmText: 'Jetzt sichern', cancelText: 'Später' }
+  );
+
+  if (doBackup) {
+    // JSON-Export auslösen (gleiche Logik wie btnExportJSON)
+    const data = { version: '1.5.2', exported: new Date().toISOString(), boards, settings };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'hellion-newtab-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Timestamp immer aktualisieren (egal ob gesichert oder "Später")
+  await Store.set('lastBackupReminder', now);
 }
 
 // ---- CLOCK & DATE ----
@@ -50,12 +98,18 @@ function bindGlobalEvents() {
     const file = e.target.files[0];
     if (!file) return;
     const imported = parseBookmarkHtml(await file.text());
-    if (imported.length === 0) { alert('Keine Bookmarks gefunden.'); return; }
+    if (imported.length === 0) {
+      await HellionDialog.alert('Keine Bookmarks in dieser Datei gefunden.', { type: 'warning', title: 'Import' });
+      return;
+    }
     boards = [...boards, ...imported];
     await saveBoards();
     renderBoards();
     e.target.value = '';
-    alert(`✓ ${imported.length} Board(s) mit ${imported.reduce((s,b) => s + b.bookmarks.length, 0)} Bookmarks importiert.`);
+    await HellionDialog.alert(
+      `${imported.length} Board(s) mit ${imported.reduce((s,b) => s + b.bookmarks.length, 0)} Bookmarks importiert.`,
+      { type: 'success', title: 'Import erfolgreich' }
+    );
   });
 
   // Add Board Modal
@@ -86,7 +140,7 @@ function bindGlobalEvents() {
     const url   = document.getElementById('newBmUrl').value.trim();
     const desc  = document.getElementById('newBmDesc').value.trim();
     if (!title || !url) return;
-    try { new URL(url); } catch { alert('Ungültige URL. Bitte mit https:// beginnen.'); return; }
+    try { new URL(url); } catch { await HellionDialog.alert('Ungültige URL. Bitte mit https:// beginnen.', { type: 'warning', title: 'URL ungültig' }); return; }
     const board = boards.find(b => b.id === pendingBookmarkBoardId);
     if (!board) return;
     board.bookmarks.push({ id: uid(), title, url, desc });

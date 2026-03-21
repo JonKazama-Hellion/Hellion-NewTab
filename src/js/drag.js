@@ -37,13 +37,11 @@ function initBoardDragDrop() {
 
       // Ghost
       const ghost = boardEl.cloneNode(true);
-      ghost.style.cssText = `
-        position:fixed; left:${rect.left}px; top:${rect.top}px;
-        width:${rect.width}px; height:${rect.height}px;
-        opacity:0.75; pointer-events:none; z-index:9999;
-        transform:rotate(1.5deg) scale(1.02);
-        box-shadow:0 12px 40px rgba(0,0,0,0.6);
-      `;
+      ghost.className += ' drag-ghost';
+      ghost.style.left = rect.left + 'px';
+      ghost.style.top = rect.top + 'px';
+      ghost.style.width = rect.width + 'px';
+      ghost.style.height = rect.height + 'px';
       document.body.appendChild(ghost);
 
       // Placeholder
@@ -104,29 +102,42 @@ function initBoardDragDrop() {
 function initBookmarkDragDrop(listEl, board) {
   let dragSrcBmId = null;
 
-  listEl.querySelectorAll('.bm-item').forEach(item => {
-    item.addEventListener('dragstart', e => {
-      dragSrcBmId = item.dataset.bmId;
-      e.dataTransfer.effectAllowed = 'move';
-      setTimeout(() => item.style.opacity = '0.4', 0);
-    });
-    item.addEventListener('dragend',  () => { item.style.opacity = ''; });
-    item.addEventListener('dragover', e => {
-      e.preventDefault();
-      item.style.background = 'rgba(255,160,50,0.07)';
-    });
-    item.addEventListener('dragleave', () => { item.style.background = ''; });
-    item.addEventListener('drop', async e => {
-      e.preventDefault(); e.stopPropagation();
-      item.style.background = '';
-      const targetBmId = item.dataset.bmId;
-      if (!dragSrcBmId || dragSrcBmId === targetBmId) return;
-      const srcIdx = board.bookmarks.findIndex(b => b.id === dragSrcBmId);
-      const tgtIdx = board.bookmarks.findIndex(b => b.id === targetBmId);
-      const [moved] = board.bookmarks.splice(srcIdx, 1);
-      board.bookmarks.splice(tgtIdx, 0, moved);
-      await saveBoards();
-      renderBoards();
-    });
+  listEl.addEventListener('dragstart', e => {
+    const item = e.target.closest('.bm-item');
+    if (!item) return;
+    dragSrcBmId = item.dataset.bmId;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => item.classList.add('dragging-source'), 0);
+  });
+
+  listEl.addEventListener('dragend', e => {
+    const item = e.target.closest('.bm-item');
+    if (item) item.classList.remove('dragging-source');
+  });
+
+  listEl.addEventListener('dragover', e => {
+    e.preventDefault();
+    const item = e.target.closest('.bm-item');
+    if (item) item.classList.add('drag-over');
+  });
+
+  listEl.addEventListener('dragleave', e => {
+    const item = e.target.closest('.bm-item');
+    if (item) item.classList.remove('drag-over');
+  });
+
+  listEl.addEventListener('drop', async e => {
+    e.preventDefault(); e.stopPropagation();
+    const item = e.target.closest('.bm-item');
+    if (!item) return;
+    item.classList.remove('drag-over');
+    const targetBmId = item.dataset.bmId;
+    if (!dragSrcBmId || dragSrcBmId === targetBmId) return;
+    const srcIdx = board.bookmarks.findIndex(b => b.id === dragSrcBmId);
+    const tgtIdx = board.bookmarks.findIndex(b => b.id === targetBmId);
+    const [moved] = board.bookmarks.splice(srcIdx, 1);
+    board.bookmarks.splice(tgtIdx, 0, moved);
+    await saveBoards();
+    renderBoards();
   });
 }

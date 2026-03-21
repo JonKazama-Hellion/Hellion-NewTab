@@ -11,7 +11,7 @@ function initDataButtons() {
 
   // Export
   btnExport.addEventListener('click', () => {
-    const data = { version: '1.2.0', exported: new Date().toISOString(), boards, settings };
+    const data = { version: '1.5.2', exported: new Date().toISOString(), boards, settings };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -42,13 +42,20 @@ function initDataButtons() {
         return true;
       });
       if (validBoards.length === 0) throw new Error('Keine gültigen Boards gefunden');
-      if (!confirm(`${validBoards.length} Boards importieren? Bestehende Daten bleiben erhalten.`)) return;
+      const ok = await HellionDialog.confirm(
+        `${validBoards.length} Boards importieren? Bestehende Daten bleiben erhalten.`,
+        { type: 'info', title: 'JSON Import' }
+      );
+      if (!ok) return;
       boards = [...boards, ...validBoards];
       await saveBoards();
       renderBoards();
-      alert(`✓ ${validBoards.length} Board(s) importiert.`);
+      await HellionDialog.alert(
+        `${validBoards.length} Board(s) erfolgreich importiert.`,
+        { type: 'success', title: 'Import erfolgreich' }
+      );
     } catch (err) {
-      alert('Fehler beim Import: ' + err.message);
+      await HellionDialog.alert('Fehler beim Import: ' + err.message, { type: 'danger', title: 'Import fehlgeschlagen' });
     }
     e.target.value = '';
   });

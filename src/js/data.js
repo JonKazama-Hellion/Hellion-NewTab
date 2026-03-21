@@ -18,7 +18,8 @@ function initDataButtons() {
       boards,
       settings,
       notes: widgetData && Array.isArray(widgetData.notes) ? widgetData.notes : [],
-      calculator: widgetData && widgetData.calculator ? widgetData.calculator.history || [] : []
+      calculator: widgetData && widgetData.calculator ? widgetData.calculator.history || [] : [],
+      timerPresets: widgetData && widgetData.timer ? widgetData.timer.presets || [] : []
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
@@ -94,13 +95,28 @@ function initDataButtons() {
         }
       }
 
+      // Timer-Presets importieren (falls vorhanden)
+      let timerImported = false;
+      if (Array.isArray(data.timerPresets) && data.timerPresets.length > 0) {
+        const validPresets = data.timerPresets.filter(p => p && typeof p.name === 'string' && typeof p.seconds === 'number');
+        if (validPresets.length > 0) {
+          if (!existingWidgets.timer) {
+            existingWidgets.timer = { x: 600, y: 80, width: 260, height: 360, open: false, presets: [] };
+          }
+          existingWidgets.timer.presets = validPresets.slice(0, Timer.MAX_PRESETS);
+          Timer._presets = existingWidgets.timer.presets;
+          timerImported = true;
+        }
+      }
+
       // Gemeinsam speichern
       await Store.set('widgetStates', existingWidgets);
 
       const noteMsg = notesImported > 0 ? ` + ${notesImported} Note(s)` : '';
       const calcMsg = calcImported ? ' + Calculator-History' : '';
+      const timerMsg = timerImported ? ' + Timer-Presets' : '';
       await HellionDialog.alert(
-        `${validBoards.length} Board(s)${noteMsg}${calcMsg} erfolgreich importiert.`,
+        `${validBoards.length} Board(s)${noteMsg}${calcMsg}${timerMsg} erfolgreich importiert.`,
         { type: 'success', title: 'Import erfolgreich' }
       );
     } catch (err) {

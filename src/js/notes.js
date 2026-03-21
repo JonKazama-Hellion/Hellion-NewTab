@@ -44,7 +44,13 @@ const Notes = {
       return note;
     });
 
-    await Store.set(this.STORAGE_KEY, { notes: merged });
+    // Calculator-State beibehalten falls vorhanden
+    const existing = await Store.get(this.STORAGE_KEY);
+    const saveData = { notes: merged };
+    if (existing && existing.calculator) {
+      saveData.calculator = existing.calculator;
+    }
+    await Store.set(this.STORAGE_KEY, saveData);
   },
 
   /**
@@ -514,6 +520,8 @@ const Notes = {
         await this.create('text');
       } else if (action === 'new-checklist') {
         await this.create('checklist');
+      } else if (action === 'calculator') {
+        Calculator.toggle();
       } else if (action === 'notebook') {
         this.openNotebook();
       }

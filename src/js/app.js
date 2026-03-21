@@ -18,6 +18,7 @@ async function init() {
   initSearch();
   await migrateSticky();
   await Notes.init();
+  await Calculator.init();
   initDataButtons();
   Store.checkQuota();
 
@@ -98,7 +99,8 @@ async function checkBackupReminder() {
     // JSON-Export auslösen (gleiche Logik wie btnExportJSON)
     const widgetData = await Store.get('widgetStates');
     const notesData = (widgetData && Array.isArray(widgetData.notes)) ? widgetData.notes : [];
-    const data = { version: '1.6.0', exported: new Date().toISOString(), boards, settings, notes: notesData };
+    const calcHistory = (widgetData && widgetData.calculator) ? widgetData.calculator.history || [] : [];
+    const data = { version: '1.7.0', exported: new Date().toISOString(), boards, settings, notes: notesData, calculator: calcHistory };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');

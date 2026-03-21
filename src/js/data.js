@@ -13,11 +13,12 @@ function initDataButtons() {
   btnExport.addEventListener('click', async () => {
     const widgetData = await Store.get('widgetStates');
     const data = {
-      version: '1.6.0',
+      version: '1.7.0',
       exported: new Date().toISOString(),
       boards,
       settings,
-      notes: widgetData && Array.isArray(widgetData.notes) ? widgetData.notes : []
+      notes: widgetData && Array.isArray(widgetData.notes) ? widgetData.notes : [],
+      calculator: widgetData && widgetData.calculator ? widgetData.calculator.history || [] : []
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
@@ -60,9 +61,9 @@ function initDataButtons() {
 
       // Notes importieren (falls vorhanden)
       let notesImported = 0;
+      const existingWidgets = await Store.get('widgetStates') || {};
       if (Array.isArray(data.notes) && data.notes.length > 0) {
-        const existingWidgets = await Store.get('widgetStates');
-        const existingNotes = (existingWidgets && Array.isArray(existingWidgets.notes)) ? existingWidgets.notes : [];
+        const existingNotes = Array.isArray(existingWidgets.notes) ? existingWidgets.notes : [];
         const importNotes = data.notes.filter(n => {
           if (!n || !n.id || !n.template) return false;
           n.checklistItems = Array.isArray(n.checklistItems) ? n.checklistItems : [];
@@ -73,15 +74,33 @@ function initDataButtons() {
         const toImport = importNotes.slice(0, spaceLeft);
         if (toImport.length > 0) {
           const merged = [...existingNotes, ...toImport];
-          await Store.set('widgetStates', { notes: merged });
+          existingWidgets.notes = merged;
           Notes._notes = merged;
           notesImported = toImport.length;
         }
       }
 
+      // Calculator-History importieren (falls vorhanden)
+      let calcImported = false;
+      if (Array.isArray(data.calculator) && data.calculator.length > 0) {
+        const calcHistory = data.calculator.filter(h => h && typeof h.expr === 'string' && typeof h.result === 'string');
+        if (calcHistory.length > 0) {
+          if (!existingWidgets.calculator) {
+            existingWidgets.calculator = { x: 400, y: 120, width: 280, height: 400, open: false, history: [] };
+          }
+          existingWidgets.calculator.history = calcHistory.slice(0, Calculator.MAX_HISTORY);
+          Calculator._history = existingWidgets.calculator.history;
+          calcImported = true;
+        }
+      }
+
+      // Gemeinsam speichern
+      await Store.set('widgetStates', existingWidgets);
+
       const noteMsg = notesImported > 0 ? ` + ${notesImported} Note(s)` : '';
+      const calcMsg = calcImported ? ' + Calculator-History' : '';
       await HellionDialog.alert(
-        `${validBoards.length} Board(s)${noteMsg} erfolgreich importiert.`,
+        `${validBoards.length} Board(s)${noteMsg}${calcMsg} erfolgreich importiert.`,
         { type: 'success', title: 'Import erfolgreich' }
       );
     } catch (err) {

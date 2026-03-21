@@ -20,6 +20,7 @@ async function init() {
   await Notes.init();
   await Calculator.init();
   await Timer.init();
+  await ImageRef.init();
   initDataButtons();
   Store.checkQuota();
 

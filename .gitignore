@@ -2,7 +2,7 @@
 .DS_Store
 Thumbs.db
 desktop.ini
-
+CLAUDE.md
 # Editor
 .vscode/
 .idea/
@@ -14,6 +14,7 @@ dist/
 *.zip
 *.tar.gz
 node_modules/
+/xpi/
 
 # Persönliche Backup-Dateien (nicht ins Repo)
 favorites_*.html

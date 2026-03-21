@@ -44,4 +44,4 @@ Der Entwickler behält sich das Recht vor, diese Extension jederzeit zu ändern,
 
 ---
 
-**Hellion NewTab** — [Hellion Online Media](https://hellion-media.de) — JonKazama-Hellion
+**Hellion NewTab** — [Hellion Online Media - Florian Wathing](https://hellion-media.de) — JonKazama-Hellion

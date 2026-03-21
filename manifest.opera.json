@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Hellion Dashboard (GX Native)",
+  "version": "1.5.2",
+  "description": "Ersetzt die Opera GX Startseite durch dein persönliches, leistungsoptimiertes Hellion Dashboard. Schnell, sauber und werbefrei.",
+  "author": "Hellion Online Media - Florian Wathling",
+  "homepage_url": "https://hellion-media.de",
+
+  "permissions": [
+    "tabs",
+    "storage",
+    "bookmarks"
+  ],
+
+  "background": {
+    "service_worker": "src/js/opera/background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.opera.com/startpage*",
+        "http://*.opera.com/startpage*"
+      ],
+      "js": ["src/js/opera/redirect.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+
+"web_accessible_resources": [
+    {
+      "resources": ["assets/fonts/*.woff2"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "action": {
+    "default_title": "Hellion Dashboard"
+  },
+
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}

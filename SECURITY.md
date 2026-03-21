@@ -73,4 +73,4 @@ Keine Permissions für: Tabs, History, Web Requests, Downloads, Clipboard oder H
 
 ---
 
-**Hellion NewTab** — [Hellion Online Media](https://hellion-media.de) — JonKazama-Hellion
+**Hellion Dashboard** — [Hellion Online Media - Florian Wathling](https://hellion-media.de) — JonKazama-Hellion

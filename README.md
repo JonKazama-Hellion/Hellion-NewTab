@@ -5,6 +5,7 @@
 ![Manifest](https://img.shields.io/badge/Manifest-V3-green)
 ![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-orange)
 ![Privacy](https://img.shields.io/badge/Privacy-100%25%20Lokal-448f45)
+[![Ko-fi](https://img.shields.io/badge/Support-Ko--fi-ff5e5b?logo=ko-fi)](https://ko-fi.com/hellionmedia)
 
 **Kein Account. Kein Abo. Keine Cloud. Alle Daten bleiben 100% lokal.**
 
@@ -339,6 +340,7 @@ Vollständige Lizenz: [LICENSE](LICENSE) | [CC BY-NC-SA 4.0](https://creativecom
 | **Impressum** | [hellion-media.de/impressum](https://hellion-media.de/impressum) |
 | **Bug Reports** | [kontakt@hellion-media.de](mailto:kontakt@hellion-media.de?subject=Hellion%20NewTab%20%E2%80%93%20Bug%20Report) |
 | **Security** | [SECURITY.md](SECURITY.md) |
+| **Support** | [Ko-fi](https://ko-fi.com/hellionmedia) |
 
 ---
 

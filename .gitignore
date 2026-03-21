@@ -15,6 +15,7 @@ dist/
 *.tar.gz
 node_modules/
 /xpi/
+v2-planning.md
 
 # Persönliche Backup-Dateien (nicht ins Repo)
 favorites_*.html

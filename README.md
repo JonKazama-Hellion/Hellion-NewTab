@@ -1,6 +1,6 @@
-# ⬡ Hellion Dashboard v1.9.0
+# ⬡ Hellion Dashboard v2.0.0
 
-![Version](https://img.shields.io/badge/Version-1.9.0-blue)
+![Version](https://img.shields.io/badge/Version-2.0.0-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla%20ES2020-F7DF1E?logo=javascript&logoColor=black)
 ![Manifest](https://img.shields.io/badge/Manifest-V3-green)
 ![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-orange)
@@ -10,7 +10,8 @@
 **No account. No subscription. No cloud. All data stays 100% local.**
 
 A personal bookmark dashboard as a browser extension.
-Boards, drag & drop, 11 themes, search bar, widget system with notes, calculator, timer and more. All in the browser, all offline.
+Boards, drag & drop, 11 themes, search bar, widget system with notes, calculator, timer and more.
+Full DE/EN language support with runtime switching. All in the browser, all offline.
 No external data transmission, no trackers, no analytics, no ads.
 
 Developed by **[Hellion Online Media — Florian Wathling](https://hellion-media.de)** — JonKazama-Hellion.
@@ -89,6 +90,12 @@ What you see is what's saved. No magic.
 | Avorion | Own work, screenshot from Avorion, Hellion Initiative ship | Hellion Online Media |
 | Hellion Stealth | Screenshot from Star Citizen by Cloud Imperium Games | Fan Content |
 
+### Language Support (i18n)
+
+- German and English with runtime switching via Settings
+- Auto-detect from browser language, manual override available
+- All UI elements, dialogs, onboarding and widget labels fully translated
+
 ### Onboarding & Dialogs
 
 - 7-step welcome flow on first launch with widget explanation and optional gaming starter board
@@ -103,7 +110,7 @@ What you see is what's saved. No magic.
 - Compact mode, shorten titles, search bar toggle, open links in new tab, descriptions, hide extra bookmarks
 - JSON export & import (backup & restore)
 - Onboarding repeatable
-- All UI labels in German (English coming in v2.1)
+- Language setting: German, English or auto-detect
 
 ---
 
@@ -223,10 +230,15 @@ hellion-newtab/
 ├── SECURITY.md                     # Security policy and reporting
 ├── DISCLAIMER.md                   # Disclaimer and legal
 │
+├── _locales/
+│   ├── de/messages.json            # Manifest-level i18n (German)
+│   └── en/messages.json            # Manifest-level i18n (English)
+│
 ├── src/
 │   ├── js/
 │   │   ├── storage.js              # Storage abstraction + quota check
 │   │   ├── state.js                # Global state, defaults, helpers
+│   │   ├── i18n.js                 # Internationalization (DE/EN, ~220+ keys, t() helper)
 │   │   ├── dialog.js               # Custom dialog system (HellionDialog.alert/confirm)
 │   │   ├── themes.js               # Theme definitions & application (11 themes)
 │   │   ├── boards.js               # Board/bookmark rendering, event delegation, modals
@@ -272,7 +284,7 @@ hellion-newtab/
 
 - **Zero Dependencies** — No npm, no build, no framework. Runs directly
 - **Privacy First** — All data local, no server contact
-- **Modular** — 15 JS files with clear responsibilities
+- **Modular** — 16 JS files with clear responsibilities
 - **Responsive** — Tablet (768px) and smartphone (480px) breakpoints
 - **Secure** — `createElement` instead of `innerHTML`, URL validation, storage error handling
 - **Event Delegation** — One listener per board list instead of per bookmark (performance)
@@ -305,8 +317,8 @@ hellion-newtab/
 
 ```bash
 # Create a release:
-git tag v1.10.0
-git push origin v1.10.0
+git tag v2.0.0
+git push origin v2.0.0
 # → GitHub Action automatically creates release with ZIP files
 ```
 

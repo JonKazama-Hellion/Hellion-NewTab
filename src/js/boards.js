@@ -57,14 +57,14 @@ function renderBoards() {
 
     const boardStrong = document.createElement('strong');
     boardStrong.className = 'accent-text';
-    boardStrong.textContent = '+ Board';
+    boardStrong.textContent = t('boards.add_board');
 
     const importStrong = document.createElement('strong');
     importStrong.className = 'accent-text';
-    importStrong.textContent = 'Import';
+    importStrong.textContent = t('boards.import');
 
     empty.append(
-      'No boards yet. Click ', boardStrong, ' to create one, or use ', importStrong, ' to load your browser bookmarks.'
+      t('boards.empty_state_pre'), boardStrong, t('boards.empty_state_mid'), importStrong, t('boards.empty_state_post')
     );
     wrapper.appendChild(empty);
     return;
@@ -85,7 +85,7 @@ function createBoardEl(board) {
 
   const dragHandle = document.createElement('span');
   dragHandle.className = 'board-drag-handle';
-  dragHandle.title = 'Board verschieben';
+  dragHandle.title = t('boards.drag_title');
   dragHandle.appendChild(createDragHandleSvg());
 
   const titleSpanHeader = document.createElement('span');
@@ -98,17 +98,17 @@ function createBoardEl(board) {
 
   const btnBlur = document.createElement('button');
   btnBlur.className = 'board-action-btn btn-blur-board';
-  btnBlur.title = board.blurred ? 'Unblur' : 'Blur (privat)';
+  btnBlur.title = board.blurred ? t('boards.unblur') : t('boards.blur');
   btnBlur.textContent = '\uD83D\uDD12';
 
   const btnRename = document.createElement('button');
   btnRename.className = 'board-action-btn btn-rename-board';
-  btnRename.title = 'Umbenennen';
+  btnRename.title = t('boards.rename');
   btnRename.textContent = '\u270E';
 
   const btnDelete = document.createElement('button');
   btnDelete.className = 'board-action-btn btn-delete-board';
-  btnDelete.title = 'Löschen';
+  btnDelete.title = t('boards.delete');
   btnDelete.textContent = '\u2715';
 
   actions.append(btnBlur, btnRename, btnDelete);
@@ -123,14 +123,14 @@ function createBoardEl(board) {
     e.stopPropagation();
     board.blurred = !board.blurred;
     div.classList.toggle('blurred', board.blurred);
-    btnBlur.title = board.blurred ? 'Unblur' : 'Blur (privat)';
+    btnBlur.title = board.blurred ? t('boards.unblur') : t('boards.blur');
     await saveBoards();
   });
 
   blurOverlay.addEventListener('click', async () => {
     board.blurred = false;
     div.classList.remove('blurred');
-    btnBlur.title = 'Blur (privat)';
+    btnBlur.title = t('boards.blur');
     await saveBoards();
   });
 
@@ -147,8 +147,8 @@ function createBoardEl(board) {
   btnDelete.addEventListener('click', async e => {
     e.stopPropagation();
     const ok = await HellionDialog.confirm(
-      `Board "${board.title}" wirklich löschen?`,
-      { type: 'danger', title: 'Board löschen', confirmText: 'Löschen' }
+      t('boards.delete_confirm', { title: board.title }),
+      { type: 'danger', title: t('boards.delete_confirm.title'), confirmText: t('boards.delete') }
     );
     if (ok) {
       boards = boards.filter(b => b.id !== board.id);
@@ -180,16 +180,16 @@ function createBoardEl(board) {
     let hiddenEls = [];
     const showMoreBtn = document.createElement('button');
     showMoreBtn.className = 'show-more-btn';
-    showMoreBtn.textContent = `Show ${hidden.length} more…`;
+    showMoreBtn.textContent = t('boards.show_more', { count: hidden.length });
     showMoreBtn.addEventListener('click', () => {
       if (!expanded) {
         hidden.forEach(bm => { const el = createBmEl(bm); hiddenEls.push(el); list.appendChild(el); });
-        showMoreBtn.textContent = 'Show less';
+        showMoreBtn.textContent = t('boards.show_less');
         expanded = true;
       } else {
         hiddenEls.forEach(el => el.remove());
         hiddenEls = [];
-        showMoreBtn.textContent = `Show ${hidden.length} more…`;
+        showMoreBtn.textContent = t('boards.show_more', { count: hidden.length });
         expanded = false;
       }
     });
@@ -200,7 +200,7 @@ function createBoardEl(board) {
   const addBtn = document.createElement('button');
   addBtn.className = 'add-bm-btn';
   addBtn.appendChild(createPlusSvg());
-  addBtn.append(' Add link');
+  addBtn.append(t('boards.add_link'));
   addBtn.addEventListener('click', () => openAddBookmarkModal(board.id));
   div.appendChild(addBtn);
 
@@ -243,7 +243,7 @@ function createBmEl(bm) {
 
   const deleteBtn = document.createElement('button');
   deleteBtn.className = 'bm-delete';
-  deleteBtn.title = 'Entfernen';
+  deleteBtn.title = t('boards.remove_bookmark');
   deleteBtn.textContent = '✕';
 
   li.appendChild(favicon);

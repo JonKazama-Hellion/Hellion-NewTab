@@ -75,15 +75,15 @@ const Notes = {
   async create(template) {
     if (this._notes.length >= this.MAX_NOTES) {
       await HellionDialog.alert(
-        'Maximale Anzahl erreicht! Du kannst maximal ' + this.MAX_NOTES + ' Notes gleichzeitig haben. Lösche eine bestehende Note um eine neue zu erstellen.',
-        { type: 'warning', title: 'Limit erreicht' }
+        t('notes.limit_message', { max: this.MAX_NOTES }),
+        { type: 'warning', title: t('notes.limit_title') }
       );
       return null;
     }
 
     const noteData = {
       id: 'note_' + uid(),
-      title: template === 'checklist' ? 'Checkliste' : 'Note',
+      title: template === 'checklist' ? t('notes.checklist_title') : t('notes.default_title'),
       content: '',
       template: template,
       x: 120 + (this._notes.length * 30),
@@ -138,7 +138,7 @@ const Notes = {
   _renderTextBody(noteData, bodyEl) {
     const textarea = document.createElement('textarea');
     textarea.className = 'widget-textarea';
-    textarea.placeholder = 'Notiz schreiben...';
+    textarea.placeholder = t('notes.placeholder');
     textarea.spellcheck = false;
     textarea.value = noteData.content || '';
     textarea.maxLength = this.MAX_CHARS;
@@ -204,7 +204,7 @@ const Notes = {
     const addInput = document.createElement('input');
     addInput.className = 'checklist-add-input';
     addInput.type = 'text';
-    addInput.placeholder = 'Neues Item...';
+    addInput.placeholder = t('notes.checklist_placeholder');
     addInput.maxLength = 100;
 
     addInput.addEventListener('keydown', async (e) => {
@@ -276,11 +276,11 @@ const Notes = {
     // Auto-Titel: "X/Y erledigt" falls kein manueller Titel
     const widgetEntry = WidgetManager._widgets.get(noteData.id);
     if (widgetEntry) {
-      const defaultTitle = done + '/' + total + ' erledigt';
+      const defaultTitle = t('notes.checklist_progress', { done: done, total: total });
       const titleEl = widgetEntry.el.querySelector('.widget-title');
       if (titleEl && titleEl.contentEditable !== 'true') {
         // Nur wenn Titel noch Standard ist
-        if (noteData.title === 'Checkliste' || /^\d+\/\d+ erledigt$/.test(noteData.title)) {
+        if (noteData.title === t('notes.checklist_title') || /^\d+\/\d+\s/.test(noteData.title)) {
           noteData.title = defaultTitle;
           titleEl.textContent = defaultTitle;
           widgetEntry.state.title = defaultTitle;
@@ -307,8 +307,8 @@ const Notes = {
     if (idx === -1) return;
 
     const ok = await HellionDialog.confirm(
-      'Note endgültig löschen? Das kann nicht rückgängig gemacht werden.',
-      { type: 'danger', title: 'Note löschen', confirmText: 'Löschen' }
+      t('notes.delete_confirm'),
+      { type: 'danger', title: t('notes.delete_title'), confirmText: t('notes.delete_button') }
     );
     if (!ok) return;
 
@@ -330,7 +330,7 @@ const Notes = {
     } else {
       md += noteData.content || '';
     }
-    md += '\n\n---\n*Exportiert aus Hellion Dashboard*\n';
+    md += '\n\n---\n*' + t('notes.export_footer') + '*\n';
 
     const blob = new Blob([md], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
@@ -419,9 +419,9 @@ const Notes = {
     if (note.template === 'checklist') {
       const total = note.checklistItems ? note.checklistItems.length : 0;
       const done = note.checklistItems ? note.checklistItems.filter(i => i.checked).length : 0;
-      preview.textContent = done + '/' + total + ' erledigt';
+      preview.textContent = t('notes.checklist_progress', { done: done, total: total });
     } else {
-      preview.textContent = (note.content || '').slice(0, 50) || 'Leer';
+      preview.textContent = (note.content || '').slice(0, 50) || t('notes.empty_preview');
     }
 
     // Actions
@@ -430,7 +430,7 @@ const Notes = {
 
     const btnExport = document.createElement('button');
     btnExport.className = 'notebook-slot-btn';
-    btnExport.textContent = 'Export';
+    btnExport.textContent = t('notes.export');
     btnExport.addEventListener('click', (e) => {
       e.stopPropagation();
       this.exportNote(note);
@@ -470,7 +470,7 @@ const Notes = {
     slot.className = 'notebook-slot-empty';
 
     const label = document.createElement('span');
-    label.textContent = '+ Note erstellen';
+    label.textContent = t('notes.create');
     slot.appendChild(label);
 
     // Klick zeigt Typ-Auswahl
@@ -485,7 +485,7 @@ const Notes = {
 
       const btnText = document.createElement('button');
       btnText.className = 'notebook-type-btn';
-      btnText.textContent = '\u270E Freitext';
+      btnText.textContent = t('notes.text_type');
       btnText.addEventListener('click', async (e) => {
         e.stopPropagation();
         await this.create('text');
@@ -494,7 +494,7 @@ const Notes = {
 
       const btnCheck = document.createElement('button');
       btnCheck.className = 'notebook-type-btn';
-      btnCheck.textContent = '\u2611 Checkliste';
+      btnCheck.textContent = t('notes.checklist_type');
       btnCheck.addEventListener('click', async (e) => {
         e.stopPropagation();
         await this.create('checklist');

@@ -195,10 +195,6 @@ const STRINGS = {
     'settings.reset_confirm.title':   'Alles zurücksetzen',
     'settings.reset_confirm.button':  'Alles löschen',
 
-    // Widgets
-    'widgets.minimize':        'Minimieren',
-    'widgets.close':           'Schließen',
-
     // Header
     'header.import':           'Import',
     'header.board':            'Board',
@@ -489,10 +485,6 @@ const STRINGS = {
     'settings.reset_confirm':  'Really delete all boards and settings? This cannot be undone.',
     'settings.reset_confirm.title':   'Reset everything',
     'settings.reset_confirm.button':  'Delete all',
-
-    // Widgets
-    'widgets.minimize':        'Minimize',
-    'widgets.close':           'Close',
 
     // Header
     'header.import':           'Import',

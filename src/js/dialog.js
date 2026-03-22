@@ -127,7 +127,7 @@ const HellionDialog = {
     return this._show({
       message,
       title: opts.title || t('dialog.default_title'),
-      confirmText: opts.confirmText || 'OK',
+      confirmText: opts.confirmText || t('dialog.ok'),
       cancelText: '',
       type: opts.type || 'info',
       isConfirm: false
@@ -145,7 +145,7 @@ const HellionDialog = {
     return this._show({
       message,
       title: opts.title || t('dialog.confirm_title'),
-      confirmText: opts.confirmText || 'OK',
+      confirmText: opts.confirmText || t('dialog.ok'),
       cancelText: opts.cancelText || t('dialog.cancel'),
       type: opts.type || 'info',
       isConfirm: true

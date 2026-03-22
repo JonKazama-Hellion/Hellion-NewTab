@@ -114,8 +114,8 @@ const ImageRef = {
     } catch (e) {
       console.warn('ImageRef: sessionStorage Write fehlgeschlagen', e);
       HellionDialog.alert(
-        'Bild konnte nicht gespeichert werden. Der Browser-Speicher ist voll.',
-        { type: 'danger', title: 'Speicherfehler' }
+        t('imageref.storage_error'),
+        { type: 'danger', title: t('imageref.storage_error.title') }
       );
     }
   },
@@ -144,8 +144,8 @@ const ImageRef = {
 
     if (this._images.length >= this.MAX_IMAGES) {
       await HellionDialog.alert(
-        'Maximal ' + this.MAX_IMAGES + ' Bild-Widgets gleichzeitig. Schliesse eines um ein neues zu oeffnen.',
-        { type: 'warning', title: 'Limit erreicht' }
+        t('imageref.limit', { max: this.MAX_IMAGES }),
+        { type: 'warning', title: t('imageref.limit.title') }
       );
       return;
     }
@@ -172,8 +172,8 @@ const ImageRef = {
       dataUrl = await this._processFile(file);
     } catch (err) {
       await HellionDialog.alert(
-        'Bild konnte nicht geladen werden: ' + err.message,
-        { type: 'danger', title: 'Bildfehler' }
+        t('imageref.load_error', { error: err.message }),
+        { type: 'danger', title: t('imageref.load_error.title') }
       );
       return;
     }
@@ -206,7 +206,7 @@ const ImageRef = {
   _createWidget(imageData, dataUrl) {
     WidgetManager.create('image', {
       id: imageData.id,
-      title: imageData.label || 'Bild-Referenz',
+      title: imageData.label || t('imageref.title'),
       x: imageData.x,
       y: imageData.y,
       width: imageData.width,
@@ -249,14 +249,14 @@ const ImageRef = {
       const img = document.createElement('img');
       img.className = 'imgref-img';
       img.src = dataUrl;
-      img.alt = imageData.label || 'Bild-Referenz';
+      img.alt = imageData.label || t('imageref.title');
       wrapper.appendChild(img);
 
       // Bild ersetzen Button
       const replaceBtn = document.createElement('button');
       replaceBtn.className = 'imgref-replace-btn';
       replaceBtn.type = 'button';
-      replaceBtn.textContent = 'Bild ersetzen';
+      replaceBtn.textContent = t('imageref.replace');
       replaceBtn.addEventListener('click', async () => {
         const file = await this._pickFile();
         if (!file) return;
@@ -266,8 +266,8 @@ const ImageRef = {
           this.renderBody(imageData, bodyEl, newDataUrl);
         } catch (err) {
           await HellionDialog.alert(
-            'Bild konnte nicht geladen werden: ' + err.message,
-            { type: 'danger', title: 'Bildfehler' }
+            t('imageref.load_error', { error: err.message }),
+            { type: 'danger', title: t('imageref.load_error.title') }
           );
         }
       });
@@ -283,7 +283,7 @@ const ImageRef = {
     const label = document.createElement('input');
     label.className = 'imgref-label';
     label.type = 'text';
-    label.placeholder = 'Beschriftung (optional)';
+    label.placeholder = t('imageref.label_placeholder');
     label.maxLength = 100;
     label.value = imageData.label || '';
 
@@ -295,8 +295,8 @@ const ImageRef = {
       const entry = WidgetManager._widgets.get(imageData.id);
       if (entry) {
         const titleEl = entry.el.querySelector('.widget-title-text');
-        if (titleEl) titleEl.textContent = text || 'Bild-Referenz';
-        entry.state.title = text || 'Bild-Referenz';
+        if (titleEl) titleEl.textContent = text || t('imageref.title');
+        entry.state.title = text || t('imageref.title');
       }
 
       this._debouncedSave();
@@ -321,7 +321,7 @@ const ImageRef = {
     icon.textContent = '\uD83D\uDDBC\uFE0F';
 
     const text = document.createElement('span');
-    text.textContent = 'Klicken oder Bild hierher ziehen';
+    text.textContent = t('imageref.dropzone');
 
     dropzone.append(icon, text);
 
@@ -336,8 +336,8 @@ const ImageRef = {
         await this.save();
       } catch (err) {
         await HellionDialog.alert(
-          'Bild konnte nicht geladen werden: ' + err.message,
-          { type: 'danger', title: 'Bildfehler' }
+          t('imageref.load_error', { error: err.message }),
+          { type: 'danger', title: t('imageref.load_error.title') }
         );
       }
     });
@@ -363,8 +363,8 @@ const ImageRef = {
       const file = e.dataTransfer.files[0];
       if (!file || !file.type.startsWith('image/')) {
         await HellionDialog.alert(
-          'Bitte eine Bilddatei verwenden (PNG, JPG, WebP, etc.).',
-          { type: 'warning', title: 'Kein Bild' }
+          t('imageref.invalid_file'),
+          { type: 'warning', title: t('imageref.invalid_file.title') }
         );
         return;
       }
@@ -376,8 +376,8 @@ const ImageRef = {
         await this.save();
       } catch (err) {
         await HellionDialog.alert(
-          'Bild konnte nicht geladen werden: ' + err.message,
-          { type: 'danger', title: 'Bildfehler' }
+          t('imageref.load_error', { error: err.message }),
+          { type: 'danger', title: t('imageref.load_error.title') }
         );
       }
     });
@@ -433,7 +433,7 @@ const ImageRef = {
 
       img.onerror = () => {
         URL.revokeObjectURL(objectUrl);
-        reject(new Error('Bild konnte nicht geladen werden'));
+        reject(new Error(t('imageref.load_error', { error: 'unknown' })));
       };
 
       img.src = objectUrl;

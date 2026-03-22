@@ -82,7 +82,7 @@ const Timer = {
 
     WidgetManager.create('timer', {
       id: this.WIDGET_ID,
-      title: 'Timer',
+      title: t('timer.title'),
       x: saved.x || 600,
       y: saved.y || 80,
       width: saved.width || 260,
@@ -190,7 +190,7 @@ const Timer = {
     const btnStart = document.createElement('button');
     btnStart.className = 'timer-ctrl-btn primary';
     btnStart.type = 'button';
-    btnStart.textContent = 'Start';
+    btnStart.textContent = t('timer.start');
     btnStart.addEventListener('click', () => {
       if (!this._running && this._remaining === 0) {
         this._applyInput();
@@ -202,7 +202,7 @@ const Timer = {
     const btnPause = document.createElement('button');
     btnPause.className = 'timer-ctrl-btn';
     btnPause.type = 'button';
-    btnPause.textContent = 'Pause';
+    btnPause.textContent = t('timer.pause');
     btnPause.disabled = true;
     btnPause.addEventListener('click', () => this._pause());
     this._btnPause = btnPause;
@@ -210,7 +210,7 @@ const Timer = {
     const btnReset = document.createElement('button');
     btnReset.className = 'timer-ctrl-btn danger';
     btnReset.type = 'button';
-    btnReset.textContent = 'Reset';
+    btnReset.textContent = t('timer.reset');
     btnReset.addEventListener('click', () => this._reset());
     this._btnReset = btnReset;
 
@@ -253,13 +253,13 @@ const Timer = {
 
     const title = document.createElement('span');
     title.className = 'timer-presets-title';
-    title.textContent = 'Presets';
+    title.textContent = t('timer.presets');
 
     const addBtn = document.createElement('button');
     addBtn.className = 'timer-preset-add';
     addBtn.type = 'button';
     addBtn.textContent = '+';
-    addBtn.title = 'Preset speichern';
+    addBtn.title = t('timer.save_preset');
     addBtn.addEventListener('click', () => this._showAddPreset(container));
 
     header.append(title, addBtn);
@@ -322,8 +322,8 @@ const Timer = {
 
     if (this._presets.length >= this.MAX_PRESETS) {
       HellionDialog.alert(
-        'Maximale Anzahl erreicht! Du kannst maximal ' + this.MAX_PRESETS + ' Presets speichern.',
-        { type: 'warning', title: 'Limit erreicht' }
+        t('timer.limit_message', { max: this.MAX_PRESETS }),
+        { type: 'warning', title: t('timer.limit_title') }
       );
       return;
     }
@@ -334,8 +334,8 @@ const Timer = {
       const parsed = this._parseTimeInput(this._inputEl.value);
       if (parsed === 0) {
         HellionDialog.alert(
-          'Gib zuerst eine Zeit ein, bevor du ein Preset speicherst.',
-          { type: 'info', title: 'Keine Zeit' }
+          t('timer.no_time_message'),
+          { type: 'info', title: t('timer.no_time_title') }
         );
         return;
       }
@@ -347,13 +347,13 @@ const Timer = {
     const nameInput = document.createElement('input');
     nameInput.className = 'timer-add-input';
     nameInput.type = 'text';
-    nameInput.placeholder = 'Name...';
+    nameInput.placeholder = t('timer.preset_name_placeholder');
     nameInput.maxLength = 20;
 
     const confirmBtn = document.createElement('button');
     confirmBtn.className = 'timer-add-confirm';
     confirmBtn.type = 'button';
-    confirmBtn.textContent = 'OK';
+    confirmBtn.textContent = t('timer.ok');
 
     const doAdd = async () => {
       const name = nameInput.value.trim();
@@ -508,9 +508,9 @@ const Timer = {
   _startTitleBlink() {
     this._originalTitle = document.title;
     this._blinkIntervalId = setInterval(() => {
-      document.title = document.title === '[!] Timer abgelaufen'
+      document.title = document.title === t('timer.finished_title')
         ? this._originalTitle
-        : '[!] Timer abgelaufen';
+        : t('timer.finished_title');
     }, 1000);
   },
 
@@ -521,7 +521,7 @@ const Timer = {
     if (this._blinkIntervalId) {
       clearInterval(this._blinkIntervalId);
       this._blinkIntervalId = null;
-      document.title = this._originalTitle || 'Hellion Dashboard';
+      document.title = this._originalTitle || t('timer.default_page_title');
     }
     this._finished = false;
     this._updateDisplay();
@@ -534,7 +534,7 @@ const Timer = {
   _updateMuteBtn() {
     if (!this._muteBtn) return;
     this._muteBtn.textContent = this._muted ? '\uD83D\uDD07' : '\uD83D\uDD0A';
-    this._muteBtn.title = this._muted ? 'Ton einschalten' : 'Ton ausschalten';
+    this._muteBtn.title = this._muted ? t('timer.unmute') : t('timer.mute');
     this._muteBtn.classList.toggle('muted', this._muted);
   },
 
@@ -555,7 +555,7 @@ const Timer = {
   _updateControls() {
     if (this._btnStart) {
       this._btnStart.disabled = this._running;
-      this._btnStart.textContent = this._finished ? 'Neustart' : 'Start';
+      this._btnStart.textContent = this._finished ? t('timer.restart') : t('timer.start');
     }
     if (this._btnPause) {
       this._btnPause.disabled = !this._running;

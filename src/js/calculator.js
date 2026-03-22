@@ -69,7 +69,7 @@ const Calculator = {
 
     const widgetId = WidgetManager.create('calculator', {
       id: this.WIDGET_ID,
-      title: 'Taschenrechner',
+      title: t('calculator.title'),
       x: saved.x || 400,
       y: saved.y || 120,
       width: saved.width || 280,
@@ -214,7 +214,7 @@ const Calculator = {
 
     const title = document.createElement('div');
     title.className = 'calc-history-title';
-    title.textContent = 'History';
+    title.textContent = t('calculator.history');
     container.appendChild(title);
 
     this._renderHistoryItems(container);
@@ -345,7 +345,7 @@ const Calculator = {
 
     const result = this._evaluate(this._currentExpr);
     if (result === null) {
-      this._lastResult = 'Fehler';
+      this._lastResult = t('calculator.error');
       this._updateDisplay();
       return;
     }

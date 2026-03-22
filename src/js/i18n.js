@@ -12,21 +12,21 @@ const STRINGS = {
     'dialog.cancel':           'Abbrechen',
 
     // Boards
-    'boards.empty_state_pre':  'No boards yet. Click ',
+    'boards.empty_state_pre':  'Noch keine Boards. Klicke auf ',
     'boards.add_board':        '+ Board',
-    'boards.empty_state_mid':  ' to create one, or use ',
+    'boards.empty_state_mid':  ' um eins zu erstellen, oder nutze ',
     'boards.import':           'Import',
-    'boards.empty_state_post': ' to load your browser bookmarks.',
+    'boards.empty_state_post': ' um deine Browser-Lesezeichen zu laden.',
     'boards.drag_title':       'Board verschieben',
     'boards.blur':             'Blur (privat)',
     'boards.unblur':           'Unblur',
     'boards.rename':           'Umbenennen',
     'boards.delete':           'Löschen',
-    'boards.delete_confirm':   'Board "{title}" wirklich löschen?',
+    'boards.delete_confirm':   'Board „{title}" wirklich löschen?',
     'boards.delete_confirm.title': 'Board löschen',
-    'boards.show_more':        'Show {count} more…',
-    'boards.show_less':        'Show less',
-    'boards.add_link':         ' Add link',
+    'boards.show_more':        '{count} weitere anzeigen…',
+    'boards.show_less':        'Weniger anzeigen',
+    'boards.add_link':         ' Link hinzufügen',
     'boards.remove_bookmark':  'Entfernen',
 
     // Onboarding
@@ -200,7 +200,7 @@ const STRINGS = {
     'header.board':            'Board',
     'header.note':             'Note',
     'header.theme':            'Darstellung',
-    'header.settings':         'Settings',
+    'header.settings':         'Einstellungen',
 
     // Settings-Panel Überschrift
     'settings.title':          'Einstellungen',
@@ -255,16 +255,16 @@ const STRINGS = {
     'settings.search_engine_toggle': 'Suchmaschine wechseln',
 
     // Modals
-    'modal.new_board':         'New Board',
-    'modal.board_name':        'Board name...',
-    'modal.create':            'Create',
-    'modal.new_bookmark':      'New Bookmark',
-    'modal.bm_title':          'Title...',
-    'modal.bm_desc':           'Description (optional)',
-    'modal.bm_add':            'Add',
-    'modal.rename':            'Rename',
-    'modal.rename_placeholder': 'New name...',
-    'modal.rename_confirm':    'Rename',
+    'modal.new_board':         'Neues Board',
+    'modal.board_name':        'Board-Name...',
+    'modal.create':            'Erstellen',
+    'modal.new_bookmark':      'Neues Lesezeichen',
+    'modal.bm_title':          'Titel...',
+    'modal.bm_desc':           'Beschreibung (optional)',
+    'modal.bm_add':            'Hinzufügen',
+    'modal.rename':            'Umbenennen',
+    'modal.rename_placeholder': 'Neuer Name...',
+    'modal.rename_confirm':    'Umbenennen',
     'modal.theme_header':      'Darstellung',
 
     // About
@@ -283,7 +283,7 @@ const STRINGS = {
     'notebook.title':          'Notebook',
 
     // Suche
-    'search.placeholder':      'Search the web…',
+    'search.placeholder':      'Im Web suchen…',
 
     // Widget-Toolbar Tooltips
     'toolbar.note':            'Note erstellen',
@@ -630,6 +630,7 @@ function setLanguage(lang) {
     ? (navigator.language.startsWith('de') ? 'de' : 'en')
     : lang;
   currentLang = resolved;
+  document.documentElement.lang = resolved;
   applyLanguage();
 }
 
@@ -652,6 +653,7 @@ const I18n = {
       ? (navigator.language.startsWith('de') ? 'de' : 'en')
       : lang;
     currentLang = resolved;
+    document.documentElement.lang = resolved;
     applyLanguage();
   }
 };

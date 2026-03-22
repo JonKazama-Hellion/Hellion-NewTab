@@ -10,8 +10,8 @@ async function init() {
   boards = savedBoards ?? getDefaultBoards();
   if (savedSettings) Object.assign(settings, savedSettings);
 
-  applySettings();
   I18n.init();
+  applySettings();
   renderBoards();
   startClock();
   bindGlobalEvents();

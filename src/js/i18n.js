@@ -224,6 +224,7 @@ const STRINGS = {
     'settings.image_ref.desc':     'Bilder als Referenz anzeigen (nur aktuelle Session)',
     'settings.export':             'Backup exportieren',
     'settings.export.desc':        'Alle Boards, Notes und Einstellungen als JSON sichern',
+    'settings.export.btn':         'Export',
     'settings.import':             'Backup importieren',
     'settings.import.desc':        'JSON-Backup wiederherstellen',
     'settings.browser_import':     'Browser-Lesezeichen',
@@ -514,6 +515,7 @@ const STRINGS = {
     'settings.image_ref.desc':     'Show images as reference (current session only)',
     'settings.export':             'Export backup',
     'settings.export.desc':        'Save all boards, notes and settings as JSON',
+    'settings.export.btn':         'Export',
     'settings.import':             'Import backup',
     'settings.import.desc':        'Restore a JSON backup',
     'settings.browser_import':     'Browser bookmarks',
@@ -622,15 +624,23 @@ function applyLanguage() {
 }
 
 /**
+ * 'auto' auflösen zu konkretem Sprachcode
+ * @param {string} lang - 'de', 'en' oder 'auto'
+ * @returns {string} 'de' oder 'en'
+ */
+function resolveLang(lang) {
+  return (lang === 'auto')
+    ? (navigator.language.startsWith('de') ? 'de' : 'en')
+    : lang;
+}
+
+/**
  * Sprache setzen, speichern und DOM aktualisieren
  * @param {string} lang - 'de', 'en' oder 'auto'
  */
 function setLanguage(lang) {
-  const resolved = (lang === 'auto')
-    ? (navigator.language.startsWith('de') ? 'de' : 'en')
-    : lang;
-  currentLang = resolved;
-  document.documentElement.lang = resolved;
+  currentLang = resolveLang(lang);
+  document.documentElement.lang = currentLang;
   applyLanguage();
 }
 
@@ -643,17 +653,14 @@ const I18n = {
 
   /**
    * Initialisierung: Sprache aus Settings lesen, auflösen, DOM anwenden
-   * Wird nach applySettings() aufgerufen (settings-Objekt muss bereit sein)
+   * Muss NACH dem Laden des settings-Objekts aufgerufen werden
    */
   init() {
     const lang = (typeof settings !== 'undefined' && settings.language)
       ? settings.language
       : 'auto';
-    const resolved = (lang === 'auto')
-      ? (navigator.language.startsWith('de') ? 'de' : 'en')
-      : lang;
-    currentLang = resolved;
-    document.documentElement.lang = resolved;
+    currentLang = resolveLang(lang);
+    document.documentElement.lang = currentLang;
     applyLanguage();
   }
 };

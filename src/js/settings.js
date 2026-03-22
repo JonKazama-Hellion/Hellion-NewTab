@@ -235,6 +235,7 @@ function bindSettingsEvents() {
                  imageRefEnabled: false, language: 'auto' };
     await saveBoards();
     await saveSettings();
+    setLanguage('auto');
     applySettings();
     renderBoards();
     closeSettings();

@@ -6,6 +6,27 @@ All notable changes per version. Format based on [Keep a Changelog](https://keep
 
 ---
 
+### v2.0.0 — 22.03.2026
+
+#### New Features
+
+- **Internationalization (i18n)** — Full DE/EN language support with runtime switching
+- Language setting in Settings panel: German, English or Auto-detect (browser language)
+- `i18n.js` module with ~220+ string keys, `t(key, vars?)` helper and `data-i18n` HTML attributes
+- `_locales/de/` and `_locales/en/` for manifest-level i18n (`__MSG_extName__`, `__MSG_extDesc__`)
+- `<html lang>` attribute updates dynamically when language changes
+- All modules migrated: dialog, boards, onboarding, notes, calculator, timer, image-ref, data, bookmark-import, storage, settings, widgets, app
+
+#### Technical
+
+- New script load order: `storage → state → i18n → dialog → ...`
+- `applyLanguage()` scans DOM for `data-i18n`, `data-i18n-placeholder`, `data-i18n-title`
+- Onboarding slides use i18n keys instead of hardcoded text (rendered at display time)
+- Clock day/month names via i18n keys instead of hardcoded arrays
+- `resolveLang()` helper for DRY language resolution (auto → browser detect)
+
+---
+
 ### v1.10.0 — 22.03.2026
 
 #### Themes

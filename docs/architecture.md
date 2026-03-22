@@ -27,21 +27,23 @@ HOM_NewTab_Project/
 │   ├── css/
 │   │   └── main.css         # All styles, 11 themes, responsive breakpoints
 │   └── js/
-│       ├── dialog.js         # Custom dialog system (alert, confirm)
 │       ├── storage.js        # Storage abstraction layer
 │       ├── state.js          # Global state, defaults, helpers
+│       ├── i18n.js           # Internationalization (DE/EN, t() helper)
+│       ├── dialog.js         # Custom dialog system (alert, confirm)
 │       ├── themes.js         # Theme definitions & application (11 themes)
-│       ├── boards.js         # Board/bookmark rendering & events
 │       ├── drag.js           # Drag & drop (Pointer Events API)
+│       ├── boards.js         # Board/bookmark rendering & events
 │       ├── settings.js       # Settings panel, toggles, theme picker
 │       ├── search.js         # Search bar (Google, DuckDuckGo, Bing)
-│       ├── onboarding.js     # First-run onboarding flow
 │       ├── widgets.js        # Widget manager (registry, drag, resize)
 │       ├── notes.js          # Notes/checklists (multi-instance widgets)
 │       ├── calculator.js     # Calculator widget (single-instance)
 │       ├── timer.js          # Timer/countdown widget (single-instance)
 │       ├── image-ref.js      # Image reference widget (multi-instance)
+│       ├── bookmark-import.js # Browser bookmark import (chrome.bookmarks API)
 │       ├── data.js           # JSON export/import (backup & restore)
+│       ├── onboarding.js     # First-run onboarding flow
 │       └── app.js            # Init, clock, global events (entry point)
 ├── assets/
 │   ├── fonts/                # Local fonts (Rajdhani, Inter, Cinzel)
@@ -58,21 +60,23 @@ Each module has exactly one responsibility. Communication happens through global
 
 | Module | Responsibility |
 |---|---|
-| `dialog.js` | `HellionDialog.alert()` and `HellionDialog.confirm()` — custom styled dialogs that replace native browser popups. Loaded first so every other module can use it. |
 | `storage.js` | The **only** place that touches `chrome.storage` / `localStorage`. Everything else goes through `Store.get()` / `Store.set()`. |
 | `state.js` | Global `boards` and `settings` arrays, default values, `uid()`, `escHtml()`, `getFaviconUrl()`. |
+| `i18n.js` | Internationalization module. `STRINGS` object with ~220+ keys (DE/EN), `t(key, vars?)` helper, `applyLanguage()` DOM scanner, `setLanguage()`, `I18n.init()`. |
+| `dialog.js` | `HellionDialog.alert()` and `HellionDialog.confirm()` — custom styled dialogs that replace native browser popups. |
 | `themes.js` | Applies theme CSS variables. 11 themes, each with its own `[data-theme]` block in `main.css`. |
 | `boards.js` | Renders boards and bookmarks. Event delegation on board containers. |
 | `drag.js` | Board and bookmark reordering via Pointer Events API. |
 | `settings.js` | Settings panel UI, toggle handlers, appearance modal, background upload. |
 | `search.js` | Search bar with engine switching (Google, DuckDuckGo, Bing). |
-| `onboarding.js` | Multi-slide first-run flow including the gaming starter board opt-in. |
 | `widgets.js` | Widget manager — creates DOM, handles drag/resize/z-index, provides registry. See [widget-schema.md](widget-schema.md). |
 | `notes.js` | Notes and checklists as widgets. Multi-instance (max 5). Notebook sidebar. Also handles widget toolbar events. |
 | `calculator.js` | Calculator widget. Single-instance. Shunting-yard expression parser — no `eval()`. |
 | `timer.js` | Timer/countdown widget. Single-instance. Presets, Web Audio API alarm, tab-title blink on completion. |
 | `image-ref.js` | Image reference widget. Multi-instance (max 3). Canvas API WebP conversion, sessionStorage for image data — cleared on browser close. |
+| `bookmark-import.js` | Direct browser bookmark import via `chrome.bookmarks.getTree()`. Folder selection modal with duplicate detection. |
 | `data.js` | JSON export/import with validation. Covers boards, notes, calculator history and timer presets. |
+| `onboarding.js` | Multi-slide first-run flow including the gaming starter board opt-in. |
 | `app.js` | Entry point. Calls `init()` on DOMContentLoaded. Clock, global event binding. |
 
 ---
@@ -106,21 +110,23 @@ DOMContentLoaded
 Scripts are loaded in `newtab.html` in dependency order. A module may only reference modules loaded before it — there is no bundler to handle this automatically.
 
 ```html
-<script src="src/js/dialog.js"></script>
 <script src="src/js/storage.js"></script>
 <script src="src/js/state.js"></script>
+<script src="src/js/i18n.js"></script>
+<script src="src/js/dialog.js"></script>
 <script src="src/js/themes.js"></script>
-<script src="src/js/boards.js"></script>
 <script src="src/js/drag.js"></script>
+<script src="src/js/boards.js"></script>
 <script src="src/js/settings.js"></script>
 <script src="src/js/search.js"></script>
-<script src="src/js/onboarding.js"></script>
 <script src="src/js/widgets.js"></script>
 <script src="src/js/notes.js"></script>
 <script src="src/js/calculator.js"></script>
 <script src="src/js/timer.js"></script>
 <script src="src/js/image-ref.js"></script>
+<script src="src/js/bookmark-import.js"></script>
 <script src="src/js/data.js"></script>
+<script src="src/js/onboarding.js"></script>
 <script src="src/js/app.js"></script>
 ```
 

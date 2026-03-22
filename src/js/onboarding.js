@@ -9,52 +9,40 @@ const Onboarding = {
   slides: [
     {
       hero: '\u2B21',
-      title: 'Willkommen bei Hellion Dashboard',
-      text: 'Dein neuer Browser-Startbildschirm. Minimalistisch, schnell und vollst\u00E4ndig lokal \u2014 keine Cloud, kein Account, keine Datensammlung.'
+      titleKey: 'onboarding.s1.title',
+      textKey: 'onboarding.s1.text'
     },
     {
       hero: '\uD83D\uDCCB',
-      title: 'Boards & Bookmarks',
-      features: [
-        'Erstelle Boards mit dem \u201E+ Board\u201C Button oben',
-        'Importiere Browser-Lesezeichen \u00FCber den \u201EImport\u201C Button im Header',
-        'Drag & Drop zum Umsortieren von Boards und Links',
-        'Blur-Modus f\u00FCr private Boards (\uD83D\uDD12 Icon)'
-      ]
+      titleKey: 'onboarding.s2.title',
+      featureKeys: ['onboarding.s2.f1', 'onboarding.s2.f2', 'onboarding.s2.f3', 'onboarding.s2.f4']
     },
     {
       hero: '\uD83C\uDFA8',
-      title: '11 handgefertigte Themes',
-      text: 'Klicke auf den \u201ETheme\u201C Button im Header um dein Theme zu w\u00E4hlen. Jedes hat seinen eigenen Stil und Farbpalette.',
+      titleKey: 'onboarding.s3.title',
+      textKey: 'onboarding.s3.text',
       showThemes: true
     },
     {
       hero: '\uD83E\uDDF0',
-      title: 'Widget-Toolbar',
-      features: [
-        'Die schwebenden Buttons rechts \u00F6ffnen Widgets',
-        'Notes und Checklisten f\u00FCr schnelle Notizen',
-        'Taschenrechner mit History',
-        'Timer/Countdown mit speicherbaren Presets',
-        'Bild-Referenz Widgets (aktivierbar in Settings)',
-        'Notebook-Sidebar zeigt alle Notes auf einen Blick'
-      ]
+      titleKey: 'onboarding.s4.title',
+      featureKeys: ['onboarding.s4.f1', 'onboarding.s4.f2', 'onboarding.s4.f3', 'onboarding.s4.f4', 'onboarding.s4.f5', 'onboarding.s4.f6']
     },
     {
       hero: '\uD83D\uDEE1\uFE0F',
-      title: 'Backups nicht vergessen!',
-      text: 'Deine Daten sind lokal im Browser gespeichert. Wenn du Browserdaten l\u00F6schst, gehen sie verloren! Sichere regelm\u00E4\u00DFig \u00FCber Settings \u2192 Data \u2192 Export. Wir erinnern dich alle 7 Tage daran.'
+      titleKey: 'onboarding.s5.title',
+      textKey: 'onboarding.s5.text'
     },
     {
       hero: '\uD83C\uDFAE',
-      title: 'Gaming Starter Board',
-      text: 'Spielst du Games wie Satisfactory, Factorio oder Star Citizen? Ich kann ein Board mit n\u00FCtzlichen Community-Links anlegen.',
+      titleKey: 'onboarding.s6.title',
+      textKey: 'onboarding.s6.text',
       interactive: 'gaming-board'
     },
     {
       hero: '\uD83D\uDE80',
-      title: 'Bereit!',
-      text: 'Erstelle dein erstes Board mit \u201E+ Board\u201C oder importiere deine Browser-Lesezeichen \u00FCber den Import-Button im Header. Viel Spa\u00DF!'
+      titleKey: 'onboarding.s7.title',
+      textKey: 'onboarding.s7.text'
     }
   ],
 
@@ -87,7 +75,7 @@ const Onboarding = {
     if (!isLast) {
       const skip = document.createElement('button');
       skip.className = 'onboarding-skip';
-      skip.textContent = '\u00DCberspringen';
+      skip.textContent = t('onboarding.skip');
       skip.addEventListener('click', () => this._finish());
       modal.appendChild(skip);
     }
@@ -103,22 +91,22 @@ const Onboarding = {
 
     const title = document.createElement('div');
     title.className = 'onboarding-title';
-    title.textContent = slide.title;
+    title.textContent = t(slide.titleKey);
     slideEl.appendChild(title);
 
-    if (slide.text) {
+    if (slide.textKey) {
       const text = document.createElement('div');
       text.className = 'onboarding-text';
-      text.textContent = slide.text;
+      text.textContent = t(slide.textKey);
       slideEl.appendChild(text);
     }
 
-    if (slide.features) {
+    if (slide.featureKeys) {
       const list = document.createElement('ul');
       list.className = 'onboarding-feature-list';
-      slide.features.forEach(f => {
+      slide.featureKeys.forEach(key => {
         const li = document.createElement('li');
-        li.textContent = f;
+        li.textContent = t(key);
         list.appendChild(li);
       });
       slideEl.appendChild(list);
@@ -160,7 +148,7 @@ const Onboarding = {
     if (this.currentSlide > 0) {
       const backBtn = document.createElement('button');
       backBtn.className = 'btn-secondary';
-      backBtn.textContent = 'Zur\u00FCck';
+      backBtn.textContent = t('onboarding.back');
       backBtn.addEventListener('click', () => {
         this.currentSlide--;
         this._render();
@@ -172,7 +160,7 @@ const Onboarding = {
       // Interaktive Slide: Zwei Buttons statt "Weiter"
       const noBtn = document.createElement('button');
       noBtn.className = 'btn-secondary';
-      noBtn.textContent = 'Nein danke';
+      noBtn.textContent = t('onboarding.no');
       noBtn.addEventListener('click', () => {
         this.currentSlide++;
         this._render();
@@ -180,7 +168,7 @@ const Onboarding = {
 
       const yesBtn = document.createElement('button');
       yesBtn.className = 'btn-primary';
-      yesBtn.textContent = 'Ja, gerne';
+      yesBtn.textContent = t('onboarding.yes');
       yesBtn.addEventListener('click', async () => {
         await this._createGamingBoard();
         this.currentSlide++;
@@ -191,13 +179,13 @@ const Onboarding = {
     } else if (isLast) {
       const startBtn = document.createElement('button');
       startBtn.className = 'btn-primary';
-      startBtn.textContent = 'Los geht\u2019s!';
+      startBtn.textContent = t('onboarding.start');
       startBtn.addEventListener('click', () => this._finish());
       nav.appendChild(startBtn);
     } else {
       const nextBtn = document.createElement('button');
       nextBtn.className = 'btn-primary';
-      nextBtn.textContent = 'Weiter';
+      nextBtn.textContent = t('onboarding.next');
       nextBtn.addEventListener('click', () => {
         this.currentSlide++;
         this._render();

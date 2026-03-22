@@ -37,7 +37,7 @@ function initDataButtons() {
     if (!file) return;
     try {
       const data = JSON.parse(await file.text());
-      if (!Array.isArray(data.boards)) throw new Error('Ungültiges Format');
+      if (!Array.isArray(data.boards)) throw new Error(t('data.invalid_format'));
       const validBoards = data.boards.filter(b => {
         if (!b || typeof b.title !== 'string' || !Array.isArray(b.bookmarks)) return false;
         b.id = b.id || uid();
@@ -50,10 +50,10 @@ function initDataButtons() {
         });
         return true;
       });
-      if (validBoards.length === 0) throw new Error('Keine gültigen Boards gefunden');
+      if (validBoards.length === 0) throw new Error(t('data.no_boards'));
       const ok = await HellionDialog.confirm(
-        `${validBoards.length} Boards importieren? Bestehende Daten bleiben erhalten.`,
-        { type: 'info', title: 'JSON Import' }
+        t('data.import_confirm', { count: validBoards.length }),
+        { type: 'info', title: t('data.import_confirm.title') }
       );
       if (!ok) return;
       boards = [...boards, ...validBoards];
@@ -112,15 +112,15 @@ function initDataButtons() {
       // Gemeinsam speichern
       await Store.set('widgetStates', existingWidgets);
 
-      const noteMsg = notesImported > 0 ? ` + ${notesImported} Note(s)` : '';
-      const calcMsg = calcImported ? ' + Calculator-History' : '';
-      const timerMsg = timerImported ? ' + Timer-Presets' : '';
+      const noteMsg = notesImported > 0 ? t('data.notes_suffix', { count: notesImported }) : '';
+      const calcMsg = calcImported ? t('data.calc_suffix') : '';
+      const timerMsg = timerImported ? t('data.timer_suffix') : '';
       await HellionDialog.alert(
-        `${validBoards.length} Board(s)${noteMsg}${calcMsg}${timerMsg} erfolgreich importiert.`,
-        { type: 'success', title: 'Import erfolgreich' }
+        t('data.import_success', { boards: validBoards.length, notes: noteMsg, calc: calcMsg, timer: timerMsg }),
+        { type: 'success', title: t('data.import_success.title') }
       );
     } catch (err) {
-      await HellionDialog.alert('Fehler beim Import: ' + err.message, { type: 'danger', title: 'Import fehlgeschlagen' });
+      await HellionDialog.alert(t('data.import_error', { error: err.message }), { type: 'danger', title: t('data.import_error.title') });
     }
     e.target.value = '';
   });

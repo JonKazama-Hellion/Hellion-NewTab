@@ -42,8 +42,8 @@ const BrowserBookmarkImport = {
       tree = await api.getTree();
     } catch (err) {
       await HellionDialog.alert(
-        'Zugriff auf Browser-Lesezeichen nicht möglich. Stelle sicher, dass die Extension die nötigen Berechtigungen hat.',
-        { type: 'warning', title: 'Lesezeichen-Import' }
+        t('bm_import.no_access'),
+        { type: 'warning', title: t('bm_import.title') }
       );
       return;
     }
@@ -51,8 +51,8 @@ const BrowserBookmarkImport = {
     const folders = this._extractFolders(tree[0]);
     if (folders.length === 0) {
       await HellionDialog.alert(
-        'Keine Lesezeichen-Ordner gefunden.',
-        { type: 'warning', title: 'Lesezeichen-Import' }
+        t('bm_import.no_folders'),
+        { type: 'warning', title: t('bm_import.title') }
       );
       return;
     }
@@ -79,7 +79,7 @@ const BrowserBookmarkImport = {
 
         result.push({
           id: child.id,
-          title: child.title || 'Unbenannt',
+          title: child.title || t('bm_import.unnamed'),
           depth: depth,
           bookmarkCount: bookmarkCount,
           subfolderCount: subfolderCount,
@@ -114,7 +114,7 @@ const BrowserBookmarkImport = {
     header.className = 'bm-import-header';
 
     const title = document.createElement('span');
-    title.textContent = 'Browser-Lesezeichen importieren';
+    title.textContent = t('bm_import.modal_title');
     header.appendChild(title);
 
     const closeBtn = document.createElement('button');
@@ -128,7 +128,7 @@ const BrowserBookmarkImport = {
     // Info
     const info = document.createElement('div');
     info.className = 'bm-import-info';
-    info.textContent = 'Wähle die Ordner aus, die als Boards importiert werden sollen. Jeder Ordner wird ein eigenes Board.';
+    info.textContent = t('bm_import.info');
     modal.appendChild(info);
 
     // Ordner-Liste
@@ -155,13 +155,13 @@ const BrowserBookmarkImport = {
       meta.className = 'bm-import-folder-meta';
       const parts = [];
       if (folder.bookmarkCount > 0) {
-        parts.push(folder.bookmarkCount + ' Link' + (folder.bookmarkCount !== 1 ? 's' : ''));
+        parts.push(t('bm_import.link_count', { count: folder.bookmarkCount }));
       }
       if (folder.subfolderCount > 0) {
-        parts.push(folder.subfolderCount + ' Ordner');
+        parts.push(t('bm_import.folder_count', { count: folder.subfolderCount }));
       }
       if (parts.length === 0) {
-        parts.push('leer');
+        parts.push(t('bm_import.empty'));
       }
       meta.textContent = parts.join(', ');
       row.appendChild(meta);
@@ -177,18 +177,18 @@ const BrowserBookmarkImport = {
 
     const selectAll = document.createElement('button');
     selectAll.className = 'btn-secondary';
-    selectAll.textContent = 'Alle auswählen';
+    selectAll.textContent = t('bm_import.select_all');
     selectAll.addEventListener('click', () => {
       const boxes = list.querySelectorAll('.bm-import-checkbox');
       const allChecked = Array.from(boxes).every(function(cb) { return cb.checked; });
       boxes.forEach(function(cb) { cb.checked = !allChecked; });
-      selectAll.textContent = allChecked ? 'Alle auswählen' : 'Alle abwählen';
+      selectAll.textContent = allChecked ? t('bm_import.select_all') : t('bm_import.deselect_all');
     });
     footer.appendChild(selectAll);
 
     const importBtn = document.createElement('button');
     importBtn.className = 'btn-primary';
-    importBtn.textContent = 'Importieren';
+    importBtn.textContent = t('bm_import.import_btn');
     importBtn.addEventListener('click', () => this._importSelected(folders));
     footer.appendChild(importBtn);
 
@@ -216,8 +216,8 @@ const BrowserBookmarkImport = {
     const checkboxes = document.querySelectorAll('.bm-import-checkbox:checked');
     if (checkboxes.length === 0) {
       await HellionDialog.alert(
-        'Bitte wähle mindestens einen Ordner aus.',
-        { type: 'warning', title: 'Lesezeichen-Import' }
+        t('bm_import.no_selection'),
+        { type: 'warning', title: t('bm_import.title') }
       );
       return;
     }
@@ -289,15 +289,15 @@ const BrowserBookmarkImport = {
 
     // Ergebnis-Dialog
     const lines = [];
-    lines.push(boardsCreated + ' Board' + (boardsCreated !== 1 ? 's' : '') + ' erstellt');
-    lines.push(totalImported + ' Lesezeichen importiert');
+    lines.push(t('bm_import.boards_created', { count: boardsCreated }));
+    lines.push(t('bm_import.bookmarks_imported', { count: totalImported }));
     if (totalSkipped > 0) {
-      lines.push(totalSkipped + ' Duplikat' + (totalSkipped !== 1 ? 'e' : '') + ' übersprungen');
+      lines.push(t('bm_import.duplicates_skipped', { count: totalSkipped }));
     }
 
     await HellionDialog.alert(
       lines.join('\n'),
-      { type: 'success', title: 'Import abgeschlossen' }
+      { type: 'success', title: t('bm_import.success_title') }
     );
   }
 };

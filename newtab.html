@@ -162,6 +162,13 @@
             <button class="btn-small" id="btnImportJSON">Import</button>
             <input type="file" id="jsonImportInput" accept=".json" class="hidden" />
           </div>
+          <div class="setting-row" id="browserImportRow">
+            <div class="setting-info">
+              <span class="setting-label">Browser-Lesezeichen</span>
+              <span class="setting-desc">Lesezeichen direkt aus dem Browser importieren</span>
+            </div>
+            <button class="btn-small" id="btnBrowserImport">Import</button>
+          </div>
           <div class="setting-row">
             <div class="setting-info">
               <span class="setting-label">Onboarding wiederholen</span>
@@ -195,7 +202,7 @@
     <div class="panel-footer">
       <div class="about-block">
         <div class="about-logo">⬡ HELLION NEWTAB</div>
-        <div class="about-version">Version 1.9.0 · by Hellion Online Media</div>
+        <div class="about-version">Version 1.11.1 · by Hellion Online Media</div>
 
         <div class="about-links">
           <a href="https://hellion-media.de/impressum" target="_blank" class="about-link">
@@ -270,17 +277,17 @@
       </div>
       <div class="theme-grid">
         <div class="theme-card active" data-value="nebula">
-          <img class="theme-card-img" src="assets/themes/bg-nebula.jpg" alt="Nebula" />
+          <img class="theme-card-img" src="assets/themes/bg-nebula.webp" alt="Nebula" />
           <span class="theme-card-label">Nebula</span>
           <span class="theme-card-check">✓</span>
         </div>
         <div class="theme-card" data-value="crescent">
-          <img class="theme-card-img" src="assets/themes/bg-crescent.jpg" alt="Crescent" />
+          <img class="theme-card-img" src="assets/themes/bg-crescent.webp" alt="Crescent" />
           <span class="theme-card-label">Crescent</span>
           <span class="theme-card-check">✓</span>
         </div>
         <div class="theme-card" data-value="event-horizon">
-          <img class="theme-card-img" src="assets/themes/bg-event-horizon.jpg" alt="Event Horizon" />
+          <img class="theme-card-img" src="assets/themes/bg-event-horizon.webp" alt="Event Horizon" />
           <span class="theme-card-label">Event Horizon</span>
           <span class="theme-card-check">✓</span>
         </div>
@@ -290,23 +297,38 @@
           <span class="theme-card-check">✓</span>
         </div>
         <div class="theme-card" data-value="julia-jin">
-          <img class="theme-card-img" src="assets/themes/bg-julia-jin.png" alt="Julia &amp; Jin" />
+          <img class="theme-card-img" src="assets/themes/bg-julia-jin.webp" alt="Julia &amp; Jin" />
           <span class="theme-card-label">Julia &amp; Jin</span>
           <span class="theme-card-check">✓</span>
         </div>
         <div class="theme-card" data-value="sc-sunset">
-          <img class="theme-card-img" src="assets/themes/bg-sc-sunset.jpg" alt="SC Sunset" />
+          <img class="theme-card-img" src="assets/themes/bg-sc-sunset.webp" alt="SC Sunset" />
           <span class="theme-card-label">SC Sunset</span>
           <span class="theme-card-check">✓</span>
         </div>
         <div class="theme-card" data-value="hellion-hud">
-          <img class="theme-card-img" src="assets/themes/bg-hellion-hud.png" alt="Hellion HUD" />
+          <img class="theme-card-img" src="assets/themes/bg-hellion-hud.webp" alt="Hellion HUD" />
           <span class="theme-card-label">HUD</span>
           <span class="theme-card-check">✓</span>
         </div>
         <div class="theme-card" data-value="hellion-energy">
-          <img class="theme-card-img" src="assets/themes/bg-hellion-energy.jpg" alt="Hellion Energy" />
+          <img class="theme-card-img" src="assets/themes/bg-hellion-energy.webp" alt="Hellion Energy" />
           <span class="theme-card-label">Energy</span>
+          <span class="theme-card-check">✓</span>
+        </div>
+        <div class="theme-card" data-value="satisfactory">
+          <img class="theme-card-img" src="assets/themes/bg-satisfactory.webp" alt="Satisfactory" />
+          <span class="theme-card-label">Satisfactory</span>
+          <span class="theme-card-check">✓</span>
+        </div>
+        <div class="theme-card" data-value="avorion">
+          <img class="theme-card-img" src="assets/themes/bg-avorion.webp" alt="Avorion" />
+          <span class="theme-card-label">Avorion</span>
+          <span class="theme-card-check">✓</span>
+        </div>
+        <div class="theme-card" data-value="hellion-stealth">
+          <img class="theme-card-img" src="assets/themes/bg-scPolaris.webp" alt="Hellion Stealth" />
+          <span class="theme-card-label">Stealth</span>
           <span class="theme-card-check">✓</span>
         </div>
       </div>
@@ -464,6 +486,7 @@
   <script src="src/js/calculator.js"></script>
   <script src="src/js/timer.js"></script>
   <script src="src/js/image-ref.js"></script>
+  <script src="src/js/bookmark-import.js"></script>
   <script src="src/js/data.js"></script>
   <!-- Onboarding -->
   <script src="src/js/onboarding.js"></script>

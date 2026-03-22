@@ -299,6 +299,97 @@
 }
 
 /* ============================================
+   THEME: SATISFACTORY (Industrial Desert)
+   ============================================ */
+[data-theme="satisfactory"] {
+  --accent:              #00b4d8;
+  --accent-dim:          rgba(0, 180, 216, 0.12);
+  --accent-glow:         rgba(0, 180, 216, 0.08);
+  --border-accent:       rgba(0, 180, 216, 0.35);
+  --bg-primary:          #1a0f08;
+  --bg-board:            rgba(26, 15, 8, 0.65);
+  --border:              rgba(0, 180, 216, 0.15);
+  --text-primary:        #f0faff;
+  --text-secondary:      #a89f98;
+  --text-muted:          #635a54;
+  --font-display:        'Rajdhani', sans-serif;
+  --font-body:           'Inter', sans-serif;
+  --overlay-bg:          linear-gradient(180deg,
+                           rgba(26,15,8,0.85) 0%,
+                           rgba(26,15,8,0.15) 50%,
+                           rgba(26,15,8,0.90) 100%);
+  --header-bg:           rgba(26,15,8,0.95);
+  --board-hover-border:  rgba(0, 180, 216, 0.25);
+  --toggle-on-bg:        rgba(0, 180, 216, 0.20);
+  --logo-shadow:         rgba(0, 180, 216, 0.40);
+}
+[data-theme="satisfactory"] .logo        { font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+[data-theme="satisfactory"] .clock       { font-family: 'Rajdhani', sans-serif; font-weight: 600; color: var(--accent); }
+[data-theme="satisfactory"] .board-title { font-family: 'Rajdhani', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; }
+[data-theme="satisfactory"] .board       { border-color: rgba(0, 180, 216, 0.20); backdrop-filter: blur(12px); }
+[data-theme="satisfactory"] .bm-item:hover { background: rgba(0, 180, 216, 0.10); }
+
+/* ============================================
+   THEME: AVORION (Deep Void)
+   ============================================ */
+[data-theme="avorion"] {
+  --accent:              #2ec4a0;
+  --accent-dim:          rgba(46, 196, 160, 0.12);
+  --accent-glow:         rgba(46, 196, 160, 0.08);
+  --border-accent:       rgba(46, 196, 160, 0.30);
+  --bg-primary:          #020d0c;
+  --bg-board:            rgba(2, 13, 12, 0.60);
+  --border:              rgba(46, 196, 160, 0.12);
+  --text-primary:        #e6fffa;
+  --text-secondary:      #8abdb3;
+  --text-muted:          #40615a;
+  --font-display:        'Rajdhani', sans-serif;
+  --font-body:           'Inter', sans-serif;
+  --overlay-bg:          radial-gradient(circle at center,
+                           transparent 0%,
+                           rgba(2, 13, 12, 0.95) 100%);
+  --header-bg:           rgba(2, 13, 12, 0.94);
+  --board-hover-border:  rgba(46, 196, 160, 0.22);
+  --toggle-on-bg:        rgba(46, 196, 160, 0.18);
+  --logo-shadow:         rgba(46, 196, 160, 0.50);
+}
+[data-theme="avorion"] .logo        { font-family: 'Rajdhani', sans-serif; font-weight: 500; letter-spacing: 6px; text-transform: uppercase; }
+[data-theme="avorion"] .clock       { font-family: 'Rajdhani', sans-serif; font-weight: 400; color: var(--accent); }
+[data-theme="avorion"] .board-title { font-family: 'Rajdhani', sans-serif; font-weight: 500; text-transform: uppercase; }
+[data-theme="avorion"] .board       { border-color: rgba(46, 196, 160, 0.15); backdrop-filter: blur(8px); }
+[data-theme="avorion"] .bm-item:hover { background: rgba(46, 196, 160, 0.08); }
+
+/* ============================================
+   THEME: HELLION STEALTH (Tactical Recon)
+   ============================================ */
+[data-theme="hellion-stealth"] {
+  --accent:              #5ec2ff;
+  --accent-dim:          rgba(94, 194, 255, 0.12);
+  --accent-glow:         rgba(94, 194, 255, 0.08);
+  --border-accent:       rgba(94, 194, 255, 0.35);
+  --bg-primary:          #0d0f12;
+  --bg-board:            rgba(13, 15, 18, 0.70);
+  --border:              rgba(94, 194, 255, 0.15);
+  --text-primary:        #e0f4ff;
+  --text-secondary:      #8a9499;
+  --text-muted:          #4a5257;
+  --font-display:        'Rajdhani', sans-serif;
+  --font-body:           'Inter', sans-serif;
+  --overlay-bg:          radial-gradient(circle at center,
+                           transparent 0%,
+                           rgba(13, 15, 18, 0.90) 100%);
+  --header-bg:           rgba(13, 15, 18, 0.96);
+  --board-hover-border:  rgba(94, 194, 255, 0.25);
+  --toggle-on-bg:        rgba(94, 194, 255, 0.20);
+  --logo-shadow:         rgba(94, 194, 255, 0.45);
+}
+[data-theme="hellion-stealth"] .logo        { font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 4px; }
+[data-theme="hellion-stealth"] .clock       { font-family: 'Rajdhani', sans-serif; font-weight: 600; color: var(--accent); }
+[data-theme="hellion-stealth"] .board-title { text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; }
+[data-theme="hellion-stealth"] .board       { border-color: rgba(94, 194, 255, 0.15); backdrop-filter: blur(10px); }
+[data-theme="hellion-stealth"] .bm-item:hover { background: rgba(94, 194, 255, 0.10); border-left: 2px solid var(--accent); }
+
+/* ============================================
    BASE STYLES
    ============================================ */
 
@@ -612,6 +703,9 @@ body.show-desc .bm-desc { display: block; }
 .theme-card[data-value="sc-sunset"]       .theme-card-label { color: #ff8c3d; } /* Amber Sunset */
 .theme-card[data-value="hellion-hud"]     .theme-card-label { color: #32ff6a; } /* Neon Green */
 .theme-card[data-value="hellion-energy"]  .theme-card-label { color: #1eff8e; } /* Acid Green */
+.theme-card[data-value="satisfactory"]   .theme-card-label { color: #00b4d8; } /* Cyan LED */
+.theme-card[data-value="avorion"]        .theme-card-label { color: #2ec4a0; } /* Turquoise */
+.theme-card[data-value="hellion-stealth"] .theme-card-label { color: #5ec2ff; } /* Tech Blue */
 .theme-card:hover .theme-card-label {
     text-shadow: 0 0 8px currentColor;
     transition: text-shadow 0.2s ease;
@@ -1799,6 +1893,90 @@ body.show-desc .bm-desc { display: block; }
 
 .onboarding-nav {
   display: flex; gap: 8px;
+}
+
+/* ============================================
+   BROWSER BOOKMARK IMPORT MODAL
+   ============================================ */
+.bm-import-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.bm-import-overlay.active { opacity: 1; pointer-events: all; }
+
+.bm-import-modal {
+  background: rgba(8,8,16,0.96);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(28px);
+  max-width: 480px; width: 90%;
+  max-height: 75vh;
+  display: flex; flex-direction: column;
+  transform: translateY(12px) scale(0.97);
+  transition: transform 0.25s ease;
+}
+.bm-import-overlay.active .bm-import-modal {
+  transform: translateY(0) scale(1);
+}
+
+.bm-import-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  font-size: 14px; font-weight: 600;
+  color: var(--text-primary);
+}
+.bm-import-close {
+  background: none; border: none; color: var(--text-muted);
+  font-size: 20px; cursor: pointer; padding: 0 4px;
+  transition: color 0.15s;
+}
+.bm-import-close:hover { color: var(--text-primary); }
+
+.bm-import-info {
+  padding: 10px 18px;
+  font-size: 12px; color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.bm-import-list {
+  flex: 1; overflow-y: auto; padding: 4px 0;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  max-height: 45vh;
+}
+
+.bm-import-folder {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; cursor: pointer;
+  transition: background 0.15s;
+  font-size: 13px; color: var(--text-primary);
+}
+.bm-import-folder:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+.bm-import-checkbox {
+  accent-color: var(--accent);
+  width: 16px; height: 16px;
+  cursor: pointer; flex-shrink: 0;
+}
+
+.bm-import-folder-name {
+  flex: 1; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+
+.bm-import-folder-meta {
+  font-size: 11px; color: var(--text-muted);
+  white-space: nowrap; flex-shrink: 0;
+}
+
+.bm-import-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 18px; border-top: 1px solid var(--border);
+  gap: 8px;
 }
 
 /* ============================================

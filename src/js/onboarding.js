@@ -24,7 +24,7 @@ const Onboarding = {
     },
     {
       hero: '\uD83C\uDFA8',
-      title: '8 handgefertigte Themes',
+      title: '11 handgefertigte Themes',
       text: 'Klicke auf den \u201ETheme\u201C Button im Header um dein Theme zu w\u00E4hlen. Jedes hat seinen eigenen Stil und Farbpalette.',
       showThemes: true
     },
@@ -127,7 +127,7 @@ const Onboarding = {
     if (slide.showThemes) {
       const grid = document.createElement('div');
       grid.className = 'onboarding-theme-grid';
-      const themeNames = ['Nebula', 'Crescent', 'Event Horizon', 'Merchantman', 'Julia & Jin', 'SC Sunset', 'Hellion HUD', 'Hellion Energy'];
+      const themeNames = ['Nebula', 'Crescent', 'Event Horizon', 'Merchantman', 'Julia & Jin', 'SC Sunset', 'Hellion HUD', 'Hellion Energy', 'Satisfactory', 'Avorion', 'Hellion Stealth'];
       themeNames.forEach(name => {
         const chip = document.createElement('div');
         chip.className = 'onboarding-theme-chip';

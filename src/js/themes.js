@@ -4,14 +4,17 @@
    ============================================= */
 
 const THEMES = {
-  'nebula':          { bg: 'assets/themes/bg-nebula.jpg' },
-  'crescent':        { bg: 'assets/themes/bg-crescent.jpg' },
-  'event-horizon':   { bg: 'assets/themes/bg-event-horizon.jpg' },
+  'nebula':          { bg: 'assets/themes/bg-nebula.webp' },
+  'crescent':        { bg: 'assets/themes/bg-crescent.webp' },
+  'event-horizon':   { bg: 'assets/themes/bg-event-horizon.webp' },
   'merchantman':    { bg: 'assets/themes/bg-merchantman.webp' },
-  'julia-jin':      { bg: 'assets/themes/bg-julia-jin.png' },
-  'sc-sunset':      { bg: 'assets/themes/bg-sc-sunset.jpg' },
-  'hellion-hud':    { bg: 'assets/themes/bg-hellion-hud.png' },
-  'hellion-energy': { bg: 'assets/themes/bg-hellion-energy.jpg' }
+  'julia-jin':      { bg: 'assets/themes/bg-julia-jin.webp' },
+  'sc-sunset':      { bg: 'assets/themes/bg-sc-sunset.webp' },
+  'hellion-hud':    { bg: 'assets/themes/bg-hellion-hud.webp' },
+  'hellion-energy': { bg: 'assets/themes/bg-hellion-energy.webp' },
+  'satisfactory':   { bg: 'assets/themes/bg-satisfactory.webp' },
+  'avorion':        { bg: 'assets/themes/bg-avorion.webp' },
+  'hellion-stealth': { bg: 'assets/themes/bg-scPolaris.webp' }
 };
 
 function applyTheme(themeName, skipBgOverride) {

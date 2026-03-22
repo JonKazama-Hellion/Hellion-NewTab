@@ -188,7 +188,7 @@ function bindSettingsEvents() {
       await saveSettings();
     };
     reader.onerror = () => {
-      HellionDialog.alert('Fehler beim Lesen der Datei. Bitte eine andere Datei wählen.', { type: 'danger', title: 'Dateifehler' });
+      HellionDialog.alert(t('settings.file_read_error'), { type: 'danger', title: t('settings.file_read_error.title') });
     };
     reader.readAsDataURL(file);
   });
@@ -224,8 +224,8 @@ function bindSettingsEvents() {
   // Reset All
   document.getElementById('btnResetAll').addEventListener('click', async () => {
     const ok = await HellionDialog.confirm(
-      'Wirklich alle Boards und Einstellungen löschen? Das kann nicht rückgängig gemacht werden.',
-      { type: 'danger', title: 'Alles zurücksetzen', confirmText: 'Alles löschen' }
+      t('settings.reset_confirm'),
+      { type: 'danger', title: t('settings.reset_confirm.title'), confirmText: t('settings.reset_confirm.button') }
     );
     if (!ok) return;
     boards   = [];

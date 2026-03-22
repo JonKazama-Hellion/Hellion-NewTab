@@ -20,7 +20,7 @@ const WidgetManager = {
     const state = {
       id,
       type,
-      title: config.title || 'Note',
+      title: config.title || t('notes.default_title'),
       x: config.x || 120,
       y: config.y || 80,
       width: config.width || 280,
@@ -75,7 +75,7 @@ const WidgetManager = {
     title.addEventListener('blur', async () => {
       title.contentEditable = 'false';
       const newTitle = title.textContent.trim().slice(0, 20);
-      title.textContent = newTitle || 'Note';
+      title.textContent = newTitle || t('notes.default_title');
       const entry = this._widgets.get(state.id);
       if (entry) {
         entry.state.title = title.textContent;
@@ -94,13 +94,13 @@ const WidgetManager = {
 
     const btnMin = document.createElement('button');
     btnMin.className = 'widget-btn widget-minimize';
-    btnMin.title = 'Minimieren';
+    btnMin.title = t('widget.minimize');
     btnMin.textContent = '\u2500';
     btnMin.addEventListener('click', () => this.minimize(state.id));
 
     const btnClose = document.createElement('button');
     btnClose.className = 'widget-btn widget-close';
-    btnClose.title = 'Schließen';
+    btnClose.title = t('widget.close');
     btnClose.textContent = '\u2715';
     btnClose.addEventListener('click', () => this.close(state.id));
 

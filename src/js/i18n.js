@@ -115,6 +115,10 @@ const STRINGS = {
     'imageref.invalid_file':   'Bitte eine Bilddatei verwenden (PNG, JPG, WebP, etc.).',
     'imageref.invalid_file.title': 'Kein Bild',
 
+    // Widget-Manager
+    'widget.minimize':         'Minimieren',
+    'widget.close':            'Schließen',
+
     // Daten (Export/Import)
     'data.invalid_format':     'Ungültiges Format',
     'data.no_boards':          'Keine gültigen Boards gefunden',
@@ -405,6 +409,10 @@ const STRINGS = {
     'imageref.load_error.title': 'Image error',
     'imageref.invalid_file':   'Please use an image file (PNG, JPG, WebP, etc.).',
     'imageref.invalid_file.title': 'Not an image',
+
+    // Widget manager
+    'widget.minimize':         'Minimize',
+    'widget.close':            'Close',
 
     // Data (export/import)
     'data.invalid_format':     'Invalid format',

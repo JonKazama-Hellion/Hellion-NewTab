@@ -95,8 +95,8 @@ async function checkBackupReminder() {
   if (boards.length === 0) return;
 
   const doBackup = await HellionDialog.confirm(
-    'Du hast seit über einer Woche kein Backup gemacht. Beim Löschen der Browserdaten gehen deine Boards verloren. Jetzt sichern?',
-    { type: 'warning', title: 'Backup-Erinnerung', confirmText: 'Jetzt sichern', cancelText: 'Später' }
+    t('app.backup_reminder'),
+    { type: 'warning', title: t('app.backup_reminder.title'), confirmText: t('app.backup_now'), cancelText: t('app.backup_later') }
   );
 
   if (doBackup) {
@@ -121,15 +121,15 @@ async function checkBackupReminder() {
 
 // ---- CLOCK & DATE ----
 function startClock() {
-  const DAYS   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-  const MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  const DAY_KEYS   = ['clock.days.sun','clock.days.mon','clock.days.tue','clock.days.wed','clock.days.thu','clock.days.fri','clock.days.sat'];
+  const MONTH_KEYS = ['clock.months.jan','clock.months.feb','clock.months.mar','clock.months.apr','clock.months.may','clock.months.jun','clock.months.jul','clock.months.aug','clock.months.sep','clock.months.oct','clock.months.nov','clock.months.dec'];
 
   function tick() {
     const now = new Date();
     document.getElementById('clock').textContent =
       `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
     document.getElementById('date').textContent =
-      `${DAYS[now.getDay()]}, ${String(now.getDate()).padStart(2,'0')}. ${MONTHS[now.getMonth()]}`;
+      `${t(DAY_KEYS[now.getDay()])}, ${String(now.getDate()).padStart(2,'0')}. ${t(MONTH_KEYS[now.getMonth()])}`;
   }
   tick();
   setInterval(tick, 1000);
@@ -149,7 +149,7 @@ function bindGlobalEvents() {
     if (!file) return;
     const imported = parseBookmarkHtml(await file.text());
     if (imported.length === 0) {
-      await HellionDialog.alert('Keine Bookmarks in dieser Datei gefunden.', { type: 'warning', title: 'Import' });
+      await HellionDialog.alert(t('app.no_bookmarks'), { type: 'warning', title: t('app.import_title') });
       return;
     }
     boards = [...boards, ...imported];
@@ -157,8 +157,8 @@ function bindGlobalEvents() {
     renderBoards();
     e.target.value = '';
     await HellionDialog.alert(
-      `${imported.length} Board(s) mit ${imported.reduce((s,b) => s + b.bookmarks.length, 0)} Bookmarks importiert.`,
-      { type: 'success', title: 'Import erfolgreich' }
+      t('app.html_import_success', { count: imported.length, total: imported.reduce((s,b) => s + b.bookmarks.length, 0) }),
+      { type: 'success', title: t('app.import_success_title') }
     );
   });
 
@@ -190,7 +190,7 @@ function bindGlobalEvents() {
     const url   = document.getElementById('newBmUrl').value.trim();
     const desc  = document.getElementById('newBmDesc').value.trim();
     if (!title || !url) return;
-    try { new URL(url); } catch { await HellionDialog.alert('Ungültige URL. Bitte mit https:// beginnen.', { type: 'warning', title: 'URL ungültig' }); return; }
+    try { new URL(url); } catch { await HellionDialog.alert(t('app.invalid_url'), { type: 'warning', title: t('app.invalid_url.title') }); return; }
     const board = boards.find(b => b.id === pendingBookmarkBoardId);
     if (!board) return;
     board.bookmarks.push({ id: uid(), title, url, desc });

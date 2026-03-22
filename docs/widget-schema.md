@@ -1,8 +1,14 @@
 # Hellion Dashboard — Widget Schema
 
+> This document is intentionally written in English. Full German/English i18n support
+> is planned for v2.0 — until then, English keeps the docs accessible to anyone
+> who wants to contribute or fork the project.
+
+---
+
 ## Overview
 
-The widget system provides draggable, resizable floating panels managed by `WidgetManager` (`src/js/widgets.js`). Each widget type has its own module that handles content rendering and state management.
+The widget system provides draggable, resizable floating panels managed by `WidgetManager` (`src/js/widgets.js`). Each widget type has its own module that handles content rendering and state management — `WidgetManager` only knows about DOM and position, never about content.
 
 ---
 
@@ -21,23 +27,23 @@ The widget system provides draggable, resizable floating panels managed by `Widg
 
 ### `create(type, config) → string`
 
-Creates a widget and appends it to the DOM.
+Creates a widget and appends it to the DOM. Returns the widget ID.
 
 ```javascript
 const id = WidgetManager.create('note', {
-  id: 'note_abc123',       // Optional, auto-generated if omitted
-  title: 'My Note',        // Default: 'Note'
-  x: 120,                  // Left position in px
-  y: 80,                   // Top position in px
-  width: 280,              // Width in px (min: 200)
-  height: 220,             // Height in px (min: 150)
-  open: true               // Visible state (default: true)
+  id: 'note_abc123',  // Optional, auto-generated if omitted
+  title: 'My Note',  // Default: 'Note'
+  x: 120,            // Left position in px
+  y: 80,             // Top position in px
+  width: 280,        // Width in px (min: 200)
+  height: 220,       // Height in px (min: 150)
+  open: true         // Visible state (default: true)
 });
 ```
 
 ### `getBody(id) → HTMLElement | null`
 
-Returns the `.widget-body` element for content rendering.
+Returns the `.widget-body` element. This is where your module renders its content.
 
 ```javascript
 const body = WidgetManager.getBody('widget_calculator');
@@ -46,7 +52,7 @@ if (body) Calculator.renderBody(body);
 
 ### `getState(id) → Object | null`
 
-Returns the current widget state (position, size, open status).
+Returns the current widget state — position, size, open status.
 
 ```javascript
 const state = WidgetManager.getState('widget_timer');
@@ -55,11 +61,11 @@ const state = WidgetManager.getState('widget_timer');
 
 ### `close(id)`
 
-Permanently removes a widget from the DOM and registry.
+Permanently removes a widget from the DOM and registry. No undo.
 
 ### `minimize(id)`
 
-Hides a widget with animation. Widget remains in registry with `open: false`.
+Hides a widget with animation. The widget stays in the registry with `open: false` so it can be restored.
 
 ### `openWidget(id)`
 
@@ -67,36 +73,36 @@ Restores a minimized widget with animation.
 
 ### `bringToFront(id)`
 
-Increments z-index to bring widget above all others.
+Increments z-index so the widget sits above everything else. Called automatically on `pointerdown`.
 
 ### `save() → Array`
 
-Returns an array of all `type: 'note'` widget states. Used by `Notes.save()` to merge with note content data.
+Returns an array of all `type: 'note'` widget states. Used by `Notes.save()` to merge position/size data with note content.
 
 ### `restore(renderCallback)`
 
-Loads widget states from storage and recreates all note widgets. Only handles notes — single-instance widgets (calculator, timer) restore themselves in their own `init()`.
+Loads widget states from storage and recreates all note widgets. Single-instance widgets (Calculator, Timer) restore themselves in their own `init()` — `restore()` only handles notes.
 
 ---
 
 ## Shared Storage Key: `widgetStates`
 
-All widget modules share a single storage key. Each module's `save()` method must preserve other modules' data.
+All widget modules share a single storage key. Every module's `save()` must read first and preserve whatever it doesn't own — otherwise modules silently wipe each other's data on every save.
 
 ```javascript
-// Structure of widgetStates
+// Full widgetStates structure
 {
   notes: [
     {
       id: 'note_abc123',
       title: 'My Note',
       content: 'Hello world',
-      template: 'text',         // 'text' or 'checklist'
+      template: 'text',      // 'text' or 'checklist'
       x: 120, y: 80,
       width: 280, height: 220,
       open: true,
-      checklistItems: [],       // For checklist template
-      checkedItems: []          // Checked item IDs
+      checklistItems: [],    // Only used by checklist template
+      checkedItems: []       // Checked item IDs
     }
   ],
   calculator: {
@@ -124,26 +130,27 @@ All widget modules share a single storage key. Each module's `save()` method mus
         x: 200, y: 120,
         width: 320, height: 280,
         open: true
+        // Image data is NOT stored here — sessionStorage only
       }
     ]
   }
 }
 ```
 
-### Save Pattern — Preserving Other Modules' Data
+### The Save Pattern
 
-Every module that saves to `widgetStates` must read existing data first and preserve keys it doesn't own:
+Every module that touches `widgetStates` must follow this pattern:
 
 ```javascript
-// Example from notes.js
+// From notes.js — same pattern applies to every widget module
 async save() {
   const existing = await Store.get(this.STORAGE_KEY);
   const saveData = { notes: mergedNotes };
 
-  // Preserve other modules
+  // Preserve everything we don't own
   if (existing && existing.calculator) saveData.calculator = existing.calculator;
-  if (existing && existing.timer) saveData.timer = existing.timer;
-  if (existing && existing.imageRef) saveData.imageRef = existing.imageRef;
+  if (existing && existing.timer)      saveData.timer      = existing.timer;
+  if (existing && existing.imageRef)   saveData.imageRef   = existing.imageRef;
 
   await Store.set(this.STORAGE_KEY, saveData);
 }
@@ -153,20 +160,21 @@ async save() {
 
 ## Creating a New Widget Type
 
-### Step 1: Choose Single or Multi-Instance
+### Step 1: Single or Multi-Instance?
 
-- **Single-instance** (like Calculator, Timer): One widget with a fixed ID. `toggle()` opens/closes.
-- **Multi-instance** (like Notes, ImageRef): Multiple widgets with dynamic IDs. `create()` adds new ones.
+**Single-instance** (Calculator, Timer style): one widget, fixed ID, `toggle()` opens and closes it.
+**Multi-instance** (Notes, ImageRef style): multiple widgets, dynamic IDs, `create()` adds new ones.
 
-### Step 2: Create the Module (`src/js/your-widget.js`)
+### Step 2: Create the Module
+
+Here's a minimal single-instance widget template. Follow the same structure — the lifecycle hooks especially are easy to get wrong.
 
 ```javascript
 const YourWidget = {
-  WIDGET_ID: 'widget_yourwidget',   // Fixed ID for single-instance
+  WIDGET_ID: 'widget_yourwidget',
   STORAGE_KEY: 'widgetStates',
   _isOpen: false,
 
-  // Load state from storage
   async load() {
     const data = await Store.get(this.STORAGE_KEY);
     if (data && data.yourWidget) {
@@ -174,25 +182,23 @@ const YourWidget = {
     }
   },
 
-  // Save state, preserving other modules
   async save() {
     const data = await Store.get(this.STORAGE_KEY) || {};
     if (data.notes === undefined) data.notes = [];
 
     const widgetState = WidgetManager.getState(this.WIDGET_ID);
     data.yourWidget = {
-      x: widgetState ? widgetState.x : 400,
-      y: widgetState ? widgetState.y : 120,
-      width: widgetState ? widgetState.width : 280,
+      x:      widgetState ? widgetState.x      : 400,
+      y:      widgetState ? widgetState.y      : 120,
+      width:  widgetState ? widgetState.width  : 280,
       height: widgetState ? widgetState.height : 300,
-      open: this._isOpen,
+      open:   this._isOpen,
       // ... your custom data
     };
 
     await Store.set(this.STORAGE_KEY, data);
   },
 
-  // Open widget
   async open() {
     if (this._isOpen) {
       WidgetManager.bringToFront(this.WIDGET_ID);
@@ -203,13 +209,13 @@ const YourWidget = {
     const saved = (data && data.yourWidget) ? data.yourWidget : {};
 
     WidgetManager.create('yourwidget', {
-      id: this.WIDGET_ID,
-      title: 'Your Widget',
-      x: saved.x || 400,
-      y: saved.y || 120,
-      width: saved.width || 280,
+      id:     this.WIDGET_ID,
+      title:  'Your Widget',
+      x:      saved.x      || 400,
+      y:      saved.y      || 120,
+      width:  saved.width  || 280,
       height: saved.height || 300,
-      open: true
+      open:   true
     });
 
     const body = WidgetManager.getBody(this.WIDGET_ID);
@@ -219,7 +225,6 @@ const YourWidget = {
     await this.save();
   },
 
-  // Toggle open/close
   async toggle() {
     if (this._isOpen) {
       const entry = WidgetManager._widgets.get(this.WIDGET_ID);
@@ -237,24 +242,23 @@ const YourWidget = {
     }
   },
 
-  // Render widget content
   renderBody(bodyEl) {
     bodyEl.textContent = '';
-    // Build your UI with createElement (never innerHTML!)
+    // Build your UI with createElement — never innerHTML!
   },
 
-  // Initialize and hook into lifecycle
   async init() {
     await this.load();
 
-    // Restore if was open last time
     const data = await Store.get(this.STORAGE_KEY);
     if (data && data.yourWidget && data.yourWidget.open) {
       await this.open();
     }
 
-    // Hook into close event
+    // Lifecycle hooks — always call the previous method first
+    // or you'll break every widget that wrapped before yours
     const self = this;
+
     const prevClose = WidgetManager.close;
     WidgetManager.close = function(id) {
       prevClose.call(WidgetManager, id);
@@ -264,7 +268,6 @@ const YourWidget = {
       }
     };
 
-    // Hook into minimize event
     const prevMinimize = WidgetManager.minimize;
     WidgetManager.minimize = async function(id) {
       await prevMinimize.call(WidgetManager, id);
@@ -274,7 +277,6 @@ const YourWidget = {
       }
     };
 
-    // Hook into open event
     const prevOpen = WidgetManager.openWidget;
     WidgetManager.openWidget = async function(id) {
       await prevOpen.call(WidgetManager, id);
@@ -293,38 +295,33 @@ const YourWidget = {
 
 ### Step 3: Integration Checklist
 
-1. **`newtab.html`** — Add `<script>` tag (after `widgets.js`, before `data.js`)
-2. **`newtab.html`** — Add toolbar button: `<button class="widget-toolbar-btn" data-action="your-action">`
-3. **`notes.js`** — Add toolbar handler in `initToolbar()`: `} else if (action === 'your-action') { YourWidget.toggle(); }`
-4. **`notes.js`** — Preserve your data in `save()`: `if (existing && existing.yourWidget) saveData.yourWidget = existing.yourWidget;`
-5. **`app.js`** — Add `await YourWidget.init();` to the init sequence
-6. **`src/css/main.css`** — Add widget-specific CSS styles
-7. **`data.js`** — Add export/import logic (if data should be included in backups)
+1. `newtab.html` — Add `<script>` tag after `widgets.js` and before `data.js`
+2. `newtab.html` — Add toolbar button: `<button class="widget-toolbar-btn" data-action="your-action">`
+3. `notes.js` — Add handler in `initToolbar()`: `else if (action === 'your-action') { YourWidget.toggle(); }`
+4. `notes.js` — Preserve your key in `save()`: `if (existing && existing.yourWidget) saveData.yourWidget = existing.yourWidget;`
+5. `app.js` — Add `await YourWidget.init();` to the init sequence
+6. `main.css` — Add widget-specific styles
+7. `data.js` — Add export/import logic if your data should survive a JSON backup
 
 ---
 
 ## Widget DOM Structure
 
-Every widget created by `WidgetManager.create()` has this structure:
+Every widget created by `WidgetManager.create()` has this structure. Your module renders into `.widget-body` via `renderBody()` — never touch the header or resize handle.
 
 ```html
 <div class="widget" data-widget-id="widget_abc123"
      style="left: 120px; top: 80px; width: 280px; height: 220px;">
-  <div class="widget-header">
-    <span class="widget-title">Title</span>
+  <div class="widget-header">         <!-- Drag handle -->
+    <span class="widget-title">Title</span>   <!-- Double-click to edit, max 20 chars -->
     <div class="widget-actions">
       <button class="widget-btn widget-minimize">─</button>
       <button class="widget-btn widget-close">✕</button>
     </div>
   </div>
   <div class="widget-body">
-    <!-- Your content goes here (via renderBody) -->
+    <!-- Your content goes here via renderBody() -->
   </div>
-  <div class="widget-resize-handle"></div>
+  <div class="widget-resize-handle"></div>   <!-- Bottom-right, visible on hover -->
 </div>
 ```
-
-- **Header** is the drag handle (Pointer Events)
-- **Title** supports double-click to edit (contentEditable, max 20 chars)
-- **Body** is where your module renders content
-- **Resize handle** appears on hover (bottom-right corner)

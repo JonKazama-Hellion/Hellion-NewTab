@@ -1,91 +1,172 @@
 # ⬡ Hellion Dashboard — Changelog
 
-Alle relevanten Änderungen pro Version. Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
+All notable changes per version. Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+> Changelog entries can be written in English or German. English preferred for consistency.
+
+---
+
+### v1.10.0 — 22.03.2026
+
+#### Themes
+
+- **3 new themes** — Satisfactory (Industrial Desert), Avorion (Deep Void) and Hellion Stealth (Tactical Recon)
+- Now **11 themes** total, each with its own accent colors, overlays and font styles
+- Satisfactory has increased board alpha (0.65) and stronger blur (12px), a deliberate choice for better readability on a visually busy background
+- Avorion uses a radial gradient overlay so the ship in the center of the image stays visible
+- Hellion Stealth is the only theme with a `border-left` hover effect in tactical scanner style
+
+---
+
+### v1.9.0 — 22.03.2026
+
+#### New Features
+
+- **Onboarding reworked** — 7 slides instead of 6, new slide explains the widget toolbar with all widgets
+- **Gaming Starter Board** — Opt-in during onboarding: pre-filled board with links to Satisfactory, Factorio, Avorion, Minecraft and Star Citizen
+- **Settings redesign** — Settings panel slimmed down to 3 sections (Widgets, Data & Help, Danger Zone)
+- **Appearance modal** — Theme picker and all display settings combined in one modal instead of spread across the panel
+- **Fixed about footer** — Developer info, license and links are now permanently visible at the bottom of the settings panel
+- **Project documentation** — `docs/architecture.md`, `docs/widget-schema.md` and `docs/patterns.md` for anyone who wants to fork or contribute
+
+#### Improvements
+
+- All labels and descriptions unified in German, no more language mix
+- Dropdown options use theme colors instead of white browser default
+- Firefox update URL for store publishing added to `manifest.firefox.json`
+
+---
+
+### v1.8.0 — 21.03.2026
+
+#### New Features
+
+- **Image Reference Widget** — Drop images as floating reference widgets (max. 3 at once)
+- Canvas API WebP conversion for smaller file sizes, all local in the browser
+- Two-layer storage: metadata persistent, image data session-only (sessionStorage)
+- Load images via drag & drop or file dialog
+- Labels editable with debounced save
+- Feature is off by default, enable via Settings → Widgets
+
+---
+
+### v1.7.1 — 21.03.2026
+
+#### Improvements
+
+- **Timer mute toggle** — Alarm can be muted via icon button without restarting the timer
+- Alarm volume reduced to 7%, 30% was a bit much
+- Mute state is saved and persists on next open
+
+---
+
+### v1.7.0 — 21.03.2026
+
+#### New Features
+
+- **Calculator widget** — Shunting-yard parser (no `eval()`), history of last calculations, keyboard input
+- **Timer/countdown widget** — Saveable presets, Web Audio API alarm, tab title blinks when timer completes
+- **Widget z-index fix** — Widgets now correctly render above the search bar (z-index 100+)
+
+---
+
+### v1.6.0 — 21.03.2026
+
+#### New Features
+
+- **Widget system** — Draggable, resizable floating panels managed by WidgetManager
+- **Notes & checklists** — Multi-instance widgets (max. 5) with text and checklist template, Markdown support, export as `.md`
+- **Notebook sidebar** — All notes at a glance, quick access via toolbar
+- **Widget toolbar** — Floating buttons on the side for quick access to all widgets, position (left/right) configurable in Settings
+- **Sticky note migration** — Old sticky notes are automatically migrated to the new widget system on first launch
+
+#### Improvements
+
+- Ko-fi support link added to the about section and `FUNDING.yml`
 
 ---
 
 ### v1.5.2 — 21.03.2026
 
-#### Neue Features
+#### New Features
 
-- **Custom Dialog-System** — Native `confirm()` und `alert()` durch Frosted-Glass-Dialoge ersetzt (`dialog.js`)
-- **Onboarding** — 6-stufiger Willkommens-Flow beim ersten Start mit Boards, Themes, Features und Backup-Hinweis
-- **Backup-Reminder** — Erinnert alle 7 Tage an JSON-Export, warnt vor Datenverlust bei Browser-Reset
-- **Theme-Modal** — Theme-Picker als eigenes Modal aus Settings ausgelagert, eigener Header-Button
-- **Accordion-Settings** — Alle Settings-Sektionen einklappbar mit Chevron (About/Danger Zone standardmäßig zu)
+- **Custom dialog system** — Native `confirm()` and `alert()` replaced with frosted glass dialogs (`dialog.js`)
+- **Onboarding** — 6-step welcome flow on first launch with explanations for boards, themes, features and a backup reminder
+- **Backup reminder** — Reminds every 7 days to run a JSON export and warns about data loss on browser reset
+- **Theme modal** — Theme picker moved to its own modal with its own header button
+- **Accordion settings** — All settings sections collapsible (About and Danger Zone closed by default)
 
-#### Verbesserungen
+#### Improvements
 
-- Fonts von Google Fonts API auf lokale WOFF2-Dateien umgestellt (DSGVO)
-- Ungenutzte Font-Dateien entfernt (~388 KB gespart)
-- `innerHTML` komplett durch `createElement`/`createElementNS` ersetzt (XSS-Schutz)
-- SVG-Icons via `createElementNS` statt Inline-HTML
-- Drag & Drop: Inline-Styles durch CSS-Klassen ersetzt (`.drag-ghost`, `.drag-over`, `.dragging-source`)
-- Suchleisten-Toggle von DATA nach BEHAVIOR verschoben
-- Nicht implementiertes "Quick Save" UI-Element entfernt
-- Onboarding wiederholbar über Settings → Help
+- Fonts migrated from Google Fonts API to local WOFF2 files (GDPR, ~388 KB saved)
+- `innerHTML` fully replaced with `createElement` and `createElementNS` (XSS protection)
+- SVG icons now via `createElementNS` instead of inline HTML
+- Drag & drop uses CSS classes instead of inline styles (`.drag-ghost`, `.drag-over`, `.dragging-source`)
+- Search bar toggle moved from DATA to BEHAVIOR section
+- Unimplemented "Quick Save" UI element removed
+- Onboarding repeatable via Settings → Help
 
 #### Opera / Opera GX
 
-- `manifest.opera.json` hinzugefügt (MV3 mit Workaround-Skripten)
-- `src/js/opera/background.js` — Tab-Management gegen Opera Speed Dial
-- `src/js/opera/redirect.js` — Content Script Redirect bei `document_start`
+- `manifest.opera.json` added (MV3 with workaround scripts)
+- `src/js/opera/background.js` monitors tabs and redirects away from Opera Speed Dial
+- `src/js/opera/redirect.js` fires as content script at `document_start`
 
 #### Firefox
 
-- `manifest.firefox.json` auf Manifest V3 migriert
-- `browser_specific_settings` mit Gecko-ID und `data_collection_permissions`
+- `manifest.firefox.json` migrated to Manifest V3
+- `browser_specific_settings` with Gecko ID and `data_collection_permissions` added
 
 #### Build & CI
 
-- GitHub Actions: Release erstellt jetzt 3 ZIP-Pakete (Chrome, Firefox, Opera)
-- Quality-Check prüft alle 3 Manifests und Opera-Ordner
+- GitHub Actions release now builds 3 ZIP packages (Chrome, Firefox, Opera)
+- Quality check validates all 3 manifests and the Opera folder
 
 ---
 
 ### v1.2.0 — 20.03.2026
 
-- Projektstruktur in `src/js/`, `src/css/`, `assets/` aufgeteilt
-- JS in 10 Module aufgeteilt (storage, state, themes, boards, drag, settings, search, sticky, data, app)
-- Firefox-Kompatibilität (`manifest.firefox.json`, Manifest V3)
-- Vivaldi bestätigt kompatibel
-- Theme-Bildpfade korrigiert (Settings Preview)
-- URL-Validierung bei Bookmark-Erstellung
-- JSON-Import mit Board- und Bookmark-Struktur-Validierung
-- XSS-Schutz: `createElement` statt `innerHTML` für Bookmarks
-- Storage-Quota-Prüfung mit Warnung bei 8 MB+
-- Event Delegation für Bookmark-Klicks (Performance)
-- Responsive Design (Tablet 768px, Smartphone 480px)
-- Sticky Note Header-Kollision behoben
-- FileReader-Fehlerbehandlung für Hintergrundbild-Upload
-- GitHub Actions: Security Scan, Code Quality, Release Automation
-- 3 Themes ersetzt: Astronaut → Nebula, Cosmic Clock → Crescent, Void Mage → Event Horizon
-- Alle Theme-Bilder lizenzrechtlich geprüft und dokumentiert
-- LICENSE (CC BY-NC-SA 4.0), SECURITY.md und DISCLAIMER.md hinzugefügt
+- Project structure split into `src/js/`, `src/css/` and `assets/`
+- JS split into 10 modules (storage, state, themes, boards, drag, settings, search, sticky, data, app)
+- Firefox compatibility (`manifest.firefox.json`, Manifest V3)
+- Vivaldi confirmed compatible
+- Theme image paths fixed (settings preview)
+- URL validation on bookmark creation
+- JSON import validates board and bookmark structure
+- XSS protection: `createElement` instead of `innerHTML` for bookmarks
+- Storage quota check with warning at 8 MB+
+- Event delegation for bookmark clicks (performance)
+- Responsive design (tablet 768px, smartphone 480px)
+- Sticky note header collision fixed
+- FileReader error handling for background image upload
+- GitHub Actions: security scan, code quality, release automation
+- 3 themes replaced: Astronaut → Nebula, Cosmic Clock → Crescent, Void Mage → Event Horizon
+- All theme images checked and documented for license compliance
+- LICENSE (CC BY-NC-SA 4.0), SECURITY.md and DISCLAIMER.md added
 
 ---
 
 ### v1.1.0 — 20.03.2026
 
-- 5 neue Themes (Merchantman, Julia & Jin, SC Sunset, Hellion HUD, Hellion Energy)
-- Suchleiste (Google / DuckDuckGo / Bing)
-- Sticky Note Widget
-- JSON Export & Import
-- Datum neben der Uhr
-- About / Impressum in Settings
-- Board Blur-Funktion (Privat-Modus)
-- Drag & Drop auf Pointer Events umgestellt
-- Opera / Opera GX Kompatibilität
+- 5 new themes (Merchantman, Julia & Jin, SC Sunset, Hellion HUD, Hellion Energy)
+- Search bar (Google, DuckDuckGo, Bing)
+- Sticky note widget
+- JSON export & import
+- Date next to the clock
+- About / imprint in settings
+- Board blur function (privacy mode)
+- Drag & drop migrated to Pointer Events API
+- Opera / Opera GX compatibility
 
 ---
 
 ### v1.0.0 — 20.03.2026
 
-- Initiales Release
-- Boards & Bookmarks mit Drag & Drop
-- 3 Themes (Nebula, Crescent, Event Horizon)
-- HTML-Import (Browser-Lesezeichen)
-- Settings Panel
+- Initial release
+- Boards & bookmarks with drag & drop
+- 3 themes (Nebula, Crescent, Event Horizon)
+- HTML import (browser bookmarks)
+- Settings panel
 
 ---
 

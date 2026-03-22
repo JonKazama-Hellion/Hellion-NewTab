@@ -1,4 +1,4 @@
-# Release — erstellt ZIP-Pakete für Chrome, Firefox und Opera bei neuem Tag
+# Release — creates ZIP packages for Chrome, Firefox and Opera on new tag
 name: Release
 
 on:
@@ -17,18 +17,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Version aus Tag extrahieren
+      - name: Extract version from tag
         id: version
         run: echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
 
-      - name: Chrome/Edge ZIP erstellen (Manifest V3)
+      - name: Create Chrome/Edge ZIP (Manifest V3)
         run: |
           mkdir -p dist
           zip -r "dist/hellion-newtab-${{ steps.version.outputs.tag }}-chrome.zip" \
             manifest.json newtab.html src/js/*.js src/css/ assets/ \
             -x "*.git*" "dist/*" ".github/*" "src/js/opera/*"
 
-      - name: Firefox ZIP erstellen (Manifest V3)
+      - name: Create Firefox ZIP (Manifest V3)
         run: |
           cp manifest.json manifest.chrome-backup.json
           cp manifest.firefox.json manifest.json
@@ -37,7 +37,7 @@ jobs:
             -x "*.git*" "dist/*" ".github/*" "manifest.chrome-backup.json" "manifest.firefox.json" "src/js/opera/*"
           mv manifest.chrome-backup.json manifest.json
 
-      - name: Opera/Opera GX ZIP erstellen (Manifest V3 + Workaround)
+      - name: Create Opera/Opera GX ZIP (Manifest V3 + workaround)
         run: |
           cp manifest.json manifest.chrome-backup.json
           cp manifest.opera.json manifest.json
@@ -46,13 +46,13 @@ jobs:
             -x "*.git*" "dist/*" ".github/*" "manifest.chrome-backup.json" "manifest.opera.json"
           mv manifest.chrome-backup.json manifest.json
 
-      - name: SHA256 Checksummen erstellen
+      - name: Generate SHA256 checksums
         run: |
           cd dist
           sha256sum *.zip > checksums-sha256.txt
           cat checksums-sha256.txt
 
-      - name: GitHub Release erstellen
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: "Hellion NewTab ${{ steps.version.outputs.tag }}"
@@ -64,10 +64,10 @@ jobs:
             - **Firefox:** `hellion-newtab-${{ steps.version.outputs.tag }}-firefox.zip`
             - **Opera / Opera GX:** `hellion-newtab-${{ steps.version.outputs.tag }}-opera.zip`
 
-            Siehe [README](README.md) für die vollständige Installationsanleitung.
+            See [README](README.md) for the full installation instructions.
 
-            ### Checksummen
-            Siehe `checksums-sha256.txt` zur Integritätsprüfung.
+            ### Checksums
+            See `checksums-sha256.txt` to verify file integrity.
           files: |
             dist/hellion-newtab-${{ steps.version.outputs.tag }}-chrome.zip
             dist/hellion-newtab-${{ steps.version.outputs.tag }}-firefox.zip

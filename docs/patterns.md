@@ -1,5 +1,11 @@
 # Hellion Dashboard — Code Patterns & Conventions
 
+> This document is intentionally written in English. Full German/English i18n support
+> is planned for v2.0 — until then, English keeps the docs accessible to anyone
+> who wants to contribute or fork the project.
+
+---
+
 ## Core Principles
 
 - **Vanilla JS ES2020** — No frameworks, no TypeScript, no build step
@@ -15,11 +21,11 @@
 
 **File:** `src/js/storage.js`
 
-All persistent data goes through the `Store` object. Never access `chrome.storage` or `localStorage` directly.
+All persistent data goes through the `Store` object. Never access `chrome.storage` or `localStorage` directly — `Store` handles the fallback between the two transparently and provides unified error handling when storage is full.
 
 ```javascript
 // Reading
-const boards = await Store.get('boards');       // Returns null if not found
+const boards = await Store.get('boards');    // Returns null if not found
 const settings = await Store.get('settings');
 
 // Writing
@@ -30,13 +36,11 @@ await Store.set('settings', settings);
 await Store.checkQuota();
 ```
 
-**Why?** The `Store` handles the chrome.storage / localStorage fallback transparently. It also provides unified error handling (shows a dialog when storage is full).
-
 ---
 
 ## Pattern: Event Delegation
 
-Instead of attaching listeners to each element, attach one to the container and use `closest()` to find the target.
+One listener on the container, `closest()` to find the target. Much cleaner than attaching a listener to every single element, and it works automatically for dynamically added content.
 
 ```javascript
 // GOOD — one listener, handles all bookmarks
@@ -53,13 +57,13 @@ bookmarks.forEach(bm => {
 });
 ```
 
-**Used in:** `boards.js` (board/bookmark events), `notes.js` (toolbar), `calculator.js` (button grid)
+Used in `boards.js` (board/bookmark events), `notes.js` (toolbar) and `calculator.js` (button grid).
 
 ---
 
 ## Pattern: createElement over innerHTML
 
-Always build DOM with `document.createElement()`. This prevents XSS and is the project's #1 security rule.
+Always build DOM with `document.createElement()`. This is the project's #1 security rule — `innerHTML` with user-provided content is an XSS risk, full stop.
 
 ```javascript
 // GOOD
@@ -76,7 +80,7 @@ container.innerHTML = `<a href="${url}">${title}</a>`;
 
 ## Pattern: Shared Storage Key
 
-Multiple widget modules share the `widgetStates` key. Every module must read-before-write and preserve other modules' data.
+All widget modules share the `widgetStates` storage key. Every module that writes to it must read first and preserve what's already there — otherwise modules silently overwrite each other's data.
 
 ```javascript
 async save() {
@@ -85,7 +89,7 @@ async save() {
   // Write your own data
   data.yourKey = { /* ... */ };
 
-  // DON'T overwrite — the key already contains other modules' data
+  // Don't replace the whole object — other modules live here too
   await Store.set('widgetStates', data);
 }
 ```
@@ -96,13 +100,13 @@ See [widget-schema.md](widget-schema.md) for the full `widgetStates` structure.
 
 ## Pattern: Widget Lifecycle Hooks
 
-Single-instance widgets (Calculator, Timer) need to know when they're closed, minimized, or reopened. They wrap `WidgetManager` methods in their `init()`:
+Single-instance widgets (Calculator, Timer) need to react when they're closed, minimized, or reopened. They do this by wrapping `WidgetManager` methods in their `init()`.
 
 ```javascript
 async init() {
-  // Wrap close
   const prevClose = WidgetManager.close;
   const self = this;
+
   WidgetManager.close = function(id) {
     prevClose.call(WidgetManager, id);
     if (id === self.WIDGET_ID) {
@@ -110,7 +114,6 @@ async init() {
     }
   };
 
-  // Wrap minimize
   const prevMinimize = WidgetManager.minimize;
   WidgetManager.minimize = async function(id) {
     await prevMinimize.call(WidgetManager, id);
@@ -122,13 +125,13 @@ async init() {
 }
 ```
 
-**Important:** Multiple widgets chain these wraps. Calculator wraps first, Timer wraps Calculator's already-wrapped version, and so on. The chain must not break.
+Multiple widgets chain these wraps — Calculator wraps first, Timer wraps Calculator's already-wrapped version, and so on. Always call the previous method (`prevClose.call(...)`) or the chain breaks and other widgets stop responding.
 
 ---
 
 ## Pattern: Debounced Save
 
-For frequent updates (typing in notes, moving widgets), use debounced saves to avoid excessive storage writes:
+For frequent updates like typing in notes or dragging widgets, debouncing avoids hammering storage with a write on every keystroke.
 
 ```javascript
 _saveTimer: null,
@@ -138,20 +141,20 @@ _debouncedSave() {
   this._saveTimer = setTimeout(() => this.save(), 500);
 }
 
-// Usage: call _debouncedSave() instead of save() for frequent events
+// Use _debouncedSave() instead of save() for frequent events
 textarea.addEventListener('input', () => {
   noteData.content = textarea.value;
   this._debouncedSave();
 });
 ```
 
-**Used in:** `notes.js` (text editing), `image-ref.js` (label editing)
+Used in `notes.js` (text editing) and `image-ref.js` (label editing).
 
 ---
 
 ## Pattern: Theme System
 
-All themes use CSS Custom Properties defined in `[data-theme="name"]` blocks:
+All themes use CSS Custom Properties in `[data-theme="name"]` blocks in `main.css`. There are currently 11 themes.
 
 ```css
 [data-theme="nebula"] {
@@ -164,55 +167,51 @@ All themes use CSS Custom Properties defined in `[data-theme="name"]` blocks:
 }
 ```
 
-**Never hardcode colors in JS.** Use CSS classes or variables:
+Never hardcode colors in JS. Let CSS handle it.
 
 ```javascript
-// GOOD — let CSS handle colors
+// GOOD
 element.classList.add('active');
 
-// BAD — hardcoded color
+// BAD — breaks every theme that isn't Nebula
 element.style.color = '#7db3ff';
 ```
-
-8 themes are available: Nebula, Crescent, Event Horizon, Merchantman, Julia & Jin, SC Sunset, Hellion HUD, Hellion Energy.
 
 ---
 
 ## Pattern: Onboarding Slides
 
-The onboarding system (`onboarding.js`) uses a data-driven slide array. Each slide is an object with rendering hints:
+The onboarding system in `onboarding.js` is data-driven. Each slide is a plain object — add a new slide by adding an object to the `slides` array, the `_render()` method handles the rest.
 
 ```javascript
 {
   hero: '🎮',                    // Large emoji/icon
-  title: 'Slide Title',          // Heading
-  text: 'Description...',        // Optional text paragraph
+  title: 'Slide Title',
+  text: 'Optional description',
   features: ['Item 1', ...],     // Optional bullet list
   showThemes: true,              // Optional theme grid
   interactive: 'gaming-board'    // Optional custom buttons
 }
 ```
 
-The `_render()` method reads these properties and builds the DOM. To add a new slide, just add an object to the `slides` array.
-
 ---
 
 ## Pattern: Dialog System
 
-Custom dialogs replace native `alert()` and `confirm()`:
+Custom dialogs replace native `alert()` and `confirm()` everywhere in the project.
 
 ```javascript
-// Alert (informational)
+// Informational
 await HellionDialog.alert('Message text', {
-  type: 'info',        // 'info', 'success', 'warning', 'danger'
+  type: 'info',   // 'info', 'success', 'warning', 'danger'
   title: 'Title'
 });
 
-// Confirm (yes/no)
+// Yes/no
 const ok = await HellionDialog.confirm('Are you sure?', {
   type: 'danger',
   title: 'Delete',
-  confirmText: 'Delete',     // Custom button text
+  confirmText: 'Delete',
   cancelText: 'Cancel'
 });
 if (ok) { /* user confirmed */ }
@@ -222,7 +221,7 @@ if (ok) { /* user confirmed */ }
 
 ## Pattern: Pointer Events for Drag
 
-Widget dragging and board reordering use the Pointer Events API (not mouse events):
+Widget dragging and board reordering use the Pointer Events API instead of mouse events. The reason: Pointer Events work with both mouse and touch, and `setPointerCapture` keeps the events flowing even if the cursor leaves the element mid-drag.
 
 ```javascript
 element.addEventListener('pointerdown', (e) => {
@@ -243,13 +242,11 @@ element.addEventListener('pointerdown', (e) => {
 });
 ```
 
-**Why Pointer Events over Mouse Events?** They work with both mouse and touch, and `setPointerCapture` ensures events continue even if the cursor leaves the element.
-
 ---
 
 ## Pattern: Canvas API Image Processing
 
-The image reference widget converts uploaded images to WebP for smaller size:
+The image reference widget converts uploaded images to WebP locally in the browser — no external service, no upload, nothing leaves the device.
 
 ```javascript
 _processFile(file) {
@@ -264,7 +261,7 @@ _processFile(file) {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
       const webpUrl = canvas.toDataURL('image/webp', 0.85);
-      URL.revokeObjectURL(objectUrl);
+      URL.revokeObjectURL(objectUrl);   // Always free the object URL
       resolve(webpUrl);
     };
 
@@ -278,7 +275,7 @@ _processFile(file) {
 }
 ```
 
-**Important:** Always call `URL.revokeObjectURL()` to free memory.
+Always call `URL.revokeObjectURL()` after the image has loaded — skipping it leaks memory.
 
 ---
 
@@ -287,24 +284,25 @@ _processFile(file) {
 | Rule | Rationale |
 |---|---|
 | `createElement` only, never `innerHTML` | XSS prevention |
-| All storage through `Store` | Browser compatibility |
-| CSS variables, no hardcoded colors | Theme support |
-| Event delegation | Performance, dynamic content |
+| All storage through `Store` | Browser compatibility + unified error handling |
+| CSS variables, no hardcoded colors | Theme support across all 11 themes |
+| Event delegation | Performance, works with dynamic content |
 | `const`/`let`, never `var` | Block scoping |
 | No external dependencies | Extension simplicity |
-| No build step | Direct development |
-| JSDoc comments on public functions | Documentation |
+| No build step | Direct development, no toolchain to break |
+| JSDoc comments on public functions | Documentation for contributors |
 | URL validation before `href` | Security |
 | Error handling on storage operations | Graceful failure |
+| `URL.revokeObjectURL()` after Canvas ops | Memory management |
 
 ---
 
 ## Manifest Synchronization
 
-Three manifest files must stay in sync:
+Three manifest files must always stay in sync:
 
 - `manifest.json` — Chrome, Edge, Brave, Vivaldi
 - `manifest.firefox.json` — Firefox
 - `manifest.opera.json` — Opera, Opera GX
 
-When changing version numbers, permissions, or content script entries, update all three files.
+Version numbers, permissions and content script entries need to be updated in all three. The CI quality check will catch drift, but it's cleaner not to let it get there in the first place.

@@ -1,8 +1,12 @@
 # ⬡ Opera GX — New-Tab Workaround
 
-Opera GX priorisiert die eigene Speed Dial Seite und ignoriert `chrome_url_overrides`
-für entpackte Erweiterungen. Um das Hellion Dashboard trotzdem als New-Tab-Seite
-zu etablieren, kommen zwei zusätzliche Skripte zum Einsatz.
+Opera GX ist der einzige Browser in diesem Projekt der sich aktiv dagegen wehrt,
+eine eigene New-Tab-Seite zu nutzen. Während Chrome, Edge, Firefox und selbst Vivaldi
+einfach `chrome_url_overrides` respektieren, priorisiert Opera GX seine eigene
+Speed Dial Seite und ignoriert den Standard-Override für entpackte Erweiterungen.
+
+Das Ergebnis: vier Stunden Debugging, zwei Workaround-Skripte und ein Reddit-Thread
+der tatsächlich geholfen hat. Hier ist was dabei rausgekommen ist.
 
 ---
 
@@ -11,8 +15,8 @@ zu etablieren, kommen zwei zusätzliche Skripte zum Einsatz.
 | Browser | New-Tab Override | Zusatzaufwand |
 |---|---|---|
 | Chrome / Edge / Brave / Vivaldi | `chrome_url_overrides` | Keiner |
-| Firefox | `chrome_url_overrides` (MV2) | Eigenes Manifest |
-| Opera / Opera GX | Blockiert durch Speed Dial | Workaround nötig |
+| Firefox | `chrome_url_overrides` (MV3) | Eigenes Manifest |
+| Opera / Opera GX | Blockiert durch Speed Dial | Dieser Ordner hier |
 
 ---
 
@@ -20,25 +24,36 @@ zu etablieren, kommen zwei zusätzliche Skripte zum Einsatz.
 
 ### `background.js` — Tab-Management
 
-Überwacht Tab-Aktivitäten im Hintergrund und greift ein bevor Opera seine Startseite lädt.
+Überwacht Tab-Aktivitäten im Hintergrund und greift ein bevor Opera seine Startseite laden kann.
 
 - Erkennt `opera://startpage/` und `chrome://startpage/`
 - Leitet per `chrome.tabs.update` auf `newtab.html` um
-- Prüft zusätzlich bei `onActivated` — auch im Hintergrund geladene Tabs werden sofort aktualisiert
+- Prüft zusätzlich bei `onActivated`, weil Opera manche Tabs im Hintergrund lädt
+  und der erste Redirect dann nicht greift
 
 ### `redirect.js` — In-Page Redirect
 
-Einige Opera-Systemprozesse sind so isoliert dass ein externer Eingriff nicht zuverlässig greift.
+Manche Opera-Systemprozesse sind so weit isoliert dass ein externer Eingriff
+nicht zuverlässig ankommt. Also nochmal von innen.
 
-- Wird als Content Script in Opera-Startseiten-Bereiche injiziert
-- Löst den Redirect bei `document_start` aus — minimale Verzögerung, kein Flackern
+- Wird als Content Script direkt in Opera-Startseiten-Bereiche injiziert
+- Löst den Redirect bei `document_start` aus, bevor die Speed Dial Seite
+  überhaupt anfangen kann sich aufzubauen
+
+Ja, es braucht wirklich beide Skripte. Opera GX hat das so entschieden.
+
+Das Gute daran: die GitHub Actions kümmern sich darum dass jeder Browser nur bekommt
+was er braucht. Das Opera-ZIP enthält die Workaround-Skripte, das Chrome-ZIP nicht.
+Wer sich das manuell zusammensuchen müsste wäre vermutlich genauso genervt wie ich
+beim Debuggen war.
 
 ---
 
 ## Datenschutz
 
 Kein Tracking, keine Speicherung, keine externen Requests.
-Ausschließlich Standard-Browser-APIs — `chrome.tabs` — um die Kontrolle über den New Tab zurückzugewinnen.
+Nur Standard-Browser-APIs, `chrome.tabs`, um zurückzubekommen was eigentlich
+standardmäßig funktionieren sollte.
 
 **100% lokal. 0% Analytics. Wie im gesamten Hellion NewTab Projekt.**
 

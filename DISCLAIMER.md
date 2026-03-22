@@ -1,47 +1,81 @@
-# Haftungsausschluss — Hellion NewTab
+# Disclaimer — Hellion NewTab
 
-## Nutzung auf eigenes Risiko
+## Use at Your Own Risk
 
-Diese Browser-Extension wird "wie besehen" (as-is) zur Verfügung gestellt, ohne jegliche ausdrückliche oder stillschweigende Gewährleistung, einschließlich, aber nicht beschränkt auf die Gewährleistung der Marktgängigkeit, der Eignung für einen bestimmten Zweck und der Nichtverletzung von Rechten Dritter.
+This browser extension is provided "as is", without warranty of any kind, express
+or implied, including but not limited to the warranties of merchantability, fitness
+for a particular purpose and non-infringement.
 
-## Keine Garantie
+## No Guarantee
 
-Der Entwickler übernimmt keine Haftung für:
+The developer assumes no liability for:
 
-- Datenverlust durch fehlerhafte Speicherung, Browser-Updates oder Extension-Deinstallation
-- Inkompatibilitäten mit bestimmten Browser-Versionen oder Betriebssystemen
-- Schäden, die durch die Nutzung oder Nichtnutzung dieser Extension entstehen
-- Verfügbarkeit oder Korrektheit von Drittanbieter-Diensten (Google Favicons API)
+- Data loss caused by storage errors, browser updates or extension uninstallation
+- Incompatibilities with specific browser versions or operating systems
+- Damages arising from the use or inability to use this extension
+- Availability or accuracy of third-party services (Google Favicons API)
 
-## Datenspeicherung
+## Data Storage
 
-Alle Daten werden ausschließlich lokal im Browser gespeichert (`chrome.storage.local`). Es erfolgt keine Übertragung an externe Server. Der Entwickler hat keinen Zugriff auf gespeicherte Bookmarks, Einstellungen oder Notizen.
+All data is stored exclusively in the local browser (`chrome.storage.local`).
+No data is transmitted to external servers. The developer has no access to stored
+bookmarks, settings, notes or any other user data.
 
-**Empfehlung:** Regelmäßig JSON-Backups über die Export-Funktion erstellen.
+**Recommendation:** Create regular JSON backups using the export function in Settings.
 
-## Drittanbieter-Dienste
+## No Guaranteed Updates
 
-Diese Extension nutzt folgende externe Dienste:
+This extension is maintained by a single developer in their spare time.
+Continued development and updates are not guaranteed. Features may change,
+projects may pause, and support is provided on a best-effort basis, not as an obligation.
 
-| Dienst | Zweck | Datenschutz |
-| --- | --- | --- |
-| Google Favicons API | Bookmark-Icons laden | Es wird nur die Domain übermittelt, keine vollständige URL |
-| Google Fonts | Schriftarten (Rajdhani, Inter, Cinzel) | Standardmäßige Google-Fonts-Nutzungsbedingungen |
+## Third-Party Services
 
-## Änderungen
+| Service | Purpose | Privacy |
+|---|---|---|
+| Google Favicons API | Load bookmark icons | Only the domain is transmitted, not the full URL |
 
-Der Entwickler behält sich das Recht vor, diese Extension jederzeit zu ändern, zu aktualisieren oder einzustellen, ohne vorherige Ankündigung.
+## Trademark
 
-## Kontakt
+The name "Hellion Online Media", the associated logo and all related graphics are
+the property of Florian Wathling / Hellion Online Media and may not be used without
+explicit permission. The CC BY-NC-SA 4.0 license applies to the source code and
+content of this project, not to trademarks or brand assets.
 
-| | |
-| --- | --- |
-| **Entwickler** | Florian Wathling |
-| **Unternehmen** | Hellion Online Media |
-| **Web** | [hellion-media.de](https://hellion-media.de) |
-| **E-Mail** | [kontakt@hellion-media.de](mailto:kontakt@hellion-media.de) |
-| **Impressum** | [hellion-media.de/impressum](https://hellion-media.de/impressum) |
+Forks and derivative works must remove or replace all Hellion Online Media branding.
+
+## Legal
+
+This extension is developed and maintained by Florian Wathling / Hellion Online Media,
+based in Bad Harzburg, Germany. All matters are handled in accordance with German
+and EU law, including the General Data Protection Regulation (GDPR / DSGVO).
+
+For legal inquiries: [hellion-media.de/impressum](https://hellion-media.de/impressum)
+
+## Use of AI
+
+**Claude:** Code analysis, bug fixing, documentation and proofreading.
+**Me:** Architecture, features and logic are planned, thought through and written by me.
+
+Who looks for "AI patterns" in the code: clean indentation is the linter,
+okayish variable names are the developer, and the semicolon hiding somewhere
+is what Claude finds. That's how it works.
+
+I have ADHD and mild dyslexia. Claude helps me stay focused and makes sure
+others can follow the code too. That's exactly what open source is for.
+
+Source code is open, every decision is traceable.
 
 ---
 
-**Hellion NewTab** — [Hellion Online Media - Florian Wathing](https://hellion-media.de) — JonKazama-Hellion
+| | |
+|---|---|
+| **Developer** | Florian Wathling |
+| **Company** | Hellion Online Media |
+| **Web** | [hellion-media.de](https://hellion-media.de) |
+| **Imprint** | [hellion-media.de/impressum](https://hellion-media.de/impressum) |
+| **Contact** | [kontakt@hellion-media.de](mailto:kontakt@hellion-media.de) |
+
+---
+
+**Hellion NewTab** — [Hellion Online Media — Florian Wathling](https://hellion-media.de) — JonKazama-Hellion

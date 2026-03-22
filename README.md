@@ -1,6 +1,6 @@
-# ⬡ Hellion Dashboard v1.5.2
+# ⬡ Hellion Dashboard v1.9.0
 
-![Version](https://img.shields.io/badge/Version-1.5.2-blue)
+![Version](https://img.shields.io/badge/Version-1.9.0-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla%20ES2020-F7DF1E?logo=javascript&logoColor=black)
 ![Manifest](https://img.shields.io/badge/Manifest-V3-green)
 ![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-orange)

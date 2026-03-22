@@ -35,9 +35,9 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         Note
       </button>
-      <button class="btn-icon" id="btnTheme" title="Theme wählen">
+      <button class="btn-icon" id="btnTheme" title="Darstellung & Theme">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 4 4 0 01-1-7.9 1 1 0 011-.1h1a2 2 0 002-2V7a5 5 0 00-3-4.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="6" r="1.5"/><circle cx="17" cy="10" r="1.5"/><circle cx="9" cy="17" r="1.5"/></svg>
-        Theme
+        Darstellung
       </button>
       <button class="btn-icon" id="btnSettings" title="Einstellungen">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -105,83 +105,10 @@
   <div class="panel-overlay" id="settingsOverlay"></div>
   <aside class="settings-panel" id="settingsPanel">
     <div class="panel-header">
-      <span>Settings</span>
+      <span>Einstellungen</span>
       <button class="btn-close" id="btnCloseSettings">✕</button>
     </div>
     <div class="panel-body">
-
-      <!-- APPEARANCE -->
-      <section class="settings-section" data-section="appearance">
-        <button class="settings-section-title" type="button">
-          <span class="section-chevron">▸</span>
-          APPEARANCE
-        </button>
-        <div class="section-content">
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-label">Compact mode</span>
-              <span class="setting-desc">Reduce spacing to show more bookmarks</span>
-            </div>
-            <label class="toggle"><input type="checkbox" id="settingCompact" /><span class="slider"></span></label>
-          </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-label">Shorten long titles</span>
-              <span class="setting-desc">Shorten title to one line with "…"</span>
-            </div>
-            <label class="toggle"><input type="checkbox" id="settingShorten" /><span class="slider"></span></label>
-          </div>
-        </div>
-      </section>
-
-      <!-- BEHAVIOR -->
-      <section class="settings-section" data-section="behavior">
-        <button class="settings-section-title" type="button">
-          <span class="section-chevron">▸</span>
-          BEHAVIOR
-        </button>
-        <div class="section-content">
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-label">Open links in new tab</span>
-              <span class="setting-desc">Open bookmarks in a new browser tab</span>
-            </div>
-            <label class="toggle"><input type="checkbox" id="settingNewTab" checked /><span class="slider"></span></label>
-          </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-label">Show bookmark descriptions</span>
-              <span class="setting-desc">Display saved descriptions below bookmark titles</span>
-            </div>
-            <label class="toggle"><input type="checkbox" id="settingShowDesc" /><span class="slider"></span></label>
-          </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-label">Hide extra bookmarks in long boards</span>
-              <span class="setting-desc">Automatically hides extra bookmarks in long boards</span>
-            </div>
-            <label class="toggle"><input type="checkbox" id="settingHideExtra" /><span class="slider"></span></label>
-          </div>
-          <div class="setting-row" id="visibleCountRow">
-            <div class="setting-info">
-              <span class="setting-label">Visible bookmarks before hide</span>
-              <span class="setting-desc">Choose how many bookmarks are shown</span>
-            </div>
-            <select class="select-input" id="settingVisibleCount">
-              <option value="5">5</option>
-              <option value="10" selected>10</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-label">Suchleiste anzeigen</span>
-              <span class="setting-desc">Suchleiste unter dem Header ein/aus</span>
-            </div>
-            <label class="toggle"><input type="checkbox" id="settingShowSearch" checked /><span class="slider"></span></label>
-          </div>
-        </div>
-      </section>
 
       <!-- WIDGETS -->
       <section class="settings-section" data-section="widgets">
@@ -193,7 +120,7 @@
           <div class="setting-row">
             <div class="setting-info">
               <span class="setting-label">Toolbar-Position</span>
-              <span class="setting-desc">Widget-Toolbar links oder rechts</span>
+              <span class="setting-desc">Widget-Toolbar links oder rechts anzeigen</span>
             </div>
             <select class="select-input" id="settingToolbarPos">
               <option value="right" selected>Rechts</option>
@@ -213,119 +140,34 @@
         </div>
       </section>
 
-      <!-- DATA -->
+      <!-- DATEN & HILFE -->
       <section class="settings-section" data-section="data">
         <button class="settings-section-title" type="button">
           <span class="section-chevron">▸</span>
-          DATA
+          DATEN & HILFE
         </button>
         <div class="section-content">
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Export Boards</span>
-              <span class="setting-desc">Alle Boards als JSON sichern</span>
+              <span class="setting-label">Backup exportieren</span>
+              <span class="setting-desc">Alle Boards, Notes und Einstellungen als JSON sichern</span>
             </div>
             <button class="btn-small" id="btnExportJSON">Export</button>
           </div>
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Import Boards</span>
+              <span class="setting-label">Backup importieren</span>
               <span class="setting-desc">JSON-Backup wiederherstellen</span>
             </div>
             <button class="btn-small" id="btnImportJSON">Import</button>
             <input type="file" id="jsonImportInput" accept=".json" class="hidden" />
           </div>
-        </div>
-      </section>
-
-      <!-- HELP -->
-      <section class="settings-section" data-section="help">
-        <button class="settings-section-title" type="button">
-          <span class="section-chevron">▸</span>
-          HELP
-        </button>
-        <div class="section-content">
           <div class="setting-row">
             <div class="setting-info">
               <span class="setting-label">Onboarding wiederholen</span>
               <span class="setting-desc">Willkommens-Tour erneut anzeigen</span>
             </div>
             <button class="btn-small" id="btnRestartOnboarding">Start</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT / IMPRESSUM -->
-      <section class="settings-section" data-section="about">
-        <button class="settings-section-title" type="button">
-          <span class="section-chevron">▸</span>
-          ABOUT
-        </button>
-        <div class="section-content">
-          <div class="about-block">
-            <div class="about-logo">⬡ HELLION NEWTAB</div>
-            <div class="about-version">Version 1.5.2 · by Hellion Online Media</div>
-
-            <div class="about-links">
-              <a href="https://hellion-media.de/impressum" target="_blank" class="about-link">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                Impressum
-              </a>
-              <a href="https://hellion-media.de" target="_blank" class="about-link">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                hellion-media.de
-              </a>
-            </div>
-
-            <div class="about-divider"></div>
-
-            <div class="about-info-row">
-              <span class="about-info-label">Entwickler</span>
-              <span class="about-info-value">Florian Wathling</span>
-            </div>
-            <div class="about-info-row">
-              <span class="about-info-label">Unternehmen</span>
-              <span class="about-info-value">Hellion Online Media</span>
-            </div>
-            <div class="about-info-row">
-              <span class="about-info-label">Lizenz</span>
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" class="about-info-value about-link-subtle">CC BY-NC-SA 4.0</a>
-            </div>
-            <div class="about-info-row">
-              <span class="about-info-label">Datenspeicherung</span>
-              <span class="about-info-value">100% lokal · Kein Server · Kein Account</span>
-            </div>
-
-            <div class="about-divider"></div>
-
-            <div class="about-bugreport">
-              <span class="about-info-label about-info-label-block">Bug Report / Feedback</span>
-              <a href="mailto:kontakt@hellion-media.de?subject=Hellion NewTab – Bug Report" class="about-link-mail">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                kontakt@hellion-media.de
-              </a>
-            </div>
-
-            <div class="about-bugreport">
-              <span class="about-info-label about-info-label-block">Support</span>
-              <a href="https://ko-fi.com/hellionmedia" target="_blank" class="about-link">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-                Ko-fi — hellionmedia
-              </a>
-            </div>
-
-            <div class="about-browsers">
-              <span class="about-info-label about-info-label-block">Kompatible Browser</span>
-              <div class="about-browser-tags">
-                <span class="browser-tag">Chrome</span>
-                <span class="browser-tag">Edge</span>
-                <span class="browser-tag">Firefox</span>
-                <span class="browser-tag">Opera</span>
-                <span class="browser-tag">Opera GX</span>
-                <span class="browser-tag">Brave</span>
-                <span class="browser-tag">Vivaldi</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -339,8 +181,8 @@
         <div class="section-content">
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Reset all data</span>
-              <span class="setting-desc">Deletes all boards and bookmarks</span>
+              <span class="setting-label">Alles zurücksetzen</span>
+              <span class="setting-desc">Löscht alle Boards, Notes und Einstellungen</span>
             </div>
             <button class="btn-danger" id="btnResetAll">Reset</button>
           </div>
@@ -348,13 +190,82 @@
       </section>
 
     </div>
+
+    <!-- ABOUT — fixiert am unteren Rand -->
+    <div class="panel-footer">
+      <div class="about-block">
+        <div class="about-logo">⬡ HELLION NEWTAB</div>
+        <div class="about-version">Version 1.9.0 · by Hellion Online Media</div>
+
+        <div class="about-links">
+          <a href="https://hellion-media.de/impressum" target="_blank" class="about-link">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Impressum
+          </a>
+          <a href="https://hellion-media.de" target="_blank" class="about-link">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            hellion-media.de
+          </a>
+        </div>
+
+        <div class="about-divider"></div>
+
+        <div class="about-info-row">
+          <span class="about-info-label">Entwickler</span>
+          <span class="about-info-value">Florian Wathling</span>
+        </div>
+        <div class="about-info-row">
+          <span class="about-info-label">Unternehmen</span>
+          <span class="about-info-value">Hellion Online Media</span>
+        </div>
+        <div class="about-info-row">
+          <span class="about-info-label">Lizenz</span>
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" class="about-info-value about-link-subtle">CC BY-NC-SA 4.0</a>
+        </div>
+        <div class="about-info-row">
+          <span class="about-info-label">Datenspeicherung</span>
+          <span class="about-info-value">100% lokal · Kein Server · Kein Account</span>
+        </div>
+
+        <div class="about-divider"></div>
+
+        <div class="about-bugreport">
+          <span class="about-info-label about-info-label-block">Bug Report / Feedback</span>
+          <a href="mailto:kontakt@hellion-media.de?subject=Hellion NewTab – Bug Report" class="about-link-mail">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            kontakt@hellion-media.de
+          </a>
+        </div>
+
+        <div class="about-bugreport">
+          <span class="about-info-label about-info-label-block">Support</span>
+          <a href="https://ko-fi.com/hellionmedia" target="_blank" class="about-link">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            Ko-fi — hellionmedia
+          </a>
+        </div>
+
+        <div class="about-browsers">
+          <span class="about-info-label about-info-label-block">Kompatible Browser</span>
+          <div class="about-browser-tags">
+            <span class="browser-tag">Chrome</span>
+            <span class="browser-tag">Edge</span>
+            <span class="browser-tag">Firefox</span>
+            <span class="browser-tag">Opera</span>
+            <span class="browser-tag">Opera GX</span>
+            <span class="browser-tag">Brave</span>
+            <span class="browser-tag">Vivaldi</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </aside>
 
   <!-- THEME PICKER MODAL -->
   <div class="modal-overlay" id="themeOverlay">
     <div class="theme-modal" id="themeModal">
       <div class="modal-header">
-        <span>Theme wählen</span>
+        <span>Darstellung</span>
         <button class="btn-close" id="btnCloseTheme">✕</button>
       </div>
       <div class="theme-grid">
@@ -400,25 +311,81 @@
         </div>
       </div>
       <div class="theme-modal-section">
-        <h3 class="settings-section-title">BACKGROUND</h3>
+        <h3 class="settings-section-title">HINTERGRUND</h3>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Background image URL</span>
-            <span class="setting-desc">Custom wallpaper URL</span>
+            <span class="setting-label">Bild-URL</span>
+            <span class="setting-desc">Eigenes Hintergrundbild per URL</span>
           </div>
-          <button class="btn-small" id="btnChangeBg">Change</button>
+          <button class="btn-small" id="btnChangeBg">Ändern</button>
         </div>
         <div class="setting-row hidden" id="bgInputRow">
-          <input type="text" class="text-input full-width" id="bgUrlInput" placeholder="https://... or leave empty for default" />
-          <button class="btn-small" id="btnApplyBg">Apply</button>
+          <input type="text" class="text-input full-width" id="bgUrlInput" placeholder="https://... oder leer für Standard" />
+          <button class="btn-small" id="btnApplyBg">Übernehmen</button>
         </div>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Background file upload</span>
-            <span class="setting-desc">Use a local image as background</span>
+            <span class="setting-label">Datei hochladen</span>
+            <span class="setting-desc">Lokales Bild als Hintergrund verwenden</span>
           </div>
           <button class="btn-small" id="btnBgFile">Upload</button>
           <input type="file" id="bgFileInput" accept="image/*" class="hidden" />
+        </div>
+      </div>
+      <div class="theme-modal-section">
+        <h3 class="settings-section-title">DARSTELLUNG</h3>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Kompaktmodus</span>
+            <span class="setting-desc">Weniger Abstand für mehr Bookmarks</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingCompact" /><span class="slider"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Lange Titel kürzen</span>
+            <span class="setting-desc">Titel auf eine Zeile mit „…" kürzen</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingShorten" /><span class="slider"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Suchleiste anzeigen</span>
+            <span class="setting-desc">Suchleiste unter dem Header ein/aus</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingShowSearch" checked /><span class="slider"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Links in neuem Tab</span>
+            <span class="setting-desc">Bookmarks in neuem Browser-Tab öffnen</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingNewTab" checked /><span class="slider"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Beschreibungen anzeigen</span>
+            <span class="setting-desc">Gespeicherte Beschreibung unter Bookmarks</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingShowDesc" /><span class="slider"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Bookmarks ausblenden</span>
+            <span class="setting-desc">Überzählige Bookmarks in langen Boards verstecken</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="settingHideExtra" /><span class="slider"></span></label>
+        </div>
+        <div class="setting-row" id="visibleCountRow">
+          <div class="setting-info">
+            <span class="setting-label">Sichtbare Bookmarks</span>
+            <span class="setting-desc">Anzahl vor dem Ausblenden</span>
+          </div>
+          <select class="select-input" id="settingVisibleCount">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+          </select>
         </div>
       </div>
     </div>

@@ -25,7 +25,7 @@ function closeThemeModal() {
 
 // ---- ACCORDION ----
 function initAccordion() {
-  const defaultOpen = new Set(['appearance', 'behavior', 'widgets', 'data', 'help']);
+  const defaultOpen = new Set(['widgets']);
   const sections = document.querySelectorAll('.settings-section[data-section]');
 
   sections.forEach(section => {

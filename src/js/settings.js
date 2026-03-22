@@ -83,6 +83,10 @@ function applySettings() {
   const toolbarPosEl = document.getElementById('settingToolbarPos');
   if (toolbarPosEl) toolbarPosEl.value = settings.toolbarPos || 'right';
 
+  // Sprache (Dropdown-Wert setzen — I18n.init() übernimmt die eigentliche Anwendung)
+  const langEl = document.getElementById('settingLanguage');
+  if (langEl) langEl.value = settings.language || 'auto';
+
   applyTheme(settings.theme || 'nebula', !!settings.bgUrl);
 
   if (settings.bgUrl) {
@@ -189,6 +193,17 @@ function bindSettingsEvents() {
     reader.readAsDataURL(file);
   });
 
+  // Sprach-Einstellung
+  const languageEl = document.getElementById('settingLanguage');
+  if (languageEl) {
+    languageEl.value = settings.language || 'auto';
+    languageEl.addEventListener('change', async (e) => {
+      settings.language = e.target.value;
+      setLanguage(e.target.value);
+      await saveSettings();
+    });
+  }
+
   // Toolbar-Position Setting
   const toolbarPosEl = document.getElementById('settingToolbarPos');
   if (toolbarPosEl) {
@@ -217,7 +232,7 @@ function bindSettingsEvents() {
     settings = { compact: false, shortenTitles: false, newTab: true, showDesc: false,
                  hideExtra: false, visibleCount: 10, bgUrl: '', theme: 'nebula',
                  showSearch: true, searchEngine: 'google', toolbarPos: 'right',
-                 imageRefEnabled: false };
+                 imageRefEnabled: false, language: 'auto' };
     await saveBoards();
     await saveSettings();
     applySettings();

@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Hellion NewTab",
+  "name": "__MSG_extName__",
+  "default_locale": "en",
   "version": "1.11.1",
-  "description": "Personal bookmark dashboard — local, private, no account needed. By Hellion Online Media.",
+  "description": "__MSG_extDesc__",
   "author": "Hellion Online Media - Florian Wathling",
   "homepage_url": "https://hellion-media.de",
   "chrome_url_overrides": {

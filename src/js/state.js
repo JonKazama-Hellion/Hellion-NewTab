@@ -17,7 +17,8 @@ let settings = {
   showSearch:    true,
   searchEngine:  'google',
   toolbarPos:    'right',
-  imageRefEnabled: false
+  imageRefEnabled: false,
+  language:      'auto'
 };
 
 function uid() {

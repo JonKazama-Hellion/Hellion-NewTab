@@ -11,6 +11,7 @@ async function init() {
   if (savedSettings) Object.assign(settings, savedSettings);
 
   applySettings();
+  I18n.init();
   renderBoards();
   startClock();
   bindGlobalEvents();

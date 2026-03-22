@@ -25,23 +25,23 @@
     <div class="header-right">
       <button class="btn-icon" id="btnImport" title="Bookmarks importieren (HTML)">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Import
+        <span data-i18n="header.import">Import</span>
       </button>
       <button class="btn-icon" id="btnAddBoard" title="Neues Board hinzufügen">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Board
+        <span data-i18n="header.board">Board</span>
       </button>
       <button class="btn-icon" id="btnNote" title="Schnellnotiz">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        Note
+        <span data-i18n="header.note">Note</span>
       </button>
       <button class="btn-icon" id="btnTheme" title="Darstellung & Theme">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 4 4 0 01-1-7.9 1 1 0 011-.1h1a2 2 0 002-2V7a5 5 0 00-3-4.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="6" r="1.5"/><circle cx="17" cy="10" r="1.5"/><circle cx="9" cy="17" r="1.5"/></svg>
-        Darstellung
+        <span data-i18n="header.theme">Darstellung</span>
       </button>
       <button class="btn-icon" id="btnSettings" title="Einstellungen">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-        Settings
+        <span data-i18n="header.settings">Settings</span>
       </button>
     </div>
   </header>
@@ -49,10 +49,10 @@
   <!-- SEARCH BAR -->
   <div class="search-bar-wrapper" id="searchBarWrapper">
     <div class="search-bar">
-      <button class="search-engine-toggle" id="searchEngineToggle" title="Suchmaschine wechseln">
+      <button class="search-engine-toggle" id="searchEngineToggle" data-i18n-title="settings.search_engine_toggle" title="Suchmaschine wechseln">
         <span id="searchEngineIcon">G</span>
       </button>
-      <input type="text" class="search-input" id="searchInput" placeholder="Search the web…" autocomplete="off" />
+      <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search.placeholder" placeholder="Search the web…" autocomplete="off" />
       <button class="search-submit" id="searchSubmit">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
@@ -61,22 +61,22 @@
 
   <!-- WIDGET TOOLBAR -->
   <div class="widget-toolbar" id="widgetToolbar">
-    <button class="widget-toolbar-btn" data-action="new-note" title="Note erstellen">
+    <button class="widget-toolbar-btn" data-action="new-note" data-i18n-title="toolbar.note" title="Note erstellen">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
     </button>
-    <button class="widget-toolbar-btn" data-action="new-checklist" title="Checkliste erstellen">
+    <button class="widget-toolbar-btn" data-action="new-checklist" data-i18n-title="toolbar.checklist" title="Checkliste erstellen">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
     </button>
-    <button class="widget-toolbar-btn" data-action="calculator" title="Taschenrechner">
+    <button class="widget-toolbar-btn" data-action="calculator" data-i18n-title="toolbar.calculator" title="Taschenrechner">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><circle cx="8" cy="10" r="0.5"/><circle cx="12" cy="10" r="0.5"/><circle cx="16" cy="10" r="0.5"/><circle cx="8" cy="14" r="0.5"/><circle cx="12" cy="14" r="0.5"/><circle cx="16" cy="14" r="0.5"/><circle cx="8" cy="18" r="0.5"/><circle cx="12" cy="18" r="0.5"/><circle cx="16" cy="18" r="0.5"/></svg>
     </button>
-    <button class="widget-toolbar-btn" data-action="timer" title="Timer">
+    <button class="widget-toolbar-btn" data-action="timer" data-i18n-title="toolbar.timer" title="Timer">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3l2 2"/><path d="M19 3l-2 2"/><line x1="12" y1="1" x2="12" y2="3"/></svg>
     </button>
-    <button class="widget-toolbar-btn hidden" data-action="image-ref" title="Bild-Referenz">
+    <button class="widget-toolbar-btn hidden" data-action="image-ref" data-i18n-title="toolbar.imageref" title="Bild-Referenz">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
     </button>
-    <button class="widget-toolbar-btn" data-action="notebook" title="Alle Notes">
+    <button class="widget-toolbar-btn" data-action="notebook" data-i18n-title="toolbar.notebook" title="Alle Notes">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
     </button>
   </div>
@@ -85,7 +85,7 @@
   <div class="notebook-overlay" id="notebookOverlay"></div>
   <aside class="notebook-panel" id="notebookPanel">
     <div class="notebook-header">
-      <span class="notebook-header-title">Notebook <span class="notebook-count" id="notebookCount">0 / 5</span></span>
+      <span class="notebook-header-title"><span data-i18n="notebook.title">Notebook</span> <span class="notebook-count" id="notebookCount">0 / 5</span></span>
       <button class="btn-close" id="btnCloseNotebook">✕</button>
     </div>
     <div class="notebook-slots" id="notebookSlots">
@@ -105,32 +105,53 @@
   <div class="panel-overlay" id="settingsOverlay"></div>
   <aside class="settings-panel" id="settingsPanel">
     <div class="panel-header">
-      <span>Einstellungen</span>
+      <span data-i18n="settings.title">Einstellungen</span>
       <button class="btn-close" id="btnCloseSettings">✕</button>
     </div>
     <div class="panel-body">
+
+      <!-- SPRACHE -->
+      <section class="settings-section" data-section="language">
+        <button class="settings-section-title" type="button">
+          <span class="section-chevron">▸</span>
+          <span data-i18n="settings.section.display">DARSTELLUNG</span>
+        </button>
+        <div class="section-content">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" data-i18n="settings.language">Sprache</span>
+              <span class="setting-desc" data-i18n="settings.language.desc">Anzeigesprache wählen</span>
+            </div>
+            <select class="select-input" id="settingLanguage">
+              <option value="auto" data-i18n="settings.language.auto">Automatisch</option>
+              <option value="de">Deutsch</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
+      </section>
 
       <!-- WIDGETS -->
       <section class="settings-section" data-section="widgets">
         <button class="settings-section-title" type="button">
           <span class="section-chevron">▸</span>
-          WIDGETS
+          <span data-i18n="settings.section.widgets">WIDGETS</span>
         </button>
         <div class="section-content">
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Toolbar-Position</span>
-              <span class="setting-desc">Widget-Toolbar links oder rechts anzeigen</span>
+              <span class="setting-label" data-i18n="settings.toolbar_pos">Toolbar-Position</span>
+              <span class="setting-desc" data-i18n="settings.toolbar_pos.desc">Widget-Toolbar links oder rechts anzeigen</span>
             </div>
             <select class="select-input" id="settingToolbarPos">
-              <option value="right" selected>Rechts</option>
-              <option value="left">Links</option>
+              <option value="right" selected data-i18n="settings.toolbar_pos.right">Rechts</option>
+              <option value="left" data-i18n="settings.toolbar_pos.left">Links</option>
             </select>
           </div>
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Bild-Referenz Widgets</span>
-              <span class="setting-desc">Bilder als Referenz anzeigen (nur aktuelle Session)</span>
+              <span class="setting-label" data-i18n="settings.image_ref">Bild-Referenz Widgets</span>
+              <span class="setting-desc" data-i18n="settings.image_ref.desc">Bilder als Referenz anzeigen (nur aktuelle Session)</span>
             </div>
             <label class="toggle">
               <input type="checkbox" id="settingImageRef">
@@ -144,35 +165,35 @@
       <section class="settings-section" data-section="data">
         <button class="settings-section-title" type="button">
           <span class="section-chevron">▸</span>
-          DATEN & HILFE
+          <span data-i18n="settings.section.data">DATEN &amp; HILFE</span>
         </button>
         <div class="section-content">
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Backup exportieren</span>
-              <span class="setting-desc">Alle Boards, Notes und Einstellungen als JSON sichern</span>
+              <span class="setting-label" data-i18n="settings.export">Backup exportieren</span>
+              <span class="setting-desc" data-i18n="settings.export.desc">Alle Boards, Notes und Einstellungen als JSON sichern</span>
             </div>
-            <button class="btn-small" id="btnExportJSON">Export</button>
+            <button class="btn-small" id="btnExportJSON" data-i18n="settings.export">Export</button>
           </div>
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Backup importieren</span>
-              <span class="setting-desc">JSON-Backup wiederherstellen</span>
+              <span class="setting-label" data-i18n="settings.import">Backup importieren</span>
+              <span class="setting-desc" data-i18n="settings.import.desc">JSON-Backup wiederherstellen</span>
             </div>
-            <button class="btn-small" id="btnImportJSON">Import</button>
+            <button class="btn-small" id="btnImportJSON" data-i18n="header.import">Import</button>
             <input type="file" id="jsonImportInput" accept=".json" class="hidden" />
           </div>
           <div class="setting-row" id="browserImportRow">
             <div class="setting-info">
-              <span class="setting-label">Browser-Lesezeichen</span>
-              <span class="setting-desc">Lesezeichen direkt aus dem Browser importieren</span>
+              <span class="setting-label" data-i18n="settings.browser_import">Browser-Lesezeichen</span>
+              <span class="setting-desc" data-i18n="settings.browser_import.desc">Lesezeichen direkt aus dem Browser importieren</span>
             </div>
-            <button class="btn-small" id="btnBrowserImport">Import</button>
+            <button class="btn-small" id="btnBrowserImport" data-i18n="header.import">Import</button>
           </div>
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Onboarding wiederholen</span>
-              <span class="setting-desc">Willkommens-Tour erneut anzeigen</span>
+              <span class="setting-label" data-i18n="settings.onboarding">Onboarding wiederholen</span>
+              <span class="setting-desc" data-i18n="settings.onboarding.desc">Willkommens-Tour erneut anzeigen</span>
             </div>
             <button class="btn-small" id="btnRestartOnboarding">Start</button>
           </div>
@@ -183,13 +204,13 @@
       <section class="settings-section" data-section="danger">
         <button class="settings-section-title danger" type="button">
           <span class="section-chevron">▸</span>
-          DANGER ZONE
+          <span data-i18n="settings.section.danger">DANGER ZONE</span>
         </button>
         <div class="section-content">
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Alles zurücksetzen</span>
-              <span class="setting-desc">Löscht alle Boards, Notes und Einstellungen</span>
+              <span class="setting-label" data-i18n="settings.reset">Alles zurücksetzen</span>
+              <span class="setting-desc" data-i18n="settings.reset.desc">Löscht alle Boards, Notes und Einstellungen</span>
             </div>
             <button class="btn-danger" id="btnResetAll">Reset</button>
           </div>
@@ -201,13 +222,13 @@
     <!-- ABOUT — fixiert am unteren Rand -->
     <div class="panel-footer">
       <div class="about-block">
-        <div class="about-logo">⬡ HELLION NEWTAB</div>
+        <div class="about-logo" data-i18n="about.title">⬡ HELLION NEWTAB</div>
         <div class="about-version">Version 1.11.1 · by Hellion Online Media</div>
 
         <div class="about-links">
           <a href="https://hellion-media.de/impressum" target="_blank" class="about-link">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Impressum
+            <span data-i18n="about.impressum">Impressum</span>
           </a>
           <a href="https://hellion-media.de" target="_blank" class="about-link">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
@@ -218,26 +239,26 @@
         <div class="about-divider"></div>
 
         <div class="about-info-row">
-          <span class="about-info-label">Entwickler</span>
+          <span class="about-info-label" data-i18n="about.developer">Entwickler</span>
           <span class="about-info-value">Florian Wathling</span>
         </div>
         <div class="about-info-row">
-          <span class="about-info-label">Unternehmen</span>
+          <span class="about-info-label" data-i18n="about.company">Unternehmen</span>
           <span class="about-info-value">Hellion Online Media</span>
         </div>
         <div class="about-info-row">
-          <span class="about-info-label">Lizenz</span>
+          <span class="about-info-label" data-i18n="about.license">Lizenz</span>
           <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" class="about-info-value about-link-subtle">CC BY-NC-SA 4.0</a>
         </div>
         <div class="about-info-row">
-          <span class="about-info-label">Datenspeicherung</span>
-          <span class="about-info-value">100% lokal · Kein Server · Kein Account</span>
+          <span class="about-info-label" data-i18n="about.storage">Datenspeicherung</span>
+          <span class="about-info-value" data-i18n="about.storage.value">100% lokal · Kein Server · Kein Account</span>
         </div>
 
         <div class="about-divider"></div>
 
         <div class="about-bugreport">
-          <span class="about-info-label about-info-label-block">Bug Report / Feedback</span>
+          <span class="about-info-label about-info-label-block" data-i18n="about.bugreport">Bug Report / Feedback</span>
           <a href="mailto:kontakt@hellion-media.de?subject=Hellion NewTab – Bug Report" class="about-link-mail">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             kontakt@hellion-media.de
@@ -245,7 +266,7 @@
         </div>
 
         <div class="about-bugreport">
-          <span class="about-info-label about-info-label-block">Support</span>
+          <span class="about-info-label about-info-label-block" data-i18n="about.support">Support</span>
           <a href="https://ko-fi.com/hellionmedia" target="_blank" class="about-link">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
             Ko-fi — hellionmedia
@@ -253,7 +274,7 @@
         </div>
 
         <div class="about-browsers">
-          <span class="about-info-label about-info-label-block">Kompatible Browser</span>
+          <span class="about-info-label about-info-label-block" data-i18n="about.browsers">Kompatible Browser</span>
           <div class="about-browser-tags">
             <span class="browser-tag">Chrome</span>
             <span class="browser-tag">Edge</span>
@@ -272,7 +293,7 @@
   <div class="modal-overlay" id="themeOverlay">
     <div class="theme-modal" id="themeModal">
       <div class="modal-header">
-        <span>Darstellung</span>
+        <span data-i18n="modal.theme_header">Darstellung</span>
         <button class="btn-close" id="btnCloseTheme">✕</button>
       </div>
       <div class="theme-grid">
@@ -333,75 +354,75 @@
         </div>
       </div>
       <div class="theme-modal-section">
-        <h3 class="settings-section-title">HINTERGRUND</h3>
+        <h3 class="settings-section-title" data-i18n="settings.section.bg">HINTERGRUND</h3>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Bild-URL</span>
-            <span class="setting-desc">Eigenes Hintergrundbild per URL</span>
+            <span class="setting-label" data-i18n="settings.bg_url">Bild-URL</span>
+            <span class="setting-desc" data-i18n="settings.bg_url.desc">Eigenes Hintergrundbild per URL</span>
           </div>
-          <button class="btn-small" id="btnChangeBg">Ändern</button>
+          <button class="btn-small" id="btnChangeBg" data-i18n="settings.bg_change">Ändern</button>
         </div>
         <div class="setting-row hidden" id="bgInputRow">
           <input type="text" class="text-input full-width" id="bgUrlInput" placeholder="https://... oder leer für Standard" />
-          <button class="btn-small" id="btnApplyBg">Übernehmen</button>
+          <button class="btn-small" id="btnApplyBg" data-i18n="settings.bg_apply">Übernehmen</button>
         </div>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Datei hochladen</span>
-            <span class="setting-desc">Lokales Bild als Hintergrund verwenden</span>
+            <span class="setting-label" data-i18n="settings.bg_upload">Datei hochladen</span>
+            <span class="setting-desc" data-i18n="settings.bg_upload.desc">Lokales Bild als Hintergrund verwenden</span>
           </div>
           <button class="btn-small" id="btnBgFile">Upload</button>
           <input type="file" id="bgFileInput" accept="image/*" class="hidden" />
         </div>
       </div>
       <div class="theme-modal-section">
-        <h3 class="settings-section-title">DARSTELLUNG</h3>
+        <h3 class="settings-section-title" data-i18n="settings.section.display">DARSTELLUNG</h3>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Kompaktmodus</span>
-            <span class="setting-desc">Weniger Abstand für mehr Bookmarks</span>
+            <span class="setting-label" data-i18n="settings.compact">Kompaktmodus</span>
+            <span class="setting-desc" data-i18n="settings.compact.desc">Weniger Abstand für mehr Bookmarks</span>
           </div>
           <label class="toggle"><input type="checkbox" id="settingCompact" /><span class="slider"></span></label>
         </div>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Lange Titel kürzen</span>
-            <span class="setting-desc">Titel auf eine Zeile mit „…" kürzen</span>
+            <span class="setting-label" data-i18n="settings.shorten">Lange Titel kürzen</span>
+            <span class="setting-desc" data-i18n="settings.shorten.desc">Titel auf eine Zeile mit „…" kürzen</span>
           </div>
           <label class="toggle"><input type="checkbox" id="settingShorten" /><span class="slider"></span></label>
         </div>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Suchleiste anzeigen</span>
-            <span class="setting-desc">Suchleiste unter dem Header ein/aus</span>
+            <span class="setting-label" data-i18n="settings.search">Suchleiste anzeigen</span>
+            <span class="setting-desc" data-i18n="settings.search.desc">Suchleiste unter dem Header ein/aus</span>
           </div>
           <label class="toggle"><input type="checkbox" id="settingShowSearch" checked /><span class="slider"></span></label>
         </div>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Links in neuem Tab</span>
-            <span class="setting-desc">Bookmarks in neuem Browser-Tab öffnen</span>
+            <span class="setting-label" data-i18n="settings.newtab">Links in neuem Tab</span>
+            <span class="setting-desc" data-i18n="settings.newtab.desc">Bookmarks in neuem Browser-Tab öffnen</span>
           </div>
           <label class="toggle"><input type="checkbox" id="settingNewTab" checked /><span class="slider"></span></label>
         </div>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Beschreibungen anzeigen</span>
-            <span class="setting-desc">Gespeicherte Beschreibung unter Bookmarks</span>
+            <span class="setting-label" data-i18n="settings.showdesc">Beschreibungen anzeigen</span>
+            <span class="setting-desc" data-i18n="settings.showdesc.desc">Gespeicherte Beschreibung unter Bookmarks</span>
           </div>
           <label class="toggle"><input type="checkbox" id="settingShowDesc" /><span class="slider"></span></label>
         </div>
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Bookmarks ausblenden</span>
-            <span class="setting-desc">Überzählige Bookmarks in langen Boards verstecken</span>
+            <span class="setting-label" data-i18n="settings.hideextra">Bookmarks ausblenden</span>
+            <span class="setting-desc" data-i18n="settings.hideextra.desc">Überzählige Bookmarks in langen Boards verstecken</span>
           </div>
           <label class="toggle"><input type="checkbox" id="settingHideExtra" /><span class="slider"></span></label>
         </div>
         <div class="setting-row" id="visibleCountRow">
           <div class="setting-info">
-            <span class="setting-label">Sichtbare Bookmarks</span>
-            <span class="setting-desc">Anzahl vor dem Ausblenden</span>
+            <span class="setting-label" data-i18n="settings.visible_count">Sichtbare Bookmarks</span>
+            <span class="setting-desc" data-i18n="settings.visible_count.desc">Anzahl vor dem Ausblenden</span>
           </div>
           <select class="select-input" id="settingVisibleCount">
             <option value="5">5</option>
@@ -417,14 +438,14 @@
   <div class="modal-overlay" id="addBoardOverlay">
     <div class="modal">
       <div class="modal-header">
-        <span>New Board</span>
+        <span data-i18n="modal.new_board">New Board</span>
         <button class="btn-close" id="btnCancelBoard">✕</button>
       </div>
       <div class="modal-body">
-        <input type="text" class="text-input full-width" id="newBoardName" placeholder="Board name..." maxlength="40" />
+        <input type="text" class="text-input full-width" id="newBoardName" data-i18n-placeholder="modal.board_name" placeholder="Board name..." maxlength="40" />
       </div>
       <div class="modal-footer">
-        <button class="btn-primary" id="btnConfirmBoard">Create</button>
+        <button class="btn-primary" id="btnConfirmBoard" data-i18n="modal.create">Create</button>
       </div>
     </div>
   </div>
@@ -433,16 +454,16 @@
   <div class="modal-overlay" id="addBookmarkOverlay">
     <div class="modal">
       <div class="modal-header">
-        <span>New Bookmark</span>
+        <span data-i18n="modal.new_bookmark">New Bookmark</span>
         <button class="btn-close" id="btnCancelBookmark">✕</button>
       </div>
       <div class="modal-body">
-        <input type="text" class="text-input full-width" id="newBmTitle" placeholder="Title..." maxlength="60" />
+        <input type="text" class="text-input full-width" id="newBmTitle" data-i18n-placeholder="modal.bm_title" placeholder="Title..." maxlength="60" />
         <input type="url" class="text-input full-width modal-input-spaced" id="newBmUrl" placeholder="https://..." />
-        <input type="text" class="text-input full-width modal-input-spaced" id="newBmDesc" placeholder="Description (optional)" />
+        <input type="text" class="text-input full-width modal-input-spaced" id="newBmDesc" data-i18n-placeholder="modal.bm_desc" placeholder="Description (optional)" />
       </div>
       <div class="modal-footer">
-        <button class="btn-primary" id="btnConfirmBookmark">Add</button>
+        <button class="btn-primary" id="btnConfirmBookmark" data-i18n="modal.bm_add">Add</button>
       </div>
     </div>
   </div>
@@ -451,14 +472,14 @@
   <div class="modal-overlay" id="renameOverlay">
     <div class="modal">
       <div class="modal-header">
-        <span>Rename</span>
+        <span data-i18n="modal.rename">Rename</span>
         <button class="btn-close" id="btnCancelRename">✕</button>
       </div>
       <div class="modal-body">
-        <input type="text" class="text-input full-width" id="renameInput" placeholder="New name..." maxlength="60" />
+        <input type="text" class="text-input full-width" id="renameInput" data-i18n-placeholder="modal.rename_placeholder" placeholder="New name..." maxlength="60" />
       </div>
       <div class="modal-footer">
-        <button class="btn-primary" id="btnConfirmRename">Rename</button>
+        <button class="btn-primary" id="btnConfirmRename" data-i18n="modal.rename_confirm">Rename</button>
       </div>
     </div>
   </div>
@@ -472,6 +493,8 @@
   <script src="src/js/storage.js"></script>
   <!-- State & Hilfsfunktionen -->
   <script src="src/js/state.js"></script>
+  <!-- i18n (nach state.js, vor allen Modulen die t() nutzen könnten) -->
+  <script src="src/js/i18n.js"></script>
   <!-- Dialog-System (vor Features, wird überall gebraucht) -->
   <script src="src/js/dialog.js"></script>
   <!-- Theme-System -->

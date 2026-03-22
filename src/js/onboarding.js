@@ -25,17 +25,19 @@ const Onboarding = {
     {
       hero: '\uD83C\uDFA8',
       title: '8 handgefertigte Themes',
-      text: 'Klicke auf den „Theme" Button im Header um dein Theme zu wählen. Jedes hat seinen eigenen Stil und Farbpalette.',
+      text: 'Klicke auf den \u201ETheme\u201C Button im Header um dein Theme zu w\u00E4hlen. Jedes hat seinen eigenen Stil und Farbpalette.',
       showThemes: true
     },
     {
-      hero: '\u26A1',
-      title: 'Weitere Features',
+      hero: '\uD83E\uDDF0',
+      title: 'Widget-Toolbar',
       features: [
-        'Suchleiste mit Google, DuckDuckGo oder Bing',
-        'Widget-Toolbar rechts \u2014 Notes und Checklisten erstellen',
-        'Notebook-Sidebar \u00FCber den \u201ENote\u201C Button oder die Toolbar',
-        'Funktioniert komplett offline \u2014 alles lokal gespeichert'
+        'Die schwebenden Buttons rechts \u00F6ffnen Widgets',
+        'Notes und Checklisten f\u00FCr schnelle Notizen',
+        'Taschenrechner mit History',
+        'Timer/Countdown mit speicherbaren Presets',
+        'Bild-Referenz Widgets (aktivierbar in Settings)',
+        'Notebook-Sidebar zeigt alle Notes auf einen Blick'
       ]
     },
     {
@@ -44,9 +46,15 @@ const Onboarding = {
       text: 'Deine Daten sind lokal im Browser gespeichert. Wenn du Browserdaten l\u00F6schst, gehen sie verloren! Sichere regelm\u00E4\u00DFig \u00FCber Settings \u2192 Data \u2192 Export. Wir erinnern dich alle 7 Tage daran.'
     },
     {
+      hero: '\uD83C\uDFAE',
+      title: 'Gaming Starter Board',
+      text: 'Spielst du Games wie Satisfactory, Factorio oder Star Citizen? Ich kann ein Board mit n\u00FCtzlichen Community-Links anlegen.',
+      interactive: 'gaming-board'
+    },
+    {
       hero: '\uD83D\uDE80',
       title: 'Bereit!',
-      text: 'Klicke auf \u201E+ Board\u201C um dein erstes Board zu erstellen, oder nutze den \u201EImport\u201C Button im Header um deine Browser-Lesezeichen zu importieren.'
+      text: 'Erstelle dein erstes Board mit \u201E+ Board\u201C oder importiere deine Browser-Lesezeichen \u00FCber den Import-Button im Header. Viel Spa\u00DF!'
     }
   ],
 
@@ -160,7 +168,27 @@ const Onboarding = {
       nav.appendChild(backBtn);
     }
 
-    if (isLast) {
+    if (slide.interactive === 'gaming-board') {
+      // Interaktive Slide: Zwei Buttons statt "Weiter"
+      const noBtn = document.createElement('button');
+      noBtn.className = 'btn-secondary';
+      noBtn.textContent = 'Nein danke';
+      noBtn.addEventListener('click', () => {
+        this.currentSlide++;
+        this._render();
+      });
+
+      const yesBtn = document.createElement('button');
+      yesBtn.className = 'btn-primary';
+      yesBtn.textContent = 'Ja, gerne';
+      yesBtn.addEventListener('click', async () => {
+        await this._createGamingBoard();
+        this.currentSlide++;
+        this._render();
+      });
+
+      nav.append(noBtn, yesBtn);
+    } else if (isLast) {
       const startBtn = document.createElement('button');
       startBtn.className = 'btn-primary';
       startBtn.textContent = 'Los geht\u2019s!';
@@ -179,6 +207,34 @@ const Onboarding = {
 
     footer.appendChild(nav);
     modal.appendChild(footer);
+  },
+
+  /**
+   * Gaming Starter Board erstellen
+   * Vorbefuelltes Board mit Community-Links fuer Factory/Space Games
+   */
+  async _createGamingBoard() {
+    const gamingBoard = {
+      id: uid(),
+      title: '\uD83C\uDFAE Gaming',
+      bookmarks: [
+        { id: uid(), title: 'Satisfactory Wiki', url: 'https://satisfactory.wiki.gg', desc: '' },
+        { id: uid(), title: 'Satisfactory Calculator', url: 'https://satisfactorytools.com', desc: '' },
+        { id: uid(), title: 'Factorio Wiki', url: 'https://wiki.factorio.com', desc: '' },
+        { id: uid(), title: 'Factorio Cheatsheet', url: 'https://factoriocheatsheet.com', desc: '' },
+        { id: uid(), title: 'Avorion Wiki', url: 'https://wiki.avorion.net', desc: '' },
+        { id: uid(), title: 'Minecraft Wiki', url: 'https://minecraft.wiki', desc: '' },
+        { id: uid(), title: 'Modrinth (Mods)', url: 'https://modrinth.com', desc: '' },
+        { id: uid(), title: 'Star Citizen Wiki', url: 'https://starcitizen.tools', desc: '' },
+        { id: uid(), title: 'UEX Corp (Trading)', url: 'https://uexcorp.space', desc: '' },
+        { id: uid(), title: 'Hellion TradeCenter', url: 'https://hellion-initiative.online/tradecenter', desc: 'Trade Center f\u00FCr Star Citizen' }
+      ],
+      blurred: false
+    };
+
+    boards.push(gamingBoard);
+    await saveBoards();
+    renderBoards();
   },
 
   /** Keyboard-Navigation */

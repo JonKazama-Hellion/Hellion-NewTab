@@ -1332,6 +1332,65 @@ body.show-desc .bm-desc { display: block; }
   overflow-x: hidden;
 }
 
+/* Calculator Scientific Mode */
+.calc-sci-buttons {
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 4px;
+}
+.calc-formula-helper {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+.calc-formula-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.calc-formula-select {
+  width: 100%;
+  padding: 4px 6px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: 'Rajdhani', sans-serif;
+  margin-bottom: 6px;
+}
+.calc-formula-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.calc-formula-row label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  min-width: 50px;
+}
+.calc-formula-input {
+  flex: 1;
+  padding: 4px 6px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: 'Rajdhani', sans-serif;
+}
+.calc-formula-result {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+  font-family: 'Rajdhani', monospace;
+  text-align: right;
+  min-height: 20px;
+  padding: 2px 0;
+}
+
 /* ============================================
    TIMER WIDGET
    ============================================ */

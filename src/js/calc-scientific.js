@@ -69,10 +69,20 @@
   function handleSciKey(key) {
     switch (key) {
       case 'sqrt':
+        if (!Calculator._currentExpr && Calculator._lastResult) {
+          Calculator._currentExpr = 'sqrt(' + Calculator._lastResult + ')';
+          Calculator._lastResult = '';
+          Calculator._updateDisplay();
+          break;
+        }
         Calculator._currentExpr += 'sqrt(';
         Calculator._updateDisplay();
         break;
       case 'square':
+        if (!Calculator._currentExpr && Calculator._lastResult) {
+          Calculator._currentExpr = Calculator._lastResult;
+          Calculator._lastResult = '';
+        }
         Calculator._currentExpr += '^2';
         Calculator._updateDisplay();
         break;
@@ -104,7 +114,7 @@
       }
       return;
     }
-    const match = expr.match(/(-?\d+\.?\d*)$/);
+    const match = expr.match(/(-?\d*\.?\d+)$/);
     if (match) {
       const num = parseFloat(match[1]);
       const negated = String(-num);

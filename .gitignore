@@ -24,3 +24,6 @@ updates.json
 # Persönliche Backup-Dateien (nicht ins Repo)
 favorites_*.html
 *_backup*.json
+.mcp.json
+.claude
+.superpowers/

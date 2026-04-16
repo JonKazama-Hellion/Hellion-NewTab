@@ -177,10 +177,19 @@ const WidgetManager = {
     const entry = this._widgets.get(id);
     if (!entry) return;
     entry.state.open = false;
+    entry._minimizing = true;
     entry.el.classList.add('widget-minimized');
-    setTimeout(() => {
-      entry.el.style.display = 'none';
-    }, 250);
+
+    entry.el.addEventListener('transitionend', function onEnd(e) {
+      if (e.target !== entry.el) return;
+      entry.el.removeEventListener('transitionend', onEnd);
+      if (entry._minimizing) {
+        entry.el.style.display = 'none';
+      }
+      entry._minimizing = false;
+    });
+
+    this._emitter.dispatchEvent(new CustomEvent('widget:minimize', { detail: { id } }));
     await this.save();
   },
 
@@ -191,13 +200,14 @@ const WidgetManager = {
   async openWidget(id) {
     const entry = this._widgets.get(id);
     if (!entry) return;
+    entry._minimizing = false;
     entry.state.open = true;
     entry.el.style.display = 'flex';
-    // Naechster Frame fuer Animation
     requestAnimationFrame(() => {
       entry.el.classList.remove('widget-minimized');
     });
     this.bringToFront(id);
+    this._emitter.dispatchEvent(new CustomEvent('widget:open', { detail: { id } }));
     await this.save();
   },
 

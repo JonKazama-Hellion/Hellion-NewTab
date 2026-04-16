@@ -17,6 +17,22 @@ const Calculator = {
   _displayExprEl: null,
   _displayResultEl: null,
   _keydownHandler: null,
+  _modes: new Map(),
+  _activeMode: 'standard',
+  _tabBarEl: null,
+
+  // ---- MODE REGISTRY ----
+
+  /**
+   * Modus registrieren (wird von externen Mode-Dateien aufgerufen)
+   * @param {string} name - Eindeutiger Modus-Name
+   * @param {Object} config - { label, shortName, titleKey, render(bodyEl), destroy() }
+   */
+  registerMode(name, config) {
+    this._modes.set(name, config);
+    // Tab-Bar aktualisieren falls Widget bereits offen
+    if (this._tabBarEl) this._renderTabBar();
+  },
 
   // ---- STORAGE ----
 
@@ -27,6 +43,9 @@ const Calculator = {
     const data = await Store.get(this.STORAGE_KEY);
     if (data && data.calculator) {
       this._history = Array.isArray(data.calculator.history) ? data.calculator.history : [];
+      if (data.calculator.activeMode) {
+        this._activeMode = data.calculator.activeMode;
+      }
     }
   },
 
@@ -46,6 +65,7 @@ const Calculator = {
       width: widgetState ? widgetState.width : 280,
       height: widgetState ? widgetState.height : 400,
       open: this._isOpen,
+      activeMode: this._activeMode,
       history: this._history.slice(0, this.MAX_HISTORY)
     };
 
@@ -113,8 +133,13 @@ const Calculator = {
    * Wird aufgerufen wenn Widget geschlossen wird
    */
   async onClose() {
+    // Aktiven Modus aufräumen
+    const mode = this._modes.get(this._activeMode);
+    if (mode && mode.destroy) mode.destroy();
+
     this._isOpen = false;
     this._unbindKeyboard();
+    this._tabBarEl = null;
     this._displayExprEl = null;
     this._displayResultEl = null;
     await this.save();
@@ -123,14 +148,133 @@ const Calculator = {
   // ---- UI RENDERING ----
 
   /**
-   * Calculator-Body rendern (in Widget-Body einfuegen)
+   * Calculator-Body rendern: Tab-Bar + aktiver Modus
    * @param {HTMLElement} bodyEl
    */
   renderBody(bodyEl) {
     bodyEl.textContent = '';
+    bodyEl.style.padding = '0';
+    bodyEl.style.display = 'flex';
+    bodyEl.style.flexDirection = 'column';
+    bodyEl.style.height = '100%';
+
+    // Tab-Bar
+    const tabBar = document.createElement('div');
+    tabBar.className = 'calc-tab-bar';
+    this._tabBarEl = tabBar;
+    this._renderTabBar();
+
+    // Mode-Body Container
+    const modeBody = document.createElement('div');
+    modeBody.className = 'calc-mode-body';
+
+    bodyEl.append(tabBar, modeBody);
+
+    // Aktiven Modus rendern
+    const mode = this._modes.get(this._activeMode);
+    if (mode) {
+      mode.render(modeBody);
+    }
+  },
+
+  /**
+   * Tab-Bar mit Buttons aus _modes Map befüllen
+   */
+  _renderTabBar() {
+    if (!this._tabBarEl) return;
+    while (this._tabBarEl.firstChild) {
+      this._tabBarEl.removeChild(this._tabBarEl.firstChild);
+    }
+
+    this._modes.forEach((config, name) => {
+      const tab = document.createElement('button');
+      tab.type = 'button';
+      tab.className = 'calc-tab' + (name === this._activeMode ? ' active' : '');
+      tab.dataset.mode = name;
+
+      const icon = document.createElement('span');
+      icon.className = 'calc-tab-icon';
+      icon.textContent = config.label;
+
+      const label = document.createElement('span');
+      label.className = 'calc-tab-label';
+      label.textContent = config.shortName;
+
+      tab.append(icon, label);
+      tab.addEventListener('click', () => this.switchMode(name));
+      this._tabBarEl.appendChild(tab);
+    });
+  },
+
+  /**
+   * Aktiven Tab visuell markieren (ohne Neuaufbau)
+   */
+  _updateTabBar() {
+    if (!this._tabBarEl) return;
+    const tabs = this._tabBarEl.querySelectorAll('.calc-tab');
+    tabs.forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.mode === this._activeMode);
+    });
+  },
+
+  /**
+   * Modus wechseln
+   * @param {string} name - Ziel-Modus
+   */
+  async switchMode(name) {
+    if (name === this._activeMode) return;
+    const mode = this._modes.get(name);
+    if (!mode) return;
+
+    // Alten Modus aufräumen
+    const oldMode = this._modes.get(this._activeMode);
+    if (oldMode && oldMode.destroy) oldMode.destroy();
+
+    this._activeMode = name;
+
+    // Mode-Body leeren und neu rendern
+    const entry = WidgetManager._widgets.get(this.WIDGET_ID);
+    if (!entry) return;
+    const modeBody = entry.el.querySelector('.calc-mode-body');
+    if (!modeBody) return;
+    modeBody.textContent = '';
+    mode.render(modeBody);
+
+    // Tab-UI aktualisieren
+    this._updateTabBar();
+
+    // Auto-Resize für komplexe Modi
+    const isComplex = name !== 'standard';
+    if (isComplex) {
+      const state = WidgetManager.getState(this.WIDGET_ID);
+      if (state) {
+        const newW = Math.max(state.width, 320);
+        const newH = Math.max(state.height, 480);
+        if (newW !== state.width || newH !== state.height) {
+          WidgetManager.resize(this.WIDGET_ID, newW, newH);
+        }
+      }
+    }
+
+    // Keyboard neu binden
+    this._unbindKeyboard();
+    if (name === 'standard' || name === 'scientific') {
+      if (entry) this._bindKeyboard(entry.el);
+    }
+
+    await this.save();
+  },
+
+  /**
+   * Standard-Modus UI rendern
+   * @param {HTMLElement} bodyEl
+   */
+  _renderStandardMode(bodyEl) {
     bodyEl.style.padding = '8px';
     bodyEl.style.display = 'flex';
     bodyEl.style.flexDirection = 'column';
+    bodyEl.style.flex = '1';
+    bodyEl.style.overflow = 'hidden';
 
     // Display
     const display = document.createElement('div');
@@ -714,6 +858,18 @@ const Calculator = {
         const entry = WidgetManager._widgets.get(self.WIDGET_ID);
         if (entry) self._bindKeyboard(entry.el);
         self.save();
+      }
+    });
+
+    // Standard-Modus intern registrieren
+    this._modes.set('standard', {
+      label: '🔢',
+      shortName: 'Std',
+      titleKey: 'calculator.tab.standard',
+      render: (bodyEl) => this._renderStandardMode(bodyEl),
+      destroy: () => {
+        this._displayExprEl = null;
+        this._displayResultEl = null;
       }
     });
   }

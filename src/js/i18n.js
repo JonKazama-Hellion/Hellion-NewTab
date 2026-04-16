@@ -83,6 +83,7 @@ const STRINGS = {
     'calculator.title':        'Taschenrechner',
     'calculator.history':      'History',
     'calculator.error':        'Fehler',
+    'calculator.tab.standard': 'Standard',
 
     // Timer
     'timer.title':             'Timer',
@@ -391,6 +392,7 @@ const STRINGS = {
     'calculator.title':        'Calculator',
     'calculator.history':      'History',
     'calculator.error':        'Error',
+    'calculator.tab.standard': 'Standard',
 
     // Timer
     'timer.title':             'Timer',

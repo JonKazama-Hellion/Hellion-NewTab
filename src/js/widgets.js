@@ -9,6 +9,27 @@ const WidgetManager = {
   _topZ: 100,
   STORAGE_KEY: 'widgetStates',
 
+  /** @type {EventTarget} Internes Event-System fuer Widget-Lifecycle */
+  _emitter: new EventTarget(),
+
+  /**
+   * Event-Listener registrieren
+   * @param {string} event - z.B. 'widget:close', 'widget:minimize', 'widget:open'
+   * @param {Function} handler
+   */
+  on(event, handler) {
+    this._emitter.addEventListener(event, handler);
+  },
+
+  /**
+   * Event-Listener entfernen
+   * @param {string} event
+   * @param {Function} handler
+   */
+  off(event, handler) {
+    this._emitter.removeEventListener(event, handler);
+  },
+
   /**
    * Widget erstellen und in DOM einfuegen
    * @param {string} type - 'note'
@@ -145,6 +166,7 @@ const WidgetManager = {
     if (!entry) return;
     entry.el.remove();
     this._widgets.delete(id);
+    this._emitter.dispatchEvent(new CustomEvent('widget:close', { detail: { id } }));
   },
 
   /**

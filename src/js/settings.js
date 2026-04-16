@@ -23,6 +23,17 @@ function closeThemeModal() {
   overlay.classList.remove('active');
 }
 
+/**
+ * Prueft ob eine Background-URL sicher fuer CSS-Einbettung ist.
+ * Erlaubt nur blob: und data:image/ Protokolle (aus File Upload).
+ * @param {string} url
+ * @returns {boolean}
+ */
+function isValidBgUrl(url) {
+  return typeof url === 'string' && url.length > 0 &&
+    (url.startsWith('blob:') || url.startsWith('data:image/'));
+}
+
 // ---- ACCORDION ----
 function initAccordion() {
   const defaultOpen = new Set(['widgets']);
@@ -89,8 +100,10 @@ function applySettings() {
 
   applyTheme(settings.theme || 'nebula', !!settings.bgUrl);
 
-  if (settings.bgUrl) {
+  if (settings.bgUrl && isValidBgUrl(settings.bgUrl)) {
     document.getElementById('bgLayer').style.backgroundImage = `url('${settings.bgUrl}')`;
+  } else if (settings.bgUrl) {
+    settings.bgUrl = '';
   }
 }
 
@@ -168,6 +181,10 @@ function bindSettingsEvents() {
   });
   document.getElementById('btnApplyBg').addEventListener('click', async () => {
     const url = document.getElementById('bgUrlInput').value.trim();
+    if (url && !isValidBgUrl(url)) {
+      await HellionDialog.alert(t('settings.bg_invalid_url'), { type: 'danger', title: t('settings.bg_invalid_url.title') });
+      return;
+    }
     settings.bgUrl = url;
     document.getElementById('bgLayer').style.backgroundImage = url ? `url('${url}')` : '';
     await saveSettings();

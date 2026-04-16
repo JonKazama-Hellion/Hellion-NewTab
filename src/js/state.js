@@ -33,15 +33,6 @@ function escHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-function getFaviconUrl(url) {
-  try {
-    const u = new URL(url);
-    return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=16`;
-  } catch {
-    return '';
-  }
-}
-
 function getDefaultBoards() {
   return [
     {

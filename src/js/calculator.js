@@ -689,41 +689,32 @@ const Calculator = {
       await this.open();
     }
 
-    // Close-Event abfangen: WidgetManager.close() ueberschreiben
-    const origClose = WidgetManager.close.bind(WidgetManager);
+    // Widget-Lifecycle-Events
     const self = this;
-    WidgetManager.close = function(id) {
-      origClose(id);
-      if (id === self.WIDGET_ID) {
+    WidgetManager.on('widget:close', (e) => {
+      if (e.detail.id === self.WIDGET_ID) {
         self.onClose();
       }
-    };
+    });
 
-    // Minimize-Event abfangen
-    const origMinimize = WidgetManager.minimize.bind(WidgetManager);
-    WidgetManager.minimize = async function(id) {
-      await origMinimize(id);
-      if (id === self.WIDGET_ID) {
+    WidgetManager.on('widget:minimize', (e) => {
+      if (e.detail.id === self.WIDGET_ID) {
         self._isOpen = false;
-        await self.save();
+        self.save();
       }
-    };
+    });
 
-    // Open-Event abfangen
-    const origOpen = WidgetManager.openWidget.bind(WidgetManager);
-    WidgetManager.openWidget = async function(id) {
-      await origOpen(id);
-      if (id === self.WIDGET_ID) {
+    WidgetManager.on('widget:open', (e) => {
+      if (e.detail.id === self.WIDGET_ID) {
         self._isOpen = true;
-        // Body neu rendern (war durch minimize entfernt)
         const body = WidgetManager.getBody(self.WIDGET_ID);
         if (body && body.children.length === 0) {
           self.renderBody(body);
         }
         const entry = WidgetManager._widgets.get(self.WIDGET_ID);
         if (entry) self._bindKeyboard(entry.el);
-        await self.save();
+        self.save();
       }
-    };
+    });
   }
 };

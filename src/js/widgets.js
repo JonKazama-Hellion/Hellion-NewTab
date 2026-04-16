@@ -9,6 +9,27 @@ const WidgetManager = {
   _topZ: 100,
   STORAGE_KEY: 'widgetStates',
 
+  /** @type {EventTarget} Internes Event-System fuer Widget-Lifecycle */
+  _emitter: new EventTarget(),
+
+  /**
+   * Event-Listener registrieren
+   * @param {string} event - z.B. 'widget:close', 'widget:minimize', 'widget:open'
+   * @param {Function} handler
+   */
+  on(event, handler) {
+    this._emitter.addEventListener(event, handler);
+  },
+
+  /**
+   * Event-Listener entfernen
+   * @param {string} event
+   * @param {Function} handler
+   */
+  off(event, handler) {
+    this._emitter.removeEventListener(event, handler);
+  },
+
   /**
    * Widget erstellen und in DOM einfuegen
    * @param {string} type - 'note'
@@ -31,7 +52,7 @@ const WidgetManager = {
     const el = this._buildDOM(state);
     document.body.appendChild(el);
 
-    this._widgets.set(id, { el, type, state });
+    this._widgets.set(id, { el, type, state, _minimizing: false });
     this._initDrag(el);
     this._initResize(el);
     this.bringToFront(id);
@@ -144,22 +165,47 @@ const WidgetManager = {
     const entry = this._widgets.get(id);
     if (!entry) return;
     entry.el.remove();
+    this._emitter.dispatchEvent(new CustomEvent('widget:close', { detail: { id } }));
     this._widgets.delete(id);
   },
 
   /**
-   * Widget minimieren (aus DOM verstecken, bleibt im Notebook)
+   * Widget minimieren (aus DOM verstecken, bleibt im Notebook).
+   * Nutzt transitionend statt setTimeout — _minimizing Flag verhindert Race Condition
+   * mit openWidget(). Fallback-Timer fuer prefers-reduced-motion / fehlende Transition.
    * @param {string} id
    */
   async minimize(id) {
     const entry = this._widgets.get(id);
     if (!entry) return;
     entry.state.open = false;
+    entry._minimizing = true;
     entry.el.classList.add('widget-minimized');
-    setTimeout(() => {
-      entry.el.style.display = 'none';
-    }, 250);
+
+    const MINIMIZE_FALLBACK_MS = 350;
+
+    function onEnd(e) {
+      if (e.target !== entry.el || e.propertyName !== 'opacity') return;
+      clearTimeout(fallbackTimer);
+      entry.el.removeEventListener('transitionend', onEnd);
+      if (entry._minimizing) {
+        entry.el.style.display = 'none';
+      }
+      entry._minimizing = false;
+    }
+
+    entry.el.addEventListener('transitionend', onEnd);
+
+    const fallbackTimer = setTimeout(() => {
+      entry.el.removeEventListener('transitionend', onEnd);
+      if (entry._minimizing) {
+        entry.el.style.display = 'none';
+        entry._minimizing = false;
+      }
+    }, MINIMIZE_FALLBACK_MS);
+
     await this.save();
+    this._emitter.dispatchEvent(new CustomEvent('widget:minimize', { detail: { id } }));
   },
 
   /**
@@ -169,14 +215,15 @@ const WidgetManager = {
   async openWidget(id) {
     const entry = this._widgets.get(id);
     if (!entry) return;
+    entry._minimizing = false;
     entry.state.open = true;
     entry.el.style.display = 'flex';
-    // Naechster Frame fuer Animation
     requestAnimationFrame(() => {
       entry.el.classList.remove('widget-minimized');
     });
     this.bringToFront(id);
     await this.save();
+    this._emitter.dispatchEvent(new CustomEvent('widget:open', { detail: { id } }));
   },
 
   /**

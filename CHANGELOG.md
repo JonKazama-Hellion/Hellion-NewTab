@@ -6,6 +6,29 @@ All notable changes per version. Format based on [Keep a Changelog](https://keep
 
 ---
 
+### v2.0.1 — 16.04.2026
+
+#### Security
+
+- **Background URL validation** — Only `blob:` and `data:image/` protocols allowed in CSS `backgroundImage` (prevents CSS injection via manipulated storage)
+- **Import URL validation** — `javascript:`, `data:`, and other unsafe protocols are blocked during JSON import
+- **Immutable import mapping** — Imported boards, bookmarks, and notes are sanitized with explicit field selection and string length limits
+
+#### Fixed
+
+- **Widget minimize race condition** — Replaced `setTimeout` with `transitionend` event; `openWidget()` during animation no longer causes display glitch
+- **Notes import mutation** — Import now uses `Notes.init()` instead of directly setting `Notes._notes`
+- **Complete i18n coverage** — 5 header button tooltips and 3 settings button texts now have `data-i18n` attributes (10 new translation keys)
+
+#### Changed
+
+- **Widget event system** — `WidgetManager` now dispatches `widget:close`, `widget:minimize`, `widget:open` CustomEvents via `EventTarget`. Calculator, Timer, and ImageRef use `WidgetManager.on()` instead of monkey-patching
+- **Local favicon icons** — Replaced Google Favicons API with local colored letter icons (deterministic hue per title). Zero external network requests, Brave Shields compatible
+- **backdrop-filter fallback** — `@supports not (backdrop-filter)` block with `--bg-solid-fallback` per theme for Brave Shields compatibility
+- **Clock interval cleanup** — `setInterval` ID stored in variable
+
+---
+
 ### v2.0.0 — 22.03.2026
 
 #### New Features

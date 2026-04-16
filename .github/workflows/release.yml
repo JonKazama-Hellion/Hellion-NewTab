@@ -25,7 +25,7 @@ jobs:
         run: |
           mkdir -p dist
           zip -r "dist/hellion-newtab-${{ steps.version.outputs.tag }}-chrome.zip" \
-            manifest.json newtab.html src/js/*.js src/css/ assets/ \
+            manifest.json newtab.html src/js/*.js src/css/ assets/ _locales/ \
             -x "*.git*" "dist/*" ".github/*" "src/js/opera/*"
 
       - name: Create Firefox ZIP (Manifest V3)
@@ -33,7 +33,7 @@ jobs:
           cp manifest.json manifest.chrome-backup.json
           cp manifest.firefox.json manifest.json
           zip -r "dist/hellion-newtab-${{ steps.version.outputs.tag }}-firefox.zip" \
-            manifest.json newtab.html src/js/*.js src/css/ assets/ \
+            manifest.json newtab.html src/js/*.js src/css/ assets/ _locales/ \
             -x "*.git*" "dist/*" ".github/*" "manifest.chrome-backup.json" "manifest.firefox.json" "src/js/opera/*"
           mv manifest.chrome-backup.json manifest.json
 
@@ -42,7 +42,7 @@ jobs:
           cp manifest.json manifest.chrome-backup.json
           cp manifest.opera.json manifest.json
           zip -r "dist/hellion-newtab-${{ steps.version.outputs.tag }}-opera.zip" \
-            manifest.json newtab.html src/js/*.js src/js/opera/ src/css/ assets/ \
+            manifest.json newtab.html src/js/*.js src/js/opera/ src/css/ assets/ _locales/ \
             -x "*.git*" "dist/*" ".github/*" "manifest.chrome-backup.json" "manifest.opera.json"
           mv manifest.chrome-backup.json manifest.json
 

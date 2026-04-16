@@ -68,6 +68,19 @@
   --board-hover-border:  rgba(179,89,255,0.18);
   --toggle-on-bg:        rgba(214,92,255,0.22);
   --logo-shadow:         rgba(179,89,255,0.35);
+  --bg-solid-fallback:   #0a060e;
+}
+
+/* Fallback fuer Browser die backdrop-filter blockieren (z.B. Brave Shields) */
+@supports not (backdrop-filter: blur(1px)) {
+  .board,
+  .widget,
+  .settings-panel,
+  .dialog-box,
+  .theme-modal,
+  .search-bar {
+    background-color: var(--bg-solid-fallback, var(--bg-primary));
+  }
 }
 
 /* ============================================
@@ -91,6 +104,7 @@
   --board-hover-border:  rgba(179,89,255,0.18);
   --toggle-on-bg:       rgba(214,92,255,0.22);
   --logo-shadow:         rgba(179,89,255,0.35);
+  --bg-solid-fallback:   #0a060e;
 }
 [data-theme="nebula"] .board         { border-color: rgba(214,92,255,0.10); }
 [data-theme="nebula"] .bm-item:hover { background: rgba(214,92,255,0.05); }
@@ -116,6 +130,7 @@
   --board-hover-border: rgba(212, 189, 138, 0.20);
   --toggle-on-bg:       rgba(200,168,74,0.22);
   --logo-shadow:        rgba(212, 189, 138, 0.40);
+  --bg-solid-fallback:  #080c16;
   letter-spacing:       0.5px;
 }
 
@@ -146,6 +161,7 @@
   --board-hover-border: rgba(157, 92, 255, 0.22);
   --toggle-on-bg:       rgba(224,128,48,0.22);
   --logo-shadow:        rgba(157, 92, 255, 0.45);
+  --bg-solid-fallback:  #08050f;
 }
 [data-theme="event-horizon"] .board         { border-color: rgba(157, 92, 255, 0.15); }
 [data-theme="event-horizon"] .bm-item:hover { background: rgba(157, 92, 255, 0.08); }
@@ -172,6 +188,7 @@
   --board-hover-border:  rgba(46, 184, 184, 0.20);
   --toggle-on-bg:        rgba(78,207,207,0.22);
   --logo-shadow:         rgba(46, 184, 184, 0.45);
+  --bg-solid-fallback:   #060a0a;
 }
 [data-theme="merchantman"] .board         { border-color: rgba(46, 184, 184, 0.12); }
 [data-theme="merchantman"] .bm-item:hover { background: rgba(46, 184, 184, 0.06); }
@@ -197,6 +214,7 @@
   --board-hover-border:  rgba(125, 179, 255, 0.22);
   --toggle-on-bg:        rgba(91,159,255,0.22);
   --logo-shadow:         rgba(125, 179, 255, 0.50);
+  --bg-solid-fallback:   #070a14;
 }
 [data-theme="julia-jin"] .logo           { font-family: 'Cinzel', serif; letter-spacing: 5px; text-transform: uppercase; }
 [data-theme="julia-jin"] .clock          { font-family: 'Cinzel', serif; font-weight: 600; }
@@ -225,6 +243,7 @@
   --board-hover-border:  rgba(255, 140, 61, 0.22);
   --toggle-on-bg:       rgba(240,124,48,0.22);
   --logo-shadow:         rgba(255, 140, 61, 0.45);
+  --bg-solid-fallback:   #0f0a08;
 }
 [data-theme="sc-sunset"] .board { 
   border-color: rgba(255, 140, 61, 0.15); 
@@ -253,6 +272,7 @@
   --board-hover-border:  rgba(50, 255, 106, 0.20);
   --toggle-on-bg:        rgba(34,204,68,0.20);
   --logo-shadow:         rgba(50, 255, 106, 0.40);
+  --bg-solid-fallback:   #050805;
   --danger:              #ff4d4d;
 }
 [data-theme="hellion-hud"] .board {
@@ -287,6 +307,7 @@
   --board-hover-border:  rgba(30, 255, 142, 0.25);
   --toggle-on-bg:       rgba(0,232,122,0.18);
   --logo-shadow:         rgba(30, 255, 142, 0.60);
+  --bg-solid-fallback:   #040705;
 }
 [data-theme="hellion-energy"] .board {
   border-color: rgba(30, 255, 142, 0.15);
@@ -322,6 +343,7 @@
   --board-hover-border:  rgba(0, 180, 216, 0.25);
   --toggle-on-bg:        rgba(0, 180, 216, 0.20);
   --logo-shadow:         rgba(0, 180, 216, 0.40);
+  --bg-solid-fallback:   #1a0f08;
 }
 [data-theme="satisfactory"] .logo        { font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
 [data-theme="satisfactory"] .clock       { font-family: 'Rajdhani', sans-serif; font-weight: 600; color: var(--accent); }
@@ -352,6 +374,7 @@
   --board-hover-border:  rgba(46, 196, 160, 0.22);
   --toggle-on-bg:        rgba(46, 196, 160, 0.18);
   --logo-shadow:         rgba(46, 196, 160, 0.50);
+  --bg-solid-fallback:   #020d0c;
 }
 [data-theme="avorion"] .logo        { font-family: 'Rajdhani', sans-serif; font-weight: 500; letter-spacing: 6px; text-transform: uppercase; }
 [data-theme="avorion"] .clock       { font-family: 'Rajdhani', sans-serif; font-weight: 400; color: var(--accent); }
@@ -382,6 +405,7 @@
   --board-hover-border:  rgba(94, 194, 255, 0.25);
   --toggle-on-bg:        rgba(94, 194, 255, 0.20);
   --logo-shadow:         rgba(94, 194, 255, 0.45);
+  --bg-solid-fallback:   #0d0f12;
 }
 [data-theme="hellion-stealth"] .logo        { font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 4px; }
 [data-theme="hellion-stealth"] .clock       { font-family: 'Rajdhani', sans-serif; font-weight: 600; color: var(--accent); }
@@ -562,12 +586,13 @@ html, body {
 
 body.compact .bm-item { padding: var(--spacing-compact) 10px; }
 
-.bm-favicon { width: 14px; height: 14px; flex-shrink: 0; border-radius: 2px; opacity: 0.85; }
-.bm-favicon-fallback {
-  width: 14px; height: 14px; flex-shrink: 0;
-  background: var(--accent-dim); border-radius: 2px;
+.bm-favicon-local {
+  width: 16px; height: 16px; flex-shrink: 0;
+  border-radius: 3px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 8px; color: var(--accent);
+  font-size: 9px; font-weight: 600;
+  color: #fff;
+  line-height: 1;
 }
 .bm-text { flex: 1; min-width: 0; }
 .bm-title { font-size: 12px; font-weight: 400; color: var(--text-primary); line-height: 1.3; }

@@ -462,7 +462,7 @@ const Calculator = {
 
       case '.': {
         // Doppelten Dezimalpunkt im letzten Zahlenblock verhindern
-        const parts = this._currentExpr.split(/[+\-*/%()]/);
+        const parts = this._currentExpr.split(/[+\-*/%()^]/);
         const lastPart = parts[parts.length - 1];
         if (lastPart && lastPart.includes('.')) break;
         this._currentExpr += key;

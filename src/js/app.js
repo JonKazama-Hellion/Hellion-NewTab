@@ -132,7 +132,7 @@ function startClock() {
       `${t(DAY_KEYS[now.getDay()])}, ${String(now.getDate()).padStart(2,'0')}. ${t(MONTH_KEYS[now.getMonth()])}`;
   }
   tick();
-  setInterval(tick, 1000);
+  const clockInterval = setInterval(tick, 1000);
 }
 
 // ---- GLOBALE EVENTS (Header-Buttons, Modals, Import) ----

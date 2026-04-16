@@ -55,11 +55,10 @@ const Calculator = {
    */
   async save() {
     const data = await Store.get(this.STORAGE_KEY) || {};
-    const notesState = Array.isArray(data.notes) ? data.notes : [];
 
     // Widget-Position aus WidgetManager holen
     const widgetState = WidgetManager.getState(this.WIDGET_ID);
-    const calcData = {
+    data.calculator = {
       x: widgetState ? widgetState.x : 400,
       y: widgetState ? widgetState.y : 120,
       width: widgetState ? widgetState.width : 280,
@@ -69,7 +68,7 @@ const Calculator = {
       history: this._history.slice(0, this.MAX_HISTORY)
     };
 
-    await Store.set(this.STORAGE_KEY, { notes: notesState, calculator: calcData });
+    await Store.set(this.STORAGE_KEY, data);
   },
 
   // ---- WIDGET LIFECYCLE ----
@@ -830,6 +829,18 @@ const Calculator = {
   async init() {
     await this.load();
 
+    // Standard-Modus ZUERST registrieren, bevor open() aufgerufen wird
+    this._modes.set('standard', {
+      label: '🔢',
+      shortName: 'Std',
+      titleKey: 'calculator.tab.standard',
+      render: (bodyEl) => this._renderStandardMode(bodyEl),
+      destroy: () => {
+        this._displayExprEl = null;
+        this._displayResultEl = null;
+      }
+    });
+
     // Wenn Calculator beim letzten Mal offen war, wiederherstellen
     const data = await Store.get(this.STORAGE_KEY);
     if (data && data.calculator && data.calculator.open) {
@@ -861,18 +872,6 @@ const Calculator = {
         const entry = WidgetManager._widgets.get(self.WIDGET_ID);
         if (entry) self._bindKeyboard(entry.el);
         self.save();
-      }
-    });
-
-    // Standard-Modus intern registrieren
-    this._modes.set('standard', {
-      label: '🔢',
-      shortName: 'Std',
-      titleKey: 'calculator.tab.standard',
-      render: (bodyEl) => this._renderStandardMode(bodyEl),
-      destroy: () => {
-        this._displayExprEl = null;
-        this._displayResultEl = null;
       }
     });
   }

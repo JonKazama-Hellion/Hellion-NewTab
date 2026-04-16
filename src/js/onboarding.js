@@ -215,7 +215,7 @@ const Onboarding = {
         { id: uid(), title: 'Modrinth (Mods)', url: 'https://modrinth.com', desc: '' },
         { id: uid(), title: 'Star Citizen Wiki', url: 'https://starcitizen.tools', desc: '' },
         { id: uid(), title: 'UEX Corp (Trading)', url: 'https://uexcorp.space', desc: '' },
-        { id: uid(), title: 'Hellion TradeCenter', url: 'https://hellion-initiative.online/tradecenter', desc: 'Trade Center f\u00FCr Star Citizen' }
+        { id: uid(), title: 'Hellion TradeCenter', url: 'https://hellion-initiative.online/tradecenter', desc: t('onboarding.tradecenter_desc') }
       ],
       blurred: false
     };

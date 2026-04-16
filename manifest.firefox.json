@@ -34,6 +34,9 @@
       "matches": ["<all_urls>"]
     }
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "icons": {
     "16":  "assets/icons/icon16.png",
     "48":  "assets/icons/icon48.png",

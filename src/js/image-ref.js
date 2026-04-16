@@ -294,7 +294,7 @@ const ImageRef = {
       // Widget-Titel aktualisieren
       const entry = WidgetManager._widgets.get(imageData.id);
       if (entry) {
-        const titleEl = entry.el.querySelector('.widget-title-text');
+        const titleEl = entry.el.querySelector('.widget-title');
         if (titleEl) titleEl.textContent = text || t('imageref.title');
         entry.state.title = text || t('imageref.title');
       }

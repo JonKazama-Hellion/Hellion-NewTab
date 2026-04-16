@@ -10,6 +10,7 @@ const STRINGS = {
     'dialog.ok':               'OK',
     'dialog.confirm_title':    'Bestätigung',
     'dialog.cancel':           'Abbrechen',
+    'dialog.close':            'Schließen',
 
     // Boards
     'boards.empty_state_pre':  'Noch keine Boards. Klicke auf ',
@@ -56,6 +57,7 @@ const STRINGS = {
     'onboarding.s5.text':      'Deine Daten sind lokal im Browser gespeichert. Wenn du Browserdaten löschst, gehen sie verloren! Sichere regelmäßig über Settings → Data → Export. Wir erinnern dich alle 7 Tage daran.',
     'onboarding.s6.title':     'Gaming Starter Board',
     'onboarding.s6.text':      'Spielst du Games wie Satisfactory, Factorio oder Star Citizen? Ich kann ein Board mit nützlichen Community-Links anlegen.',
+    'onboarding.tradecenter_desc': 'Trade Center für Star Citizen',
     'onboarding.s7.title':     'Bereit!',
     'onboarding.s7.text':      'Erstelle dein erstes Board mit „+ Board" oder importiere deine Browser-Lesezeichen über den Import-Button im Header. Viel Spaß!',
 
@@ -299,6 +301,7 @@ const STRINGS = {
 
     // Suche
     'search.placeholder':      'Im Web suchen…',
+    'search.submit_title':     'Suchen',
 
     // Widget-Toolbar Tooltips
     'toolbar.note':            'Note erstellen',
@@ -315,6 +318,7 @@ const STRINGS = {
     'dialog.ok':               'OK',
     'dialog.confirm_title':    'Confirmation',
     'dialog.cancel':           'Cancel',
+    'dialog.close':            'Close',
 
     // Boards
     'boards.empty_state_pre':  'No boards yet. Click ',
@@ -361,6 +365,7 @@ const STRINGS = {
     'onboarding.s5.text':      'Your data is stored locally in the browser. If you clear browser data, it\'s gone! Back up regularly via Settings → Data → Export. We\'ll remind you every 7 days.',
     'onboarding.s6.title':     'Gaming Starter Board',
     'onboarding.s6.text':      'Do you play games like Satisfactory, Factorio or Star Citizen? I can create a board with useful community links.',
+    'onboarding.tradecenter_desc': 'Trade Center for Star Citizen',
     'onboarding.s7.title':     'Ready!',
     'onboarding.s7.text':      'Create your first board with "+ Board" or import your browser bookmarks via the Import button in the header. Have fun!',
 
@@ -604,6 +609,7 @@ const STRINGS = {
 
     // Search
     'search.placeholder':      'Search the web…',
+    'search.submit_title':     'Search',
 
     // Widget toolbar tooltips
     'toolbar.note':            'Create note',
@@ -647,7 +653,9 @@ function applyLanguage() {
     el.placeholder = t(el.dataset.i18nPlaceholder);
   });
   document.querySelectorAll('[data-i18n-title]').forEach(el => {
-    el.title = t(el.dataset.i18nTitle);
+    const text = t(el.dataset.i18nTitle);
+    el.title = text;
+    el.setAttribute('aria-label', text);
   });
 }
 

@@ -53,7 +53,7 @@
         <span id="searchEngineIcon">G</span>
       </button>
       <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search.placeholder" placeholder="Search the web…" autocomplete="off" />
-      <button class="search-submit" id="searchSubmit">
+      <button class="search-submit" id="searchSubmit" data-i18n-title="search.submit_title">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
     </div>
@@ -86,7 +86,7 @@
   <aside class="notebook-panel" id="notebookPanel">
     <div class="notebook-header">
       <span class="notebook-header-title"><span data-i18n="notebook.title">Notebook</span> <span class="notebook-count" id="notebookCount">0 / 5</span></span>
-      <button class="btn-close" id="btnCloseNotebook">✕</button>
+      <button class="btn-close" id="btnCloseNotebook" data-i18n-title="dialog.close">✕</button>
     </div>
     <div class="notebook-slots" id="notebookSlots">
       <!-- dynamisch via JS -->
@@ -106,7 +106,7 @@
   <aside class="settings-panel" id="settingsPanel">
     <div class="panel-header">
       <span data-i18n="settings.title">Einstellungen</span>
-      <button class="btn-close" id="btnCloseSettings">✕</button>
+      <button class="btn-close" id="btnCloseSettings" data-i18n-title="dialog.close">✕</button>
     </div>
     <div class="panel-body">
 
@@ -294,7 +294,7 @@
     <div class="theme-modal" id="themeModal">
       <div class="modal-header">
         <span data-i18n="modal.theme_header">Darstellung</span>
-        <button class="btn-close" id="btnCloseTheme">✕</button>
+        <button class="btn-close" id="btnCloseTheme" data-i18n-title="dialog.close">✕</button>
       </div>
       <div class="theme-grid">
         <div class="theme-card active" data-value="nebula">
@@ -439,7 +439,7 @@
     <div class="modal">
       <div class="modal-header">
         <span data-i18n="modal.new_board">New Board</span>
-        <button class="btn-close" id="btnCancelBoard">✕</button>
+        <button class="btn-close" id="btnCancelBoard" data-i18n-title="dialog.close">✕</button>
       </div>
       <div class="modal-body">
         <input type="text" class="text-input full-width" id="newBoardName" data-i18n-placeholder="modal.board_name" placeholder="Board name..." maxlength="40" />
@@ -455,7 +455,7 @@
     <div class="modal">
       <div class="modal-header">
         <span data-i18n="modal.new_bookmark">New Bookmark</span>
-        <button class="btn-close" id="btnCancelBookmark">✕</button>
+        <button class="btn-close" id="btnCancelBookmark" data-i18n-title="dialog.close">✕</button>
       </div>
       <div class="modal-body">
         <input type="text" class="text-input full-width" id="newBmTitle" data-i18n-placeholder="modal.bm_title" placeholder="Title..." maxlength="60" />
@@ -473,7 +473,7 @@
     <div class="modal">
       <div class="modal-header">
         <span data-i18n="modal.rename">Rename</span>
-        <button class="btn-close" id="btnCancelRename">✕</button>
+        <button class="btn-close" id="btnCancelRename" data-i18n-title="dialog.close">✕</button>
       </div>
       <div class="modal-body">
         <input type="text" class="text-input full-width" id="renameInput" data-i18n-placeholder="modal.rename_placeholder" placeholder="New name..." maxlength="60" />

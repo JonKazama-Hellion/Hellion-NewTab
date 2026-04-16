@@ -1452,6 +1452,88 @@ body.show-desc .bm-desc { display: block; }
   border-top: 1px solid var(--border);
 }
 
+/* Calculator Game Modes (shared) */
+.calc-game-subtabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.calc-game-subtab {
+  flex: 1;
+  padding: 5px 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
+}
+.calc-game-subtab:hover {
+  color: var(--text-secondary);
+}
+.calc-game-subtab.active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.calc-game-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.calc-game-field label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  min-width: 90px;
+  flex-shrink: 0;
+}
+.calc-game-input {
+  flex: 1;
+  padding: 5px 8px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: 'Rajdhani', monospace;
+}
+.calc-game-output {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-top: 4px;
+}
+.calc-game-output span:first-child {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.calc-game-value {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+  font-family: 'Rajdhani', monospace;
+}
+.calc-game-warning {
+  font-size: 10px;
+  color: var(--danger);
+  padding: 2px 0;
+}
+.calc-game-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 /* ============================================
    TIMER WIDGET
    ============================================ */

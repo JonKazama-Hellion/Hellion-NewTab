@@ -105,7 +105,7 @@ async function checkBackupReminder() {
     const notesData = (widgetData && Array.isArray(widgetData.notes)) ? widgetData.notes : [];
     const calcHistory = (widgetData && widgetData.calculator) ? widgetData.calculator.history || [] : [];
     const timerPresets = (widgetData && widgetData.timer) ? widgetData.timer.presets || [] : [];
-    const data = { version: '2.0.0', exported: new Date().toISOString(), boards, settings, notes: notesData, calculator: calcHistory, timerPresets };
+    const data = { version: '2.0.1', exported: new Date().toISOString(), boards, settings, notes: notesData, calculator: calcHistory, timerPresets };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');

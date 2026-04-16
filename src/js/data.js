@@ -28,7 +28,7 @@ function initDataButtons() {
   btnExport.addEventListener('click', async () => {
     const widgetData = await Store.get('widgetStates');
     const data = {
-      version: '2.0.0',
+      version: '2.0.1',
       exported: new Date().toISOString(),
       boards,
       settings,

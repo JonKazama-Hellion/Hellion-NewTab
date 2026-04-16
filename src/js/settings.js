@@ -200,6 +200,7 @@ function bindSettingsEvents() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = async ev => {
+      if (!isValidBgUrl(ev.target.result)) return;
       settings.bgUrl = ev.target.result;
       document.getElementById('bgLayer').style.backgroundImage = `url('${ev.target.result}')`;
       await saveSettings();

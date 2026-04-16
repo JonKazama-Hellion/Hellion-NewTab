@@ -165,8 +165,8 @@ const WidgetManager = {
     const entry = this._widgets.get(id);
     if (!entry) return;
     entry.el.remove();
-    this._widgets.delete(id);
     this._emitter.dispatchEvent(new CustomEvent('widget:close', { detail: { id } }));
+    this._widgets.delete(id);
   },
 
   /**

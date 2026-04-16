@@ -443,7 +443,8 @@ const Calculator = {
       case '+':
       case '-':
       case '*':
-      case '/': {
+      case '/':
+      case '^': {
         // Wenn gerade ein Ergebnis angezeigt wird, damit weiterrechnen
         if (this._lastResult && this._currentExpr === '') {
           this._currentExpr = this._lastResult;
@@ -451,7 +452,7 @@ const Calculator = {
         }
         // Doppelte Operatoren verhindern (letzten ersetzen)
         const last = this._currentExpr.slice(-1);
-        if (/[+\-*/%]/.test(last)) {
+        if (/[+\-*/%^]/.test(last)) {
           this._currentExpr = this._currentExpr.slice(0, -1) + key;
         } else {
           this._currentExpr += key;
@@ -527,7 +528,7 @@ const Calculator = {
   _evaluate(expr) {
     try {
       // Nur erlaubte Zeichen
-      const sanitized = expr.replace(/[^0-9+\-*/.%()]/g, '');
+      const sanitized = expr.replace(/[^0-9+\-*/.%()^a-z]/g, '');
       if (!sanitized) return null;
 
       const tokens = this._tokenize(sanitized);
@@ -550,6 +551,13 @@ const Calculator = {
 
     while (i < expr.length) {
       const ch = expr[i];
+
+      // Funktion: sqrt
+      if (expr.substring(i, i + 4) === 'sqrt') {
+        tokens.push({ type: 'func', value: 'sqrt' });
+        i += 4;
+        continue;
+      }
 
       // Zahl (inkl. Dezimal)
       if (/[0-9.]/.test(ch)) {
@@ -589,11 +597,23 @@ const Calculator = {
         continue;
       }
 
+      // Potenz-Operator
+      if (ch === '^') {
+        tokens.push({ type: 'op', value: '^' });
+        i++;
+        continue;
+      }
+
       // Klammern
       if (ch === '(' || ch === ')') {
         tokens.push({ type: 'paren', value: ch });
         i++;
         continue;
+      }
+
+      // Unbekannte Buchstaben
+      if (/[a-z]/.test(ch)) {
+        return null;
       }
 
       // Unbekanntes Zeichen
@@ -605,6 +625,7 @@ const Calculator = {
 
   /**
    * Rekursiver Descent Parser mit Operator-Precedence
+   * Hierarchie: parseExpr (+/-) → parseTerm (*\/%) → parsePower (^) → parseFactor
    * @param {Array} tokens
    * @returns {number|null}
    */
@@ -614,36 +635,32 @@ const Calculator = {
     function peek() { return tokens[pos]; }
     function consume() { return tokens[pos++]; }
 
-    // Expression: Term (('+' | '-') Term)*
     function parseExpr() {
       let left = parseTerm();
       if (left === null) return null;
-
       while (pos < tokens.length) {
-        const t = peek();
-        if (!t || t.type !== 'op' || (t.value !== '+' && t.value !== '-')) break;
+        const tk = peek();
+        if (!tk || tk.type !== 'op' || (tk.value !== '+' && tk.value !== '-')) break;
         consume();
         const right = parseTerm();
         if (right === null) return null;
-        left = t.value === '+' ? left + right : left - right;
+        left = tk.value === '+' ? left + right : left - right;
       }
       return left;
     }
 
-    // Term: Factor (('*' | '/' | '%') Factor)*
     function parseTerm() {
-      let left = parseFactor();
+      let left = parsePower();
       if (left === null) return null;
-
       while (pos < tokens.length) {
-        const t = peek();
-        if (!t || t.type !== 'op' || (t.value !== '*' && t.value !== '/' && t.value !== '%')) break;
+        const tk = peek();
+        if (!tk || tk.type !== 'op' || (tk.value !== '*' && tk.value !== '/' && tk.value !== '%')) break;
         consume();
-        const right = parseFactor();
+        const right = parsePower();
         if (right === null) return null;
-        if (t.value === '*') {
+        if (tk.value === '*') {
           left = left * right;
-        } else if (t.value === '/') {
+        } else if (tk.value === '/') {
           if (right === 0) return null;
           left = left / right;
         } else {
@@ -653,17 +670,51 @@ const Calculator = {
       return left;
     }
 
-    // Factor: Number | '(' Expression ')'
-    function parseFactor() {
-      const t = peek();
-      if (!t) return null;
-
-      if (t.type === 'number') {
+    // Power: Factor ('^' Power)?  — rechts-assoziativ via Rekursion
+    function parsePower() {
+      let base = parseFactor();
+      if (base === null) return null;
+      const tk = peek();
+      if (tk && tk.type === 'op' && tk.value === '^') {
         consume();
-        return t.value;
+        const exp = parsePower(); // Rechts-assoziativ!
+        if (exp === null) return null;
+        return Math.pow(base, exp);
+      }
+      return base;
+    }
+
+    // Factor: func '(' Expression ')' | Number | '(' Expression ')'
+    function parseFactor() {
+      const tk = peek();
+      if (!tk) return null;
+
+      // Funktion: sqrt(...)
+      if (tk.type === 'func') {
+        const funcName = tk.value;
+        consume();
+        const open = peek();
+        if (!open || open.type !== 'paren' || open.value !== '(') return null;
+        consume();
+        const val = parseExpr();
+        if (val === null) return null;
+        const close = peek();
+        if (close && close.type === 'paren' && close.value === ')') {
+          consume();
+        }
+        if (funcName === 'sqrt') {
+          if (val < 0) return null; // Negativer Radikand nicht erlaubt
+          return Math.sqrt(val);
+        }
+        return null;
       }
 
-      if (t.type === 'paren' && t.value === '(') {
+      if (tk.type === 'number') {
+        consume();
+        return tk.value;
+      }
+
+      if (tk.type === 'paren' && tk.value === '(') {
         consume();
         const val = parseExpr();
         if (val === null) return null;
@@ -708,7 +759,8 @@ const Calculator = {
   _formatExpression(expr) {
     return expr
       .replace(/\*/g, '\u00D7')
-      .replace(/\//g, '\u00F7');
+      .replace(/\//g, '\u00F7')
+      .replace(/sqrt\(/g, '\u221A(');
   },
 
   // ---- DISPLAY ----

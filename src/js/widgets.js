@@ -52,7 +52,7 @@ const WidgetManager = {
     const el = this._buildDOM(state);
     document.body.appendChild(el);
 
-    this._widgets.set(id, { el, type, state });
+    this._widgets.set(id, { el, type, state, _minimizing: false });
     this._initDrag(el);
     this._initResize(el);
     this.bringToFront(id);
@@ -170,7 +170,9 @@ const WidgetManager = {
   },
 
   /**
-   * Widget minimieren (aus DOM verstecken, bleibt im Notebook)
+   * Widget minimieren (aus DOM verstecken, bleibt im Notebook).
+   * Nutzt transitionend statt setTimeout — _minimizing Flag verhindert Race Condition
+   * mit openWidget(). Fallback-Timer fuer prefers-reduced-motion / fehlende Transition.
    * @param {string} id
    */
   async minimize(id) {
@@ -180,17 +182,30 @@ const WidgetManager = {
     entry._minimizing = true;
     entry.el.classList.add('widget-minimized');
 
-    entry.el.addEventListener('transitionend', function onEnd(e) {
-      if (e.target !== entry.el) return;
+    const MINIMIZE_FALLBACK_MS = 350;
+
+    function onEnd(e) {
+      if (e.target !== entry.el || e.propertyName !== 'opacity') return;
+      clearTimeout(fallbackTimer);
       entry.el.removeEventListener('transitionend', onEnd);
       if (entry._minimizing) {
         entry.el.style.display = 'none';
       }
       entry._minimizing = false;
-    });
+    }
 
-    this._emitter.dispatchEvent(new CustomEvent('widget:minimize', { detail: { id } }));
+    entry.el.addEventListener('transitionend', onEnd);
+
+    const fallbackTimer = setTimeout(() => {
+      entry.el.removeEventListener('transitionend', onEnd);
+      if (entry._minimizing) {
+        entry.el.style.display = 'none';
+        entry._minimizing = false;
+      }
+    }, MINIMIZE_FALLBACK_MS);
+
     await this.save();
+    this._emitter.dispatchEvent(new CustomEvent('widget:minimize', { detail: { id } }));
   },
 
   /**
@@ -207,8 +222,8 @@ const WidgetManager = {
       entry.el.classList.remove('widget-minimized');
     });
     this.bringToFront(id);
-    this._emitter.dispatchEvent(new CustomEvent('widget:open', { detail: { id } }));
     await this.save();
+    this._emitter.dispatchEvent(new CustomEvent('widget:open', { detail: { id } }));
   },
 
   /**

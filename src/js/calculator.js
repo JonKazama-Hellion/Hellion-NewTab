@@ -245,13 +245,16 @@ const Calculator = {
 
     // Auto-Resize für komplexe Modi
     const isComplex = name !== 'standard';
-    if (isComplex) {
-      const state = WidgetManager.getState(this.WIDGET_ID);
+    if (isComplex && entry) {
+      const state = entry.state;
       if (state) {
         const newW = Math.max(state.width, 320);
         const newH = Math.max(state.height, 480);
         if (newW !== state.width || newH !== state.height) {
-          WidgetManager.resize(this.WIDGET_ID, newW, newH);
+          entry.el.style.width = newW + 'px';
+          entry.el.style.height = newH + 'px';
+          state.width = newW;
+          state.height = newH;
         }
       }
     }

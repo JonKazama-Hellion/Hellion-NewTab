@@ -58,15 +58,14 @@ const Calculator = {
 
     // Widget-Position aus WidgetManager holen
     const widgetState = WidgetManager.getState(this.WIDGET_ID);
-    data.calculator = {
-      x: widgetState ? widgetState.x : 400,
-      y: widgetState ? widgetState.y : 120,
-      width: widgetState ? widgetState.width : 280,
-      height: widgetState ? widgetState.height : 400,
-      open: this._isOpen,
-      activeMode: this._activeMode,
-      history: this._history.slice(0, this.MAX_HISTORY)
-    };
+    if (!data.calculator) data.calculator = {};
+    data.calculator.x = widgetState ? widgetState.x : 400;
+    data.calculator.y = widgetState ? widgetState.y : 120;
+    data.calculator.width = widgetState ? widgetState.width : 280;
+    data.calculator.height = widgetState ? widgetState.height : 400;
+    data.calculator.open = this._isOpen;
+    data.calculator.activeMode = this._activeMode;
+    data.calculator.history = this._history.slice(0, this.MAX_HISTORY);
 
     await Store.set(this.STORAGE_KEY, data);
   },

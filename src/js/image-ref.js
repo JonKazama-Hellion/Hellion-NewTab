@@ -460,41 +460,32 @@ const ImageRef = {
       });
     }
 
-    // Close-Event abfangen
+    // Widget-Lifecycle-Events
     const self = this;
-    const prevClose = WidgetManager.close;
-    WidgetManager.close = function(id) {
-      prevClose.call(WidgetManager, id);
-      // Pruefen ob es ein Image-Widget ist
-      const isImage = self._images.some(img => img.id === id);
+    WidgetManager.on('widget:close', (e) => {
+      const isImage = self._images.some(img => img.id === e.detail.id);
       if (isImage) {
-        self.onClose(id);
+        self.onClose(e.detail.id);
       }
-    };
+    });
 
-    // Minimize-Event abfangen
-    const prevMinimize = WidgetManager.minimize;
-    WidgetManager.minimize = async function(id) {
-      await prevMinimize.call(WidgetManager, id);
-      const isImage = self._images.some(img => img.id === id);
+    WidgetManager.on('widget:minimize', (e) => {
+      const isImage = self._images.some(img => img.id === e.detail.id);
       if (isImage) {
-        await self.save();
+        self.save();
       }
-    };
+    });
 
-    // Open-Event abfangen
-    const prevOpen = WidgetManager.openWidget;
-    WidgetManager.openWidget = async function(id) {
-      await prevOpen.call(WidgetManager, id);
-      const imgData = self._images.find(img => img.id === id);
+    WidgetManager.on('widget:open', (e) => {
+      const imgData = self._images.find(img => img.id === e.detail.id);
       if (imgData) {
-        const body = WidgetManager.getBody(id);
+        const body = WidgetManager.getBody(e.detail.id);
         if (body && body.children.length === 0) {
-          const dataUrl = self._getSessionImage(id);
+          const dataUrl = self._getSessionImage(e.detail.id);
           self.renderBody(imgData, body, dataUrl);
         }
-        await self.save();
+        self.save();
       }
-    };
+    });
   }
 };

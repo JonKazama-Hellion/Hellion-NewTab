@@ -720,32 +720,23 @@ const Timer = {
       await this.open();
     }
 
-    // Close-Event abfangen
-    const origClose = WidgetManager.close.bind(WidgetManager);
+    // Widget-Lifecycle-Events
     const self = this;
-    const prevClose = WidgetManager.close;
-    WidgetManager.close = function(id) {
-      prevClose.call(WidgetManager, id);
-      if (id === self.WIDGET_ID) {
+    WidgetManager.on('widget:close', (e) => {
+      if (e.detail.id === self.WIDGET_ID) {
         self.onClose();
       }
-    };
+    });
 
-    // Minimize-Event abfangen
-    const prevMinimize = WidgetManager.minimize;
-    WidgetManager.minimize = async function(id) {
-      await prevMinimize.call(WidgetManager, id);
-      if (id === self.WIDGET_ID) {
+    WidgetManager.on('widget:minimize', (e) => {
+      if (e.detail.id === self.WIDGET_ID) {
         self._isOpen = false;
-        await self.save();
+        self.save();
       }
-    };
+    });
 
-    // Open-Event abfangen
-    const prevOpen = WidgetManager.openWidget;
-    WidgetManager.openWidget = async function(id) {
-      await prevOpen.call(WidgetManager, id);
-      if (id === self.WIDGET_ID) {
+    WidgetManager.on('widget:open', (e) => {
+      if (e.detail.id === self.WIDGET_ID) {
         self._isOpen = true;
         const body = WidgetManager.getBody(self.WIDGET_ID);
         if (body && body.children.length === 0) {
@@ -753,8 +744,8 @@ const Timer = {
         }
         const entry = WidgetManager._widgets.get(self.WIDGET_ID);
         if (entry) self._bindKeyboard(entry.el);
-        await self.save();
+        self.save();
       }
-    };
+    });
   }
 };

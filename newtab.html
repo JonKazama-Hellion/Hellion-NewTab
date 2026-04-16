@@ -23,23 +23,23 @@
       </div>
     </div>
     <div class="header-right">
-      <button class="btn-icon" id="btnImport" title="Bookmarks importieren (HTML)">
+      <button class="btn-icon" id="btnImport" title="Bookmarks importieren (HTML)" data-i18n-title="header.import_title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <span data-i18n="header.import">Import</span>
       </button>
-      <button class="btn-icon" id="btnAddBoard" title="Neues Board hinzufügen">
+      <button class="btn-icon" id="btnAddBoard" title="Neues Board hinzufügen" data-i18n-title="header.board_title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         <span data-i18n="header.board">Board</span>
       </button>
-      <button class="btn-icon" id="btnNote" title="Schnellnotiz">
+      <button class="btn-icon" id="btnNote" title="Schnellnotiz" data-i18n-title="header.note_title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         <span data-i18n="header.note">Note</span>
       </button>
-      <button class="btn-icon" id="btnTheme" title="Darstellung & Theme">
+      <button class="btn-icon" id="btnTheme" title="Darstellung & Theme" data-i18n-title="header.theme_title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 4 4 0 01-1-7.9 1 1 0 011-.1h1a2 2 0 002-2V7a5 5 0 00-3-4.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="6" r="1.5"/><circle cx="17" cy="10" r="1.5"/><circle cx="9" cy="17" r="1.5"/></svg>
         <span data-i18n="header.theme">Darstellung</span>
       </button>
-      <button class="btn-icon" id="btnSettings" title="Einstellungen">
+      <button class="btn-icon" id="btnSettings" title="Einstellungen" data-i18n-title="header.settings_title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         <span data-i18n="header.settings">Settings</span>
       </button>
@@ -195,7 +195,7 @@
               <span class="setting-label" data-i18n="settings.onboarding">Onboarding wiederholen</span>
               <span class="setting-desc" data-i18n="settings.onboarding.desc">Willkommens-Tour erneut anzeigen</span>
             </div>
-            <button class="btn-small" id="btnRestartOnboarding">Start</button>
+            <button class="btn-small" id="btnRestartOnboarding" data-i18n="settings.onboarding_btn">Start</button>
           </div>
         </div>
       </section>
@@ -212,7 +212,7 @@
               <span class="setting-label" data-i18n="settings.reset">Alles zurücksetzen</span>
               <span class="setting-desc" data-i18n="settings.reset.desc">Löscht alle Boards, Notes und Einstellungen</span>
             </div>
-            <button class="btn-danger" id="btnResetAll">Reset</button>
+            <button class="btn-danger" id="btnResetAll" data-i18n="settings.reset_btn">Reset</button>
           </div>
         </div>
       </section>
@@ -371,7 +371,7 @@
             <span class="setting-label" data-i18n="settings.bg_upload">Datei hochladen</span>
             <span class="setting-desc" data-i18n="settings.bg_upload.desc">Lokales Bild als Hintergrund verwenden</span>
           </div>
-          <button class="btn-small" id="btnBgFile">Upload</button>
+          <button class="btn-small" id="btnBgFile" data-i18n="settings.bg_upload_btn">Upload</button>
           <input type="file" id="bgFileInput" accept="image/*" class="hidden" />
         </div>
       </div>

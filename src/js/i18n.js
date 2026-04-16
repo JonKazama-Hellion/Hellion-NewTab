@@ -202,6 +202,13 @@ const STRINGS = {
     'header.theme':            'Darstellung',
     'header.settings':         'Einstellungen',
 
+    // Header Tooltips
+    'header.import_title':       'Bookmarks importieren (HTML)',
+    'header.board_title':        'Neues Board hinzufügen',
+    'header.note_title':         'Schnellnotiz',
+    'header.theme_title':        'Darstellung & Theme',
+    'header.settings_title':     'Einstellungen',
+
     // Settings-Panel Überschrift
     'settings.title':          'Einstellungen',
 
@@ -254,6 +261,13 @@ const STRINGS = {
     'settings.bg_upload':          'Datei hochladen',
     'settings.bg_upload.desc':     'Lokales Bild als Hintergrund verwenden',
     'settings.search_engine_toggle': 'Suchmaschine wechseln',
+
+    // Settings Buttons + Validierung
+    'settings.onboarding_btn':   'Start',
+    'settings.reset_btn':        'Reset',
+    'settings.bg_upload_btn':    'Upload',
+    'settings.bg_invalid_url':   'Nur lokale Bilder (Upload) sind als Hintergrund erlaubt.',
+    'settings.bg_invalid_url.title': 'Ungültige URL',
 
     // Modals
     'modal.new_board':         'Neues Board',
@@ -493,6 +507,13 @@ const STRINGS = {
     'header.theme':            'Theme',
     'header.settings':         'Settings',
 
+    // Header Tooltips
+    'header.import_title':       'Import bookmarks (HTML)',
+    'header.board_title':        'Add new board',
+    'header.note_title':         'Quick note',
+    'header.theme_title':        'Appearance & Theme',
+    'header.settings_title':     'Settings',
+
     // Settings panel heading
     'settings.title':          'Settings',
 
@@ -545,6 +566,13 @@ const STRINGS = {
     'settings.bg_upload':          'Upload file',
     'settings.bg_upload.desc':     'Use a local image as background',
     'settings.search_engine_toggle': 'Switch search engine',
+
+    // Settings Buttons + Validation
+    'settings.onboarding_btn':   'Start',
+    'settings.reset_btn':        'Reset',
+    'settings.bg_upload_btn':    'Upload',
+    'settings.bg_invalid_url':   'Only local images (upload) are allowed as background.',
+    'settings.bg_invalid_url.title': 'Invalid URL',
 
     // Modals
     'modal.new_board':         'New Board',

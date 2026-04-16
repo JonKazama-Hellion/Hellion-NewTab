@@ -215,19 +215,11 @@ function createBmEl(bm) {
   li.dataset.bmUrl = bm.url;
   li.draggable = true;
 
-  const favicon = document.createElement('img');
-  favicon.className = 'bm-favicon';
-  favicon.width = 14;
-  favicon.height = 14;
-  favicon.src = getFaviconUrl(bm.url);
-  favicon.addEventListener('error', function() {
-    this.classList.add('hidden');
-    this.nextElementSibling.classList.remove('hidden');
-  });
-
-  const fallback = document.createElement('div');
-  fallback.className = 'bm-favicon-fallback hidden';
-  fallback.textContent = bm.title.charAt(0).toUpperCase();
+  const favicon = document.createElement('div');
+  favicon.className = 'bm-favicon-local';
+  favicon.textContent = bm.title.charAt(0).toUpperCase();
+  const hue = (bm.title.charCodeAt(0) * 137) % 360;
+  favicon.style.backgroundColor = `hsl(${hue}, 45%, 35%)`;
 
   const textDiv = document.createElement('div');
   textDiv.className = 'bm-text';
@@ -247,7 +239,6 @@ function createBmEl(bm) {
   deleteBtn.textContent = '✕';
 
   li.appendChild(favicon);
-  li.appendChild(fallback);
   li.appendChild(textDiv);
   li.appendChild(deleteBtn);
 

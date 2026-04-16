@@ -1534,6 +1534,47 @@ body.show-desc .bm-desc { display: block; }
   gap: 4px;
 }
 
+/* Calculator Stationeers specifics */
+.calc-game-hint {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: -4px;
+  text-align: right;
+}
+.calc-game-details {
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+  margin-top: 4px;
+}
+.calc-game-details summary {
+  font-size: 10px;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.calc-game-table {
+  width: 100%;
+  font-size: 11px;
+  border-collapse: collapse;
+  margin-top: 4px;
+}
+.calc-game-table th {
+  text-align: left;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 2px 6px;
+  border-bottom: 1px solid var(--border);
+}
+.calc-game-table td {
+  padding: 2px 6px;
+  color: var(--text-secondary);
+}
+.calc-game-table tr:nth-child(even) td {
+  background: rgba(0,0,0,0.1);
+}
+
 /* ============================================
    TIMER WIDGET
    ============================================ */

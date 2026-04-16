@@ -9,6 +9,21 @@ function initDataButtons() {
   const jsonInput = document.getElementById('jsonImportInput');
   if (!btnExport || !btnImport) return;
 
+  /**
+   * Prueft ob eine URL ein sicheres Protokoll hat.
+   * Blockiert javascript:, data:, vbscript: etc.
+   * @param {string} url
+   * @returns {boolean}
+   */
+  function isSafeUrl(url) {
+    try {
+      const u = new URL(url);
+      return ['http:', 'https:', 'ftp:'].includes(u.protocol);
+    } catch {
+      return false;
+    }
+  }
+
   // Export (inkl. Notes)
   btnExport.addEventListener('click', async () => {
     const widgetData = await Store.get('widgetStates');
@@ -38,18 +53,21 @@ function initDataButtons() {
     try {
       const data = JSON.parse(await file.text());
       if (!Array.isArray(data.boards)) throw new Error(t('data.invalid_format'));
-      const validBoards = data.boards.filter(b => {
-        if (!b || typeof b.title !== 'string' || !Array.isArray(b.bookmarks)) return false;
-        b.id = b.id || uid();
-        b.blurred = !!b.blurred;
-        b.bookmarks = b.bookmarks.filter(bm => {
-          if (!bm || typeof bm.title !== 'string' || typeof bm.url !== 'string') return false;
-          bm.id = bm.id || uid();
-          bm.desc = bm.desc || '';
-          return true;
-        });
-        return true;
-      });
+      const validBoards = data.boards
+        .filter(b => b && typeof b.title === 'string' && Array.isArray(b.bookmarks))
+        .map(b => ({
+          id: b.id || uid(),
+          title: String(b.title).slice(0, 100),
+          blurred: !!b.blurred,
+          bookmarks: b.bookmarks
+            .filter(bm => bm && typeof bm.title === 'string' && isSafeUrl(bm.url))
+            .map(bm => ({
+              id: bm.id || uid(),
+              title: String(bm.title).slice(0, 200),
+              url: bm.url,
+              desc: String(bm.desc || '').slice(0, 500)
+            }))
+        }));
       if (validBoards.length === 0) throw new Error(t('data.no_boards'));
       const ok = await HellionDialog.confirm(
         t('data.import_confirm', { count: validBoards.length }),
@@ -65,18 +83,26 @@ function initDataButtons() {
       const existingWidgets = await Store.get('widgetStates') || {};
       if (Array.isArray(data.notes) && data.notes.length > 0) {
         const existingNotes = Array.isArray(existingWidgets.notes) ? existingWidgets.notes : [];
-        const importNotes = data.notes.filter(n => {
-          if (!n || !n.id || !n.template) return false;
-          n.checklistItems = Array.isArray(n.checklistItems) ? n.checklistItems : [];
-          return true;
-        });
+        const importNotes = data.notes
+          .filter(n => n && n.id && n.template)
+          .map(n => ({
+            id: n.id,
+            template: ['note', 'checklist'].includes(n.template) ? n.template : 'note',
+            title: String(n.title || '').slice(0, 200),
+            content: String(n.content || '').slice(0, 5000),
+            x: typeof n.x === 'number' ? n.x : 120,
+            y: typeof n.y === 'number' ? n.y : 80,
+            width: typeof n.width === 'number' ? n.width : 280,
+            height: typeof n.height === 'number' ? n.height : 220,
+            open: n.open !== false,
+            checklistItems: Array.isArray(n.checklistItems) ? n.checklistItems : []
+          }));
         // Limit beachten
         const spaceLeft = Notes.MAX_NOTES - existingNotes.length;
         const toImport = importNotes.slice(0, spaceLeft);
         if (toImport.length > 0) {
           const merged = [...existingNotes, ...toImport];
           existingWidgets.notes = merged;
-          Notes._notes = merged;
           notesImported = toImport.length;
         }
       }
@@ -90,7 +116,6 @@ function initDataButtons() {
             existingWidgets.calculator = { x: 400, y: 120, width: 280, height: 400, open: false, history: [] };
           }
           existingWidgets.calculator.history = calcHistory.slice(0, Calculator.MAX_HISTORY);
-          Calculator._history = existingWidgets.calculator.history;
           calcImported = true;
         }
       }
@@ -104,13 +129,17 @@ function initDataButtons() {
             existingWidgets.timer = { x: 600, y: 80, width: 260, height: 360, open: false, presets: [] };
           }
           existingWidgets.timer.presets = validPresets.slice(0, Timer.MAX_PRESETS);
-          Timer._presets = existingWidgets.timer.presets;
           timerImported = true;
         }
       }
 
       // Gemeinsam speichern
       await Store.set('widgetStates', existingWidgets);
+
+      // Widget-Module neu aus Storage laden (kein direkter Zugriff auf Internals)
+      if (notesImported > 0) await Notes.init();
+      if (calcImported) await Calculator.load();
+      if (timerImported) await Timer.load();
 
       const noteMsg = notesImported > 0 ? t('data.notes_suffix', { count: notesImported }) : '';
       const calcMsg = calcImported ? t('data.calc_suffix') : '';

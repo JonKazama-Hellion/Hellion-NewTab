@@ -1391,6 +1391,67 @@ body.show-desc .bm-desc { display: block; }
   padding: 2px 0;
 }
 
+/* Calculator Converter Mode */
+.calc-conv-select {
+  width: 100%;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: 'Rajdhani', sans-serif;
+}
+.calc-conv-row {
+  display: flex;
+  gap: 6px;
+}
+.calc-conv-input {
+  flex: 1;
+  padding: 8px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-family: 'Rajdhani', monospace;
+}
+.calc-conv-input:read-only {
+  color: var(--accent);
+  font-weight: 600;
+}
+.calc-conv-unit {
+  width: 80px;
+  padding: 4px 6px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: 'Rajdhani', sans-serif;
+}
+.calc-conv-swap {
+  align-self: center;
+  width: 36px;
+  height: 28px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.calc-conv-swap:hover {
+  background: var(--accent-dim);
+}
+.calc-conv-ref {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 4px 0;
+  border-top: 1px solid var(--border);
+}
+
 /* ============================================
    TIMER WIDGET
    ============================================ */

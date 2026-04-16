@@ -99,6 +99,14 @@ const STRINGS = {
     'calculator.sci.field.b':            'Seite b',
     'calculator.sci.field.value':        'Wert',
     'calculator.sci.field.percent':      'Prozent',
+    'calculator.tab.converter':          'Umrechner',
+    'calculator.conv.swap':              'Einheiten tauschen',
+    'calculator.conv.cat.length':        'Länge',
+    'calculator.conv.cat.weight':        'Gewicht',
+    'calculator.conv.cat.temperature':   'Temperatur',
+    'calculator.conv.cat.volume':        'Volumen',
+    'calculator.conv.cat.speed':         'Geschwindigkeit',
+    'calculator.conv.cat.area':          'Fläche',
 
     // Timer
     'timer.title':             'Timer',
@@ -423,6 +431,14 @@ const STRINGS = {
     'calculator.sci.field.b':            'Side b',
     'calculator.sci.field.value':        'Value',
     'calculator.sci.field.percent':      'Percent',
+    'calculator.tab.converter':          'Converter',
+    'calculator.conv.swap':              'Swap units',
+    'calculator.conv.cat.length':        'Length',
+    'calculator.conv.cat.weight':        'Weight',
+    'calculator.conv.cat.temperature':   'Temperature',
+    'calculator.conv.cat.volume':        'Volume',
+    'calculator.conv.cat.speed':         'Speed',
+    'calculator.conv.cat.area':          'Area',
 
     // Timer
     'timer.title':             'Timer',

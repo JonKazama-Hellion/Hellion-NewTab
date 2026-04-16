@@ -6,6 +6,23 @@ All notable changes per version. Format based on [Keep a Changelog](https://keep
 
 ---
 
+## [2.1.0] — 2026-04-16
+
+### Added
+- **Calculator Tab-System:** 6 Modi über Tab-Leiste erreichbar (Standard, Scientific, Unit, SAT, FAC, STA)
+- **Scientific-Modus:** Wurzel, Potenz, Pi, Euler, Vorzeichen-Wechsel + Formel-Helfer (Kreis, Pythagoras, Prozent, Temperatur)
+- **Unit-Converter:** 6 Kategorien (Länge, Gewicht, Temperatur, Volumen, Geschwindigkeit, Fläche) mit Live-Konvertierung und Swap
+- **Satisfactory Calculator:** Items/Min, Overclock-Power (Exponent 1.321928), Maschinen-Rechner
+- **Factorio Calculator:** Assembler-Ratios, Belt-Throughput, Maschinen-Rechner mit Belt-Empfehlung
+- **Stationeers Calculator:** Idealgas (PV=nRT), Furnace/Verbrennung, Solar/Batterie-Dimensionierung, Atmosphären-Mixer
+
+### Changed
+- Parser um `^` (Potenz, rechts-assoziativ) und `sqrt()` erweitert
+- Calculator-Widget Auto-Resize auf 320×480 für komplexe Modi
+- ~110 neue i18n-Keys (DE + EN)
+
+---
+
 ### v2.0.1 — 16.04.2026
 
 #### Security
